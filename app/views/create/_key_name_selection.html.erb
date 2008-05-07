@@ -1,0 +1,11 @@
+<span id="key_name_selection">
+  <% unless  @fractal_piece.getScale.getValidKeyNames.size == 0 -%>
+    Key:
+    <%= select_tag :key, options_for_select(@fractal_piece.getScale.getValidKeyNames, @fractal_piece.getScale.getKeyName) %>
+    <%= observe_field :key, 
+        :url => { :action => :key_selected }, 
+        :with => "'key='+encodeURIComponent(value)",
+        :before => "$('scale_spinner').show()",
+        :complete => "$('scale_spinner').hide()" %>
+  <% end -%>
+</span>

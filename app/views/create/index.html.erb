@@ -1,0 +1,15 @@
+<% form_tag :action => 'generate_fractal_piece' do %>
+  <div id="scale_selection">Scale Type:
+    <%= select_tag :scale, options_for_select(@scale_names, @fractal_piece.getScale) %>
+    <%= observe_field :scale, 
+        :url => { :action => :scale_selected }, 
+        :update => :key_name_selection, 
+        :with => "'scale='+encodeURIComponent(value)",
+        :before => "$('scale_spinner').show()",
+        :complete => "$('scale_spinner').hide()"%>
+
+    &nbsp;
+    <%= render :partial => 'key_name_selection' %>
+    <%= image_tag 'indicator.gif', :style => 'display: none;', :id => 'scale_spinner' %>
+  </div>  
+<% end %>
