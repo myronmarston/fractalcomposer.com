@@ -6,6 +6,7 @@ import com.myronmarston.music.scales.Scale
 import com.myronmarston.music.scales.ChromaticScale
 import com.myronmarston.music.scales.MajorScale
 import com.myronmarston.music.NoteName
+import com.myronmarston.music.NoteStringParseException
 
 class CreateController < ApplicationController
   before_filter :load_fractal_piece_from_session
@@ -31,7 +32,14 @@ class CreateController < ApplicationController
   end
   
   def set_germ_xhr    
-    @fractal_piece.setGermString(params[:germ_string])
+    begin
+      @fractal_piece.setGermString(params[:germ_string])
+    rescue NoteStringParseException => ex
+      @error_message = ex.message.sub(/[^:]*: /, '')
+      render :partial => 'germ_string_error'
+      return
+    end    
+    
     save_germ_to_midi_file
     render :partial => 'midi_player', :locals => {:midi_filename => @germ_filename, :div_id => 'germ_midi_player'}
   end
