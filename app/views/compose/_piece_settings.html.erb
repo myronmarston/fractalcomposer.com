@@ -20,10 +20,10 @@
         :url => { :action => :set_germ_xhr }, 
         :update => :germ_midi_player_wrapper, 
         :with => "'germ_string='+encodeURIComponent(value)",
-        :before => "$('germ_spinner').show(); $('germ_midi_player').hide()",
-        :complete => "$('germ_spinner').hide()" %>    
+        :before => "$('germ_spinner').show(); $('germ_midi_player_wrapper').hide()",
+        :complete => "$('germ_spinner').hide(); $('germ_midi_player_wrapper').show()" %>    
     <%= render :partial => 'spinner', :locals => {:div_id => 'germ_spinner'} %>
-    <span id="germ_midi_player_wrapper">  
+    <div id="germ_midi_player_wrapper">  
         <%= render :partial => 'midi_player', :locals => {:midi_filename => @germ_filename, :div_id => 'germ_midi_player'} %>        
-    </span>
+    </div>
   </p>    

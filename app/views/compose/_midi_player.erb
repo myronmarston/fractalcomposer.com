@@ -1,6 +1,7 @@
 <%#
 # Taken from:
 # http://joliclic.free.fr/html/object-tag/en/object-audio.html#mid
+# 
 %>
 <% if midi_filename -%>   
   &nbsp;     
@@ -8,9 +9,6 @@
     <param name="src" value="<%= midi_filename %>" />
     <param name="autoplay" value="false" />
     <param name="autoStart" value="0" />
-      alt : <a href="<%= midi_filename %>">Germ Midi File</a>
-  </object>  
-<% else -%>
-  <%# create an empty span with the same div id, just so we always have something with this id...%>
-  <span id="<%= div_id %>" />
+      <a href="<%= midi_filename %>">Listen to Germ</a>
+  </object> 
 <% end -%>
