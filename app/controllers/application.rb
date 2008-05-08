@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
   # protects all actions which end with '_xhr' against a direct call (no xhr)
   # taken from http://www.webdevbros.net/2007/12/05/protect-your-xhr-actions-ror/
   def protect_xhr_actions
-    redirect_to create_index_url and false if self.action_name.ends_with?('_xhr') and !request.xhr?
+    redirect_to '/compose' and false if self.action_name.ends_with?('_xhr') and !request.xhr?
   end
 
 end

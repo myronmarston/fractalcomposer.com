@@ -8,7 +8,7 @@ import com.myronmarston.music.scales.MajorScale
 import com.myronmarston.music.NoteName
 import com.myronmarston.music.NoteStringParseException
 
-class CreateController < ApplicationController
+class ComposeController < ApplicationController
   before_filter :load_fractal_piece_from_session
   after_filter :store_fractal_piece_in_session
   

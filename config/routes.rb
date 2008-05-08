@@ -29,7 +29,7 @@ ActionController::Routing::Routes.draw do |map|
 
   # See how all your routes lay out with "rake routes"
   # this gives us a create_index_url
-  map.create_index 'create/', :controller => 'create', :action => 'index'
+  #map.create_index 'create/', :controller => 'create', :action => 'index'
   
   # Install the default routes as the lowest priority.
   map.connect ':controller/:action/:id'

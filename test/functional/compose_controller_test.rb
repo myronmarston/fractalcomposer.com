@@ -1,9 +1,9 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class CreateControllerTest < ActionController::TestCase
+class ComposeControllerTest < ActionController::TestCase
   
   def test_routings
-    assert_routing("/create", :controller => "create", :action => "index")        
+    assert_routing("/compose", :controller => "compose", :action => "index")        
   end
   
   def test_bad_germ_string
