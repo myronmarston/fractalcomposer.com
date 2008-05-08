@@ -1,0 +1,29 @@
+  <p id="scale_selection">Scale Type:
+    <%= select_tag :scale, options_for_select(@scale_names, @fractal_piece.getScale.java_class) %>
+    <%= observe_field :scale, 
+        :url => { :action => :scale_selected_xhr }, 
+        :update => :key_name_selection, 
+        :with => "'scale='+encodeURIComponent(value)",
+        :before => "$('scale_spinner').show()",
+        :complete => "$('scale_spinner').hide()" %>
+        
+    &nbsp;
+    <span id="key_name_selection">
+        <%= render :partial => 'key_name_selection' %>
+    </span>
+    <%= render :partial => 'spinner', :locals => {:div_id => 'scale_spinner'} %>    
+  </p>  
+  
+  <p id="germ">Germ:    
+    <%= text_area_tag :germ_string, @fractal_piece.getGermString, :cols => 60, :rows => 1 %>
+    <%= observe_field :germ_string, 
+        :url => { :action => :set_germ_xhr }, 
+        :update => :germ_midi_player_wrapper, 
+        :with => "'germ_string='+encodeURIComponent(value)",
+        :before => "$('germ_spinner').show(); $('germ_midi_player').hide()",
+        :complete => "$('germ_spinner').hide()" %>    
+    <%= render :partial => 'spinner', :locals => {:div_id => 'germ_spinner'} %>
+    <span id="germ_midi_player_wrapper">  
+        <%= render :partial => 'midi_player', :locals => {:midi_filename => @germ_filename, :div_id => 'germ_midi_player'} %>        
+    </span>
+  </p>    

@@ -1,45 +1,31 @@
-<%# form_tag :action => 'generate_fractal_piece' do 
-%>
-  <p id="scale_selection">Scale Type:
-    <%= select_tag :scale, options_for_select(@scale_names, @fractal_piece.getScale.java_class) %>
-    <%= observe_field :scale, 
-        :url => { :action => :scale_selected_xhr }, 
-        :update => :key_name_selection, 
-        :with => "'scale='+encodeURIComponent(value)",
-        :before => "$('scale_spinner').show()",
-        :complete => "$('scale_spinner').hide()" %>
-        
-    &nbsp;
-    <span id="key_name_selection">
-        <%= render :partial => 'key_name_selection' %>
-    </span>
-    <%= render :partial => 'spinner', :locals => {:div_id => 'scale_spinner'} %>    
-  </p>  
-  
-  <p id="germ">Germ:    
-    <%= text_field_tag :germ_string, @fractal_piece.getGermString, :size => 80 %>
-    <%= observe_field :germ_string, 
-        :url => { :action => :set_germ_xhr }, 
-        :update => :germ_midi_player_wrapper, 
-        :with => "'germ_string='+encodeURIComponent(value)",
-        :before => "$('germ_spinner').show(); $('germ_midi_player').hide()",
-        :complete => "$('germ_spinner').hide()" %>    
-    <%= render :partial => 'spinner', :locals => {:div_id => 'germ_spinner'} %>
-    <span id="germ_midi_player_wrapper">  
-        <%= render :partial => 'midi_player', :locals => {:midi_filename => @germ_filename, :div_id => 'germ_midi_player'} %>        
-    </span>
-  </p>
-  
-  <%= submit_tag 'Generate Piece With Default Options', :class => 'button', 
-        :onclick => remote_function(
-            :url => { :action => :generate_piece_with_default_settings_xhr },
-            :update => :piece_midi_player_wrapper, 
-            :before => "$('piece_spinner').show()",
-            :complete => "$('piece_spinner').hide()" ) 
-  %>
-  <%= image_tag 'indicator.gif', :style => 'display: none;', :id => 'piece_spinner' %>
-  <span id="piece_midi_player_wrapper">  
-      <%= render :partial => 'midi_player', :locals => {:midi_filename => @piece_filename, :div_id => 'piece_midi_player'} %>        
-  </span>
-<%#
-end %>
+<%
+  div_ids = ['piece_settings', 'voices', 'sections']
+  div_names = ['Piece Settings', 'Voices', 'Sections']  
+-%>
+
+<%= render :partial => 'layouts/tabpanel_js', :locals => {:div_ids => div_ids} -%>
+
+<% form_tag :action => 'generate_fractal_piece' do %>
+    <% div_ids.each do |div_id| -%>
+        <div id="<%= div_id %>" style="display:<%= if div_id == 'piece_settings' then 'block' else 'none' end %>;">
+          <%= render :partial => 'layouts/tabpanel_list',
+                  :locals => {:div_ids => div_ids, :div_names => div_names,
+                  :div_current => div_id } %>
+          <%= render :partial => div_id %>
+        </div>
+    <% end -%>    
+    
+    <div>
+      <%= submit_tag 'Generate Piece', :id => 'generate_piece_button',:class => 'button', 
+          :onclick => remote_function(
+              :url => { :action => :generate_piece_with_default_settings_xhr },
+              :update => :piece_midi_player_wrapper, 
+              :before => "$('piece_spinner').show()",
+              :complete => "$('piece_spinner').hide()" ) 
+      %>
+      <%= image_tag 'indicator.gif', :style => 'display: none;', :id => 'piece_spinner' %>    
+      <span id="piece_midi_player_wrapper">  
+          <%= render :partial => 'midi_player', :locals => {:midi_filename => @piece_filename, :div_id => 'piece_midi_player'} %>        
+      </span>
+    </div>
+<% end %>
