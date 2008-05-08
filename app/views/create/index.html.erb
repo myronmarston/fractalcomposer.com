@@ -1,4 +1,5 @@
-<% form_tag :action => 'generate_fractal_piece' do %>
+<%# form_tag :action => 'generate_fractal_piece' do 
+%>
   <p id="scale_selection">Scale Type:
     <%= select_tag :scale, options_for_select(@scale_names, @fractal_piece.getScale.java_class) %>
     <%= observe_field :scale, 
@@ -28,4 +29,17 @@
         <%= render :partial => 'midi_player', :locals => {:midi_filename => @germ_filename, :div_id => 'germ_midi_player'} %>        
     </span>
   </p>
-<% end %>
+  
+  <%= submit_tag 'Generate Piece With Default Options', :class => 'button', 
+        :onclick => remote_function(
+            :url => { :action => :generate_piece_with_default_settings_xhr },
+            :update => :piece_midi_player_wrapper, 
+            :before => "$('piece_spinner').show()",
+            :complete => "$('piece_spinner').hide()" ) 
+  %>
+  <%= image_tag 'indicator.gif', :style => 'display: none;', :id => 'piece_spinner' %>
+  <span id="piece_midi_player_wrapper">  
+      <%= render :partial => 'midi_player', :locals => {:midi_filename => @piece_filename, :div_id => 'piece_midi_player'} %>        
+  </span>
+<%#
+end %>

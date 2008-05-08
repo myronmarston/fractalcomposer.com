@@ -35,12 +35,23 @@ class CreateController < ApplicationController
     save_germ_to_midi_file
     render :partial => 'midi_player', :locals => {:midi_filename => @germ_filename, :div_id => 'germ_midi_player'}
   end
+  
+  def generate_piece_with_default_settings_xhr
+    @fractal_piece.createDefaultSettings
+    save_piece_to_midi_file
+    render :partial => 'midi_player', :locals => {:midi_filename => @piece_filename, :div_id => 'piece_midi_player'}
+  end
 
   protected
   
   def save_germ_to_midi_file        
     @germ_filename = get_temp_midi_filename('germs')
     @fractal_piece.saveGermToMidiFile("public#{@germ_filename}")    
+  end
+  
+  def save_piece_to_midi_file
+    @piece_filename = get_temp_midi_filename('pieces')
+    @fractal_piece.createAndSaveMidiFile("public#{@piece_filename}")    
   end
   
   def get_temp_midi_filename(subdirectory)

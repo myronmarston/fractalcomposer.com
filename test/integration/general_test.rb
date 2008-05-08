@@ -10,7 +10,7 @@ import com.myronmarston.music.scales.ChromaticScale
 class GeneralTest < ActionController::IntegrationTest
   def test_non_xhr_redirection
     # todo: add every xml_http_request  method here...
-    ['scale_selected_xhr', 'key_selected_xhr'].each do |action|
+    ['scale_selected_xhr', 'key_selected_xhr', 'set_germ_xhr'].each do |action|
       get '/create'
       assert_response :success
       
