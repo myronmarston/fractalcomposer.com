@@ -1,0 +1,11 @@
+/*************************************************************
+   AUTHOR: Myron Marston
+   PURPOSE: contains CSS to override the coolwater style sheet.
+ *************************************************************/
+
+img.spinner {
+    background: transparent;
+    margin: 0px;
+    padding: 0px;
+}
+ 

@@ -13,7 +13,7 @@
     <span id="key_name_selection">
         <%= render :partial => 'key_name_selection' %>
     </span>
-    <%= image_tag 'indicator.gif', :style => 'display: none;', :id => 'scale_spinner' %>
+    <%= render :partial => 'spinner', :locals => {:div_id => 'scale_spinner'} %>    
   </p>  
   
   <p id="germ">Germ:    
@@ -24,7 +24,7 @@
         :with => "'germ_string='+encodeURIComponent(value)",
         :before => "$('germ_spinner').show(); $('germ_midi_player').hide()",
         :complete => "$('germ_spinner').hide()" %>    
-    <%= image_tag 'indicator.gif', :style => 'display: none;', :id => 'germ_spinner' %>
+    <%= render :partial => 'spinner', :locals => {:div_id => 'germ_spinner'} %>
     <span id="germ_midi_player_wrapper">  
         <%= render :partial => 'midi_player', :locals => {:midi_filename => @germ_filename, :div_id => 'germ_midi_player'} %>        
     </span>
