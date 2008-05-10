@@ -27,14 +27,9 @@ object.midi_player {
     margin-left: -7px;
 }
 
-input#generate_piece_button {
-  margin: 20px 40px;
-  display: block;
-}
-
-input#add_voice_button {
+form#compose_form input.button {
+    display: block;
     margin: 10px 20px;
-    display: block;    
 }
 
 .germ_string_error {
@@ -42,17 +37,24 @@ input#add_voice_button {
 }
 
 div.one_voice_or_section {
-  padding: 20px;
-  border: 1px solid #BBB; 
+  padding: 10px 20px 0px 20px;  
 }
 
 div.one_voice_or_section p {
   line-height: 2.2em;  
 }
 
-div.one_voice_or_section h3 {
-    color: #3B5E0B;
+form#compose_form fieldset legend {
+    margin-left: 20px;
     margin-bottom: 0px;
+    display: block;
+    font-family:'Trebuchet MS',Tahoma,Sans-serif;
+    font-size: 120%;
+    color: #3B5E0B;    
+}
+
+form#compose_form fieldset {
+    border: 1px solid #ccc;    
 }
 
 /*** Tabbed Panels ***/

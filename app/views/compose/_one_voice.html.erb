@@ -1,23 +1,24 @@
 <% human_readable_index = voice_index + 1 -%>
-<div id="voice_<%= human_readable_index %> " class="one_voice_or_section">
-  <h3>Voice <%= human_readable_index %></h3>
+<div id="voice_<%= human_readable_index %> " class="one_voice_or_section">  
+  <fieldset>
+    <legend>Voice <%= human_readable_index %></legend>    
 
-  <p>
-    Instrument:
-    <%= select_tag "voices[#{voice_index}][instrument]", options_for_select(@instrument_names, voice.getInstrumentName) %>    
-    <br />
-    Octave Adjustment:
-    <%= text_field_tag "voices[#{voice_index}][octave_adjustment]", voice.getOctaveAdjustment, :size => 2 %>
-    <br />
-    Speed Scale Factor:
-    <%= text_field_tag "voices[#{voice_index}][speed_scale_factor]", voice.speedScaleFactor, :size => 2 %>
-  </p>
-  <%= submit_tag 'Listen to voice germ',     
-    :class => 'button',
-    :onclick => remote_function(:url => {:action => 'add_voice'}) %>
+    <p>
+      Instrument:
+      <%= select_tag "voices[#{voice_index}][instrument]", options_for_select(@instrument_names, voice.getInstrumentName) %>    
+      <br />
+      Octave Adjustment:
+      <%= text_field_tag "voices[#{voice_index}][octave_adjustment]", voice.getOctaveAdjustment, :size => 2 %>
+      <br />
+      Speed Scale Factor:
+      <%= text_field_tag "voices[#{voice_index}][speed_scale_factor]", voice.speedScaleFactor, :size => 2 %>
+    </p>
+    <%= submit_tag 'Listen to voice germ',     
+      :class => 'button',
+      :onclick => remote_function(:url => {:action => 'add_voice'}) %>
 
-  <%= submit_tag 'Listen to entire voice',     
-    :class => 'button',
-    :onclick => remote_function(:url => {:action => 'add_voice'}) %>
-    
+    <%= submit_tag 'Listen to entire voice',     
+      :class => 'button',
+      :onclick => remote_function(:url => {:action => 'add_voice'}) %> 
+  </fieldset> 
 </div>

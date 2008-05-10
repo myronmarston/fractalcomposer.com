@@ -1,16 +1,16 @@
 <%
   div_ids = ['piece_settings', 'voices', 'sections']
   div_names = ['Piece Settings', 'Voices', 'Sections']
-  
-  additional_tab_js = Hash.new
-  additional_tab_js['piece_settings'] = ''
-  additional_tab_js['voices'] = remote_function(:url => {:action => 'voices_tab_selected_xhr'})
-  additional_tab_js['sections'] = remote_function(:url => {:action => 'sections_tab_selected_xhr'})
+  additional_tab_js = ['',
+    remote_function(:url => {:action => 'voices_tab_selected_xhr'},
+                    :with => "Form.serialize($('compose_form'))") + '; ', 
+    remote_function(:url => {:action => 'sections_tab_selected_xhr'},
+                    :with => "Form.serialize($('compose_form'))") + '; ']
 -%>
 
 <%= render :partial => 'layouts/tabpanel_js', :locals => {:div_ids => div_ids} -%>
-
 <% form_remote_tag  :url => {:action => 'generate_piece_xhr'},
+                    :html => {:id => 'compose_form'},
                     :update => 'piece_midi_player_wrapper',
                     :before => "$('piece_spinner').show()",
                     :complete => "$('piece_spinner').hide()" do %>
@@ -21,7 +21,7 @@
                         :div_ids => div_ids,                      
                         :div_names => div_names,
                         :div_current => div_id,
-                        :additional_tab_js => additional_tab_js[div_id] } %>
+                        :additional_tab_js => additional_tab_js } %>
           <div class="tab_panel_body">
             <%= render :partial => div_id %>
           </div>
