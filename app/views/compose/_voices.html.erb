@@ -1,5 +1,6 @@
-<% @fractal_piece.getVoices.each_with_index do |voice, voice_index| %>
-    <%= render :partial => 'one_voice', :locals => {:voice => voice, :voice_index => voice_index} %>
+<% @voices_or_sections_label = 'voices' %>
+<% @fractal_piece.getVoices.each_with_index do |@voice_or_section, @voice_or_section_index| %>
+    <%= render :partial => 'one_voice' %>
 <% end %>
 <%= submit_tag 'Add Voice', 
     :id => 'add_voice_button', 

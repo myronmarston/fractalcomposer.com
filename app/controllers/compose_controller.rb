@@ -107,7 +107,9 @@ class ComposeController < ApplicationController
     end
   end  
   
-  def load_fractal_piece_from_session      
+  def load_fractal_piece_from_session
+    @tristate_options = {'Use Section Default' => nil, 'Yes' => true, 'No' => false}
+    
     begin
       @fractal_piece = FractalPiece.loadFromXml(session[:fractal_piece]) if session[:fractal_piece]
     rescue NativeException => ex

@@ -14,7 +14,7 @@
     <%= render :partial => 'spinner', :locals => {:div_id => 'scale_spinner'} %>    
   </p>  
   
-  <p id="germ">Germ:    
+  <div id="germ">Germ:    
     <%= text_area_tag :germ_string, @fractal_piece.getGermString, :cols => 60, :rows => 1 %>
     <%= observe_field :germ_string, 
         :url => { :action => :set_germ_xhr }, 
@@ -26,4 +26,4 @@
     <div id="germ_midi_player_wrapper">  
         <%= render :partial => 'midi_player', :locals => {:midi_filename => @germ_filename, :div_id => 'germ_midi_player'} %>        
     </div>
-  </p>    
+  </div>    

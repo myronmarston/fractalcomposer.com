@@ -1,0 +1,32 @@
+<% 
+    human_readable_index = @voice_section_index + 1 
+    input_name_prefix = "#{@voices_or_sections_label}[#{@voice_or_section_index}][voice_sections][#{@voice_section_index}]"
+    input_id_prefix = sanatize_input_id(input_name_prefix)
+    input_name_prefix_sss = "#{input_name_prefix}[self_similarity_settings]"
+    input_id_prefix_sss = sanatize_input_id(input_name_prefix_sss)
+-%>
+
+<fieldset>
+  <legend>Voice Section <%= human_readable_index %></legend>
+  <p>
+    Rest: <%= check_box_tag "#{input_name_prefix}[rest]", 1, @voice_section.getRest, :id => "#{input_id_prefix}_rest" %>
+    <br />
+    Apply Inversion: <%= select_tag "#{input_name_prefix}[apply_inversion]", options_for_select(@tristate_options), :id => "#{input_id_prefix}_apply_inversion" %>
+    <br />
+    Apply Retrograde: <%= select_tag "#{input_name_prefix}[apply_retrograde]", options_for_select(@tristate_options), :id => "#{input_id_prefix}_apply_retrograde" %>
+  </p>
+  <fieldset>
+    <legend>Apply Self-Similarity Settings to:</legend>
+    <p>
+        <span class="self_similarity_settings_field">
+            Pitch <%= check_box_tag "#{input_name_prefix_sss}[pitch]", 1, @voice_section.getSelfSimilaritySettings.getApplyToPitch, :id => "#{input_id_prefix_sss}_pitch" %>                
+        </span>
+        <span class="self_similarity_settings_field">
+            Rhythm <%= check_box_tag "#{input_name_prefix_sss}[rhythm]", 1, @voice_section.getSelfSimilaritySettings.getApplyToRhythm, :id => "#{input_id_prefix_sss}_rhythm" %>                
+        </span>
+        <span class="self_similarity_settings_field">
+            Volume <%= check_box_tag "#{input_name_prefix_sss}[volume]", 1, @voice_section.getSelfSimilaritySettings.getApplyToVolume, :id => "#{input_id_prefix_sss}_volume" %>
+        </span>
+    </p>
+  </fieldset>  
+</fieldset>

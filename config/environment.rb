@@ -46,7 +46,7 @@ Rails::Initializer.run do |config|
   config.action_controller.session = {
     :session_key => '_FractalComposerDotCom_session',
     :secret      => '564f8f40bcc8113309db93b20afdb3b8eaecf0a3d723f2a14d837efa93ce575f436b85e15519646c30af6df143a50e2e1adfc26e5906c30c80222f1421041621'
-  }
+  }    
 
   # Use the database for sessions instead of the cookie-based default,
   # which shouldn't be used to store highly confidential information
@@ -63,4 +63,6 @@ Rails::Initializer.run do |config|
 
   # Make Active Record use UTC-base instead of local time
   # config.active_record.default_timezone = :utc
+  
+  config.action_controller.allow_forgery_protection = false
 end

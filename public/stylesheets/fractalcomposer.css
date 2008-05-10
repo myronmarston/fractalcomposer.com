@@ -37,7 +37,7 @@ form#compose_form input.button {
 }
 
 div.one_voice_or_section {
-  padding: 10px 20px 0px 20px;  
+  padding: 10px 0px 0px 0px;  
 }
 
 div.one_voice_or_section p {
@@ -54,7 +54,14 @@ form#compose_form fieldset legend {
 }
 
 form#compose_form fieldset {
-    border: 1px solid #ccc;    
+    border: 1px solid #ccc;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 10px;
+}
+
+span.self_similarity_settings_field {
+    margin: 10px 19px;
 }
 
 /*** Tabbed Panels ***/
