@@ -15,7 +15,7 @@ form {
 
 textarea#germ_string {
     height: 40px;
-    width: 450px;
+    width: 350px;
 }
 
 #germ_midi_player_wrapper {    
@@ -28,15 +28,32 @@ object.midi_player {
 }
 
 input#generate_piece_button {
-  margin: 20px 20px 20px 20px;
-  background-position: center;
+  margin: 20px 40px;
+  display: block;
+}
+
+input#add_voice_button {
+    margin: 10px 20px;
+    display: block;    
 }
 
 .germ_string_error {
     color: #f00; 
 }
 
+div.one_voice_or_section {
+  padding: 20px;
+  border: 1px solid #BBB; 
+}
 
+div.one_voice_or_section p {
+  line-height: 2.2em;  
+}
+
+div.one_voice_or_section h3 {
+    color: #3B5E0B;
+    margin-bottom: 0px;
+}
 
 /*** Tabbed Panels ***/
 /*
@@ -86,4 +103,22 @@ background:transparent;
 
 .tablist a:hover { color:#f00;   }
 .tablist ul a:hover { color:#f00 !important; }
+
+
+div.tab_panel_body {
+    margin-top: -1px; /* to make the border overlap with the border of the tabs */
+    border-left: 1px solid #CCCCCC;
+    border-bottom: 1px solid #CCCCCC;
+    border-right: 1px solid #CCCCCC;    
+}
+
+div.tab_panel_body, #main ul.tablist {
+    margin-left: 20px;
+    margin-right: 20px;    
+}
+
+div.tab_panel_body p {
+  margin-top: 0px;
+  padding-top: 10px;
+}
  

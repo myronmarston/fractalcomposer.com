@@ -1,6 +1,7 @@
-<%#
-# To change this template, choose Tools | Templates
-# and open the template in the editor.
-%>
-
-<%= "_voices.html" %>
+<% @fractal_piece.getVoices.each_with_index do |voice, voice_index| %>
+    <%= render :partial => 'one_voice', :locals => {:voice => voice, :voice_index => voice_index} %>
+<% end %>
+<%= submit_tag 'Add Voice', 
+    :id => 'add_voice_button', 
+    :class => 'button',
+    :onclick => remote_function(:url => {:action => 'add_voice'}) %>           

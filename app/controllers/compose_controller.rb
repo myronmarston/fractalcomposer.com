@@ -7,6 +7,8 @@ import com.myronmarston.music.scales.ChromaticScale
 import com.myronmarston.music.scales.MajorScale
 import com.myronmarston.music.NoteName
 import com.myronmarston.music.NoteStringParseException
+import com.myronmarston.music.Instrument
+import com.myronmarston.util.Fraction
 
 class ComposeController < ApplicationController
   before_filter :load_fractal_piece_from_session
@@ -16,7 +18,9 @@ class ComposeController < ApplicationController
     @scale_names = Hash.new    
     Scale::SCALE_TYPES.keySet.each do |type|    
       @scale_names[type.getSimpleName.titleize] = type
-    end        
+    end     
+
+    @instrument_names = Instrument::AVAILABLE_INSTRUMENTS
   end
   
   def scale_selected_xhr    
@@ -44,8 +48,32 @@ class ComposeController < ApplicationController
     render :partial => 'midi_player', :locals => {:midi_filename => @germ_filename, :div_id => 'germ_midi_player'}
   end
   
-  def generate_piece_with_default_settings_xhr
-    @fractal_piece.createDefaultSettings
+  def voices_tab_selected_xhr
+    puts "voices_tab_selected_xhr params: #{params.inspect}"
+    render :nothing => true 
+  end
+  
+  def sections_tab_selected_xhr
+    puts "sections_tab_selected_xhr params: #{params.inspect}"
+    render :nothing => true
+  end
+  
+  def add_voice_xhr
+    puts "add_voice_xhr params: #{params.inspect}"
+    render :nothing => true
+  end
+    
+  def generate_piece_xhr    
+    # set our fractal piece options based on the params hash...    
+    @fractal_piece.setScale(get_scale(params[:scale], params[:key]))
+    @fractal_piece.setGermString(params[:germ_string])
+    params[:voices].each_pair do |index, voice_settings|       
+      voice = @fractal_piece.getVoices.get(index.to_i)
+      voice.setInstrumentName(voice_settings[:instrument])
+      voice.setOctaveAdjustment(voice_settings[:octave_adjustment].to_i)
+      voice.setSpeedScaleFactor(Fraction.new(voice_settings[:speed_scale_factor]))      
+    end
+    
     save_piece_to_midi_file
     render :partial => 'midi_player', :locals => {:midi_filename => @piece_filename, :div_id => 'piece_midi_player'}
   end
@@ -68,6 +96,7 @@ class ComposeController < ApplicationController
   end
   
   def get_scale(scale_class_name, key_name) 
+    # TODO: what if the scale is chromatic and the key_name is blank?
     # first, test that the key name is valid for this scale...    
     scale_class = eval("#{scale_class_name}.java_class")    
     valid_keys = Scale::SCALE_TYPES.get(scale_class)    
@@ -76,11 +105,21 @@ class ComposeController < ApplicationController
     else              
       return eval("#{scale_class_name}.new")
     end
-  end
+  end  
   
   def load_fractal_piece_from_session      
-    @fractal_piece = FractalPiece.loadFromXml(session[:fractal_piece]) if session[:fractal_piece]
-    @fractal_piece ||= FractalPiece.new    
+    begin
+      @fractal_piece = FractalPiece.loadFromXml(session[:fractal_piece]) if session[:fractal_piece]
+    rescue NativeException => ex
+      # if our serialization changes, we will get an exception. in this case, 
+      # just log the error and start the fractal piece over
+      logger.error("An error occurred while loading the fractal piece from the session: #{ex.message}")
+    end
+    
+    if (@fractal_piece.nil?) 
+      @fractal_piece = FractalPiece.new
+      @fractal_piece.createDefaultSettings
+    end
        
     if @fractal_piece.getGermString != '' 
       # we have a valid germ; make sure we have a midi file for it...      
