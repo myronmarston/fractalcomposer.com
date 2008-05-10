@@ -1,0 +1,9 @@
+<%
+    fieldset_id = "#{id_prefix}_fieldset"
+    link_id = "#{id_prefix}_show_link"
+%>
+<%= link_to_function link_text, "Element.hide('#{link_id}'); Element.show('#{fieldset_id}')", :id => link_id, :class => 'fieldset_toggle_link fieldset_toggle_lone_link', :style => show_fieldset_initially ? 'display: none;' : '' %>
+<fieldset id="<%= fieldset_id %>" style="<%= show_fieldset_initially ? '' : 'display: none;' %>">
+  <legend><%= link_to_function link_text, "Element.hide('#{fieldset_id}'); Element.show('#{link_id}')", :class => 'fieldset_toggle_link' %></legend>
+  <%= yield %>
+</fieldset>

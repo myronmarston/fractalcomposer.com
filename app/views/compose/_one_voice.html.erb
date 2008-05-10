@@ -3,10 +3,9 @@
     input_name_prefix = "voices[#{@voice_or_section_index}]"
     input_id_prefix = sanatize_input_id(input_name_prefix)
 -%>
-<div id="voice_<%= human_readable_index %> " class="one_voice_or_section">  
-  <fieldset>
-    <legend>Voice <%= human_readable_index %></legend>    
 
+<div id="voice_<%= human_readable_index %> " class="one_voice_or_section">  
+  <% render :layout => 'togglable_fieldset_wrapper', :locals => {:link_text => "Voice #{human_readable_index}", :id_prefix => input_id_prefix, :show_fieldset_initially => true } do %> 
     <p>
       Instrument:
       <%= select_tag "#{input_name_prefix}[instrument]", options_for_select(@instrument_names, @voice_or_section.getInstrumentName), :id => "#{input_id_prefix}_instrument" %>    
@@ -18,5 +17,5 @@
       <%= text_field_tag "#{input_name_prefix}[speed_scale_factor]", @voice_or_section.speedScaleFactor, :size => 2, :id => "#{input_id_prefix}_speed_scale_factor" %>
     </p>
     <%= render :partial => 'voice_sections' %>      
-  </fieldset> 
+  <% end -%>
 </div>

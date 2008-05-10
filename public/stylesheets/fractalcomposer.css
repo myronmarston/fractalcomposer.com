@@ -47,10 +47,27 @@ div.one_voice_or_section p {
 form#compose_form fieldset legend {
     margin-left: 20px;
     margin-bottom: 0px;
-    display: block;
+    display: block;       
+}
+
+.fieldset_toggle_link {
     font-family:'Trebuchet MS',Tahoma,Sans-serif;
-    font-size: 120%;
-    color: #3B5E0B;    
+    font-size: 120%;      
+}
+
+a.fieldset_toggle_link:link, a.fieldset_toggle_link:visited {
+    color: #3B5E0B;
+}
+
+.fieldset_toggle_lone_link {
+    margin-left: 40px;
+    margin-bottom: 10px;
+    display: block;
+}
+
+a.fieldset_toggle_link:hover {
+    color:#f00;
+    text-decoration: none;
 }
 
 form#compose_form fieldset {

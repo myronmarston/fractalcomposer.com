@@ -5,9 +5,9 @@
     input_name_prefix_sss = "#{input_name_prefix}[self_similarity_settings]"
     input_id_prefix_sss = sanatize_input_id(input_name_prefix_sss)
 -%>
-
-<fieldset>
-  <legend>Voice Section <%= human_readable_index %></legend>
+  
+<% render :layout => 'togglable_fieldset_wrapper', :locals => {:link_text => "Voice Section #{human_readable_index}", :id_prefix => input_id_prefix, :show_fieldset_initially => false } do %> 
+  
   <p>
     Rest: <%= check_box_tag "#{input_name_prefix}[rest]", 1, @voice_section.getRest, :id => "#{input_id_prefix}_rest" %>
     <br />
@@ -16,7 +16,7 @@
     Apply Retrograde: <%= select_tag "#{input_name_prefix}[apply_retrograde]", options_for_select(@tristate_options), :id => "#{input_id_prefix}_apply_retrograde" %>
   </p>
   <fieldset>
-    <legend>Apply Self-Similarity Settings to:</legend>
+    <legend>Apply Self-Similarity To:</legend>
     <p>
         <span class="self_similarity_settings_field">
             Pitch <%= check_box_tag "#{input_name_prefix_sss}[pitch]", 1, @voice_section.getSelfSimilaritySettings.getApplyToPitch, :id => "#{input_id_prefix_sss}_pitch" %>                
@@ -29,4 +29,4 @@
         </span>
     </p>
   </fieldset>  
-</fieldset>
+<% end -%>
