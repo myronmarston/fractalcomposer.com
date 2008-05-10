@@ -16,6 +16,9 @@
       Speed Scale Factor:
       <%= text_field_tag "#{input_name_prefix}[speed_scale_factor]", @voice_or_section.speedScaleFactor, :size => 2, :id => "#{input_id_prefix}_speed_scale_factor" %>
     </p>
-    <%= render :partial => 'voice_sections' %>      
+    <% render :layout => 'togglable_fieldset_wrapper', :locals => {:link_text => 'Voice Sections', :id_prefix => "#{input_id_prefix}_voice_sections", :show_fieldset_initially => false } do %> 
+        <h3>Loading...</h3>
+        <%= render :partial => 'spinner', :locals => {:display => 'inline'} %>       
+    <% end -%>
   <% end -%>
 </div>

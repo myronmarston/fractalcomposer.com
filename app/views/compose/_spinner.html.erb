@@ -1,1 +1,5 @@
-<%= image_tag 'indicator.gif', :style => 'display: none;', :class => 'spinner', :id => div_id %>
+<%
+    options_hash = {:style => "display: #{display};", :class => 'spinner'} 
+    options_hash[:id] = div_id unless div_id.nil?
+%>
+<%= image_tag 'indicator.gif', options_hash %>

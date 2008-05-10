@@ -6,7 +6,7 @@
     input_id_prefix_sss = sanatize_input_id(input_name_prefix_sss)
 -%>
   
-<% render :layout => 'togglable_fieldset_wrapper', :locals => {:link_text => "Voice Section #{human_readable_index}", :id_prefix => input_id_prefix, :show_fieldset_initially => false } do %> 
+<% render :layout => 'togglable_fieldset_wrapper', :locals => {:link_text => "Voice Section #{human_readable_index}", :id_prefix => input_id_prefix, :show_fieldset_initially => true } do %> 
   
   <p>
     Rest: <%= check_box_tag "#{input_name_prefix}[rest]", 1, @voice_section.getRest, :id => "#{input_id_prefix}_rest" %>

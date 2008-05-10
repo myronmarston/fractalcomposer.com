@@ -1,0 +1,15 @@
+<%= submit_tag 'Listen to voice germ',     
+      :class => 'button',
+      :onclick => remote_function(:url => {:action => 'add_voice'}) %>
+
+<%= submit_tag 'Listen to entire voice',     
+      :class => 'button',
+      :onclick => remote_function(:url => {:action => 'add_voice'}) %>     
+
+
+<%= check_box_tag "advanced_options_toggle", 1, false, :onclick => "switchid('piece_settings'); $$('ul.tablist').each(function(e) {e.toggle();});" %>
+
+
+<% @voice_or_section.getVoiceSections.each_with_index do |@voice_section, @voice_section_index| %>
+    <%= render :partial => 'one_voice_section' %>
+<% end %>

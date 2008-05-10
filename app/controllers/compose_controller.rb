@@ -58,8 +58,7 @@ class ComposeController < ApplicationController
     render :nothing => true
   end
   
-  def add_voice_xhr
-    puts "add_voice_xhr params: #{params.inspect}"
+  def add_voice_xhr    
     render :nothing => true
   end
     

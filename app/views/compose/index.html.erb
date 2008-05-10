@@ -9,6 +9,7 @@
 -%>
 
 <%= render :partial => 'layouts/tabpanel_js', :locals => {:div_ids => div_ids} -%>
+
 <% form_remote_tag  :url => {:action => 'generate_piece_xhr'},
                     :html => {:id => 'compose_form'},
                     :update => 'piece_midi_player_wrapper',
@@ -33,6 +34,6 @@
       <%= image_tag 'indicator.gif', :style => 'display: none;', :id => 'piece_spinner' %>    
       <span id="piece_midi_player_wrapper">  
           <%= render :partial => 'midi_player', :locals => {:midi_filename => @piece_filename, :div_id => 'piece_midi_player'} %>        
-      </span>
+      </span>      
     </div>
 <% end %>

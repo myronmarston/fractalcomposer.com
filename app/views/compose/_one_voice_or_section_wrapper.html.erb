@@ -1,0 +1,25 @@
+<% 
+    human_readable_index = @voice_or_section_index + 1 
+    input_name_prefix = "#{voices_or_sections_label}[#{@voice_or_section_index}]"
+    input_id_prefix = sanatize_input_id(input_name_prefix)
+-%>
+
+<div id="voice_<%= human_readable_index %> " class="one_voice_or_section">  
+  <% render :layout => 'togglable_fieldset_wrapper', 
+        :locals => {:link_text => "#{voices_or_sections_label.singularize.titleize} #{human_readable_index}", 
+                    :id_prefix => input_id_prefix, 
+                    :show_fieldset_initially => true } do %> 
+
+    <%= yield %>
+
+    <% render :layout => 'togglable_fieldset_wrapper', 
+        :locals => {:link_text => 'Voice Sections', 
+                    :id_prefix => "#{input_id_prefix}_voice_sections", 
+                    :show_fieldset_initially => false } do %> 
+
+        <h3>Loading...</h3>
+        <%= render :partial => 'spinner', :locals => {:display => 'inline'} %>       
+    <% end -%>
+
+  <% end -%>
+</div>
