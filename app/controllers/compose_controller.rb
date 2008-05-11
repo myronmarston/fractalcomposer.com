@@ -48,20 +48,12 @@ class ComposeController < ApplicationController
     save_germ_to_midi_file
     render :partial => 'midi_player', :locals => {:midi_filename => @germ_filename, :div_id => 'germ_midi_player'}
   end
-  
-  def voices_tab_selected_xhr
-    puts "voices_tab_selected_xhr params: #{params.inspect}"
-    render :nothing => true 
-  end
-  
-  def sections_tab_selected_xhr
-    puts "sections_tab_selected_xhr params: #{params.inspect}"
-    render :nothing => true
-  end
-  
+
   def get_voice_sections_xhr      
     @tristate_options = {'Use Section Default' => nil, 'Yes' => true, 'No' => false}        
-    @voice_or_section = eval "@fractal_piece.get#{params[:voices_or_sections].titleize}.get(#{params[:index]})"
+    @voices_or_sections_label = params[:voices_or_sections]
+    @voice_or_section_index = params[:index]
+    @voice_or_section = get_voice_or_section(@voices_or_sections_label, @voice_or_section_index)
     @fieldset_div_id = params[:fieldset_div_id] 
     @loading_div_id = params[:loading_div_id]
     respond_to do |format|
@@ -87,6 +79,51 @@ class ComposeController < ApplicationController
     save_piece_to_midi_file
     render :partial => 'midi_player', :locals => {:midi_filename => @piece_filename, :div_id => 'piece_midi_player'}
   end
+  
+  %w(voices sections).each do |voices_or_sections|
+    define_method("finished_editing_#{voices_or_sections}_tab_xhr") do      
+      return unless params.has_key?(voices_or_sections)
+      
+      # iterate over all the voices or sections, as appropriate...
+      params[voices_or_sections].each_pair do |voice_or_section_index, voice_or_section_hash|              
+        next unless voice_or_section_hash.has_key?(:voice_sections)
+        
+        # dynamically get the voice or section
+        voice_or_section = get_voice_or_section(voices_or_sections, voice_or_section_index)
+        
+        # iterate over the hash key/values for this voice or section...
+        voice_or_section_hash[:voice_sections].each_pair do |voice_section_index, voice_section_hash|
+          
+          # get the particular voice section
+          voice_section = voice_or_section.getVoiceSections.get(voice_section_index.to_i)
+          
+          # set the values.
+          # we use eval for the combo box fields, because eval {boolean string} 
+          # returns the proper value, and eval "" returns nil, which is the correct value.
+          # for boolean values, the hash will only have the key if the box is 
+          # checked, so we use has_key?          
+          voice_section.setApplyInversion(eval(voice_section_hash[:apply_inversion]))          
+          voice_section.setApplyRetrograde(eval(voice_section_hash[:apply_retrograde]))
+          voice_section.setRest(voice_section_hash.has_key?(:rest))
+
+          # self similarity settings are in another hash...
+          if voice_section_hash.has_key?(:self_similarity_settings)
+            self_similarity_settings_hash = voice_section_hash[:self_similarity_settings]
+          else
+            # provide an empty hash, as we will not have one if all three options
+            # are set to false
+            self_similarity_settings_hash = Hash.new
+          end
+          self_similarity_settings = voice_section.getSelfSimilaritySettings
+          self_similarity_settings.setApplyToPitch(self_similarity_settings_hash.has_key?(:pitch))
+          self_similarity_settings.setApplyToRhythm(self_similarity_settings_hash.has_key?(:rhythm))
+          self_similarity_settings.setApplyToVolume(self_similarity_settings_hash.has_key?(:volume))
+        end # end voice_sections hash loop
+      end # end voices_or_sections hash loop
+            
+      render :nothing => true
+    end # end the method
+  end # end define method
 
   protected
   
@@ -103,6 +140,10 @@ class ComposeController < ApplicationController
   def get_temp_midi_filename(subdirectory)
     require 'lib/uuidtools.rb'    
     "/temp/#{subdirectory}/#{UUID.random_create.to_s}.mid"
+  end
+  
+  def get_voice_or_section(voices_or_sections_label, voice_or_section_index)    
+    eval "@fractal_piece.get#{voices_or_sections_label.titleize}.get(#{voice_or_section_index})"
   end
   
   def get_scale(scale_class_name, key_name) 
@@ -138,7 +179,7 @@ class ComposeController < ApplicationController
     end
   end
 
-  def store_fractal_piece_in_session        
+  def store_fractal_piece_in_session            
     session[:fractal_piece] = @fractal_piece.getXmlRepresentation if @fractal_piece     
     session[:germ_filename] = @germ_filename if @germ_filename
   end

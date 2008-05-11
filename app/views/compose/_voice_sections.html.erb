@@ -1,3 +1,5 @@
-<% @voice_or_section.getVoiceSections.each_with_index do |@voice_section, @voice_section_index| %>
-    <%= render :partial => 'one_voice_section' %>
-<% end %>
+<div class="voice_sections_wrap">
+    <% @voice_or_section.getVoiceSections.each_with_index do |@voice_section, @voice_section_index| %>
+        <%= render :partial => 'one_voice_section' %>
+    <% end %>
+</div>

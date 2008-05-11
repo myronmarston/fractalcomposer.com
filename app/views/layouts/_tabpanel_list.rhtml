@@ -2,6 +2,6 @@
 <ul class="tablist">
 <% for i in 0 ... div_ids.length do -%>
 <li><a<%= if div_current == div_ids[i] then ' class="current"' else '' end %>
-href ="" onclick="switchid('<%= div_ids[i] %>');<%= additional_tab_js[i] %> return false;"><%= div_names[i] %></a></li>
+href ="" onclick="switchid('<%= div_ids[i] %>');<%= additional_tab_js %> return false;"><%= div_names[i] %></a></li>
 <% end -%>
 </ul>

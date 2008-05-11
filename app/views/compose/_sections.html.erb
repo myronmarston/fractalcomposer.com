@@ -1,5 +1,9 @@
 <% @voices_or_sections_label = 'sections' %>
 <% @fractal_piece.getSections.each_with_index do |@voice_or_section, @voice_or_section_index| %>
+    <%
+        @input_name_prefix = "#{@voices_or_sections_label}[#{@voice_or_section_index}]"
+        @input_id_prefix = sanatize_input_id(@input_name_prefix) 
+    %>
     <%= render :partial => 'one_section' %>
 <% end %>
 <%= submit_tag 'Add a Section', 

@@ -2,9 +2,13 @@
     fieldset_id = "#{id_prefix}_fieldset"
     link_id = "#{id_prefix}_show_link"
     additional_link_js ||= ''
+    link_class ||= '' # make sure we have a non-nil value
+    link_class = "fieldset_toggle_link fieldset_toggle_lone_link #{link_class}"    
+    fieldset_class ||= '' # make sure we have a non-nil value
+    fieldset_class = " class='#{fieldset_class}'" unless fieldset_class == ''
 %>
-<%= link_to_function "#{link_text}...", "Element.hide('#{link_id}'); Element.show('#{fieldset_id}'); #{additional_link_js}; ", :id => link_id, :class => 'fieldset_toggle_link fieldset_toggle_lone_link', :style => show_fieldset_initially ? 'display: none;' : '' %>
-<fieldset id="<%= fieldset_id %>" style="<%= show_fieldset_initially ? '' : 'display: none;' %>">
+<%= link_to_function "#{link_text}...", "Element.hide('#{link_id}'); Element.show('#{fieldset_id}'); #{additional_link_js}", :id => link_id, :class => link_class, :style => show_fieldset_initially ? 'display: none;' : '' %>
+<fieldset id="<%= fieldset_id %>"<%= fieldset_class %>  style="<%= show_fieldset_initially ? '' : 'display: none;' %>">
   <legend><%= link_to_function link_text, "Element.hide('#{fieldset_id}'); Element.show('#{link_id}')", :class => 'fieldset_toggle_link' %></legend>
   <%= yield %>
 </fieldset>

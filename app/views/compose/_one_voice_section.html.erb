@@ -11,9 +11,9 @@
   <p>
     Rest: <%= check_box_tag "#{input_name_prefix}[rest]", 1, @voice_section.getRest, :id => "#{input_id_prefix}_rest" %>
     <br />
-    Apply Inversion: <%= select_tag "#{input_name_prefix}[apply_inversion]", options_for_select(@tristate_options), :id => "#{input_id_prefix}_apply_inversion" %>
+    Apply Inversion: <%= select_tag "#{input_name_prefix}[apply_inversion]", options_for_select(@tristate_options, @voice_section.getApplyInversion), :id => "#{input_id_prefix}_apply_inversion" %>
     <br />
-    Apply Retrograde: <%= select_tag "#{input_name_prefix}[apply_retrograde]", options_for_select(@tristate_options), :id => "#{input_id_prefix}_apply_retrograde" %>
+    Apply Retrograde: <%= select_tag "#{input_name_prefix}[apply_retrograde]", options_for_select(@tristate_options, @voice_section.getApplyRetrograde), :id => "#{input_id_prefix}_apply_retrograde" %>
   </p>
   <fieldset>
     <legend>Apply Self-Similarity To:</legend>
