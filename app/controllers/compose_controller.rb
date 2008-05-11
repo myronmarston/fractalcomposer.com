@@ -80,51 +80,59 @@ class ComposeController < ApplicationController
     render :partial => 'midi_player', :locals => {:midi_filename => @piece_filename, :div_id => 'piece_midi_player'}
   end
   
-  %w(voices sections).each do |voices_or_sections|
-    define_method("finished_editing_#{voices_or_sections}_tab_xhr") do      
-      return unless params.has_key?(voices_or_sections)
+  def finished_editing_tab_xhr
+    if params.has_key?('voices') && params.has_key?('sections')
+      logger.error("The params hash was expected to have either voices or sections, but it had both.")
+      return
+    elsif params.has_key?('voices')
+      voices_or_sections = 'voices'
+    elsif params.has_key?('sections')
+      voices_or_sections = 'sections'
+    else
+      logger.error("The params hash was expected to have either voices or sections, but it had neither.")
+      return
+    end
       
-      # iterate over all the voices or sections, as appropriate...
-      params[voices_or_sections].each_pair do |voice_or_section_index, voice_or_section_hash|              
-        next unless voice_or_section_hash.has_key?(:voice_sections)
-        
-        # dynamically get the voice or section
-        voice_or_section = get_voice_or_section(voices_or_sections, voice_or_section_index)
-        
-        # iterate over the hash key/values for this voice or section...
-        voice_or_section_hash[:voice_sections].each_pair do |voice_section_index, voice_section_hash|
-          
-          # get the particular voice section
-          voice_section = voice_or_section.getVoiceSections.get(voice_section_index.to_i)
-          
-          # set the values.
-          # we use eval for the combo box fields, because eval {boolean string} 
-          # returns the proper value, and eval "" returns nil, which is the correct value.
-          # for boolean values, the hash will only have the key if the box is 
-          # checked, so we use has_key?          
-          voice_section.setApplyInversion(eval(voice_section_hash[:apply_inversion]))          
-          voice_section.setApplyRetrograde(eval(voice_section_hash[:apply_retrograde]))
-          voice_section.setRest(voice_section_hash.has_key?(:rest))
+    # iterate over all the voices or sections, as appropriate...
+    params[voices_or_sections].each_pair do |voice_or_section_index, voice_or_section_hash|              
+      next unless voice_or_section_hash.has_key?(:voice_sections)
 
-          # self similarity settings are in another hash...
-          if voice_section_hash.has_key?(:self_similarity_settings)
-            self_similarity_settings_hash = voice_section_hash[:self_similarity_settings]
-          else
-            # provide an empty hash, as we will not have one if all three options
-            # are set to false
-            self_similarity_settings_hash = Hash.new
-          end
-          self_similarity_settings = voice_section.getSelfSimilaritySettings
-          self_similarity_settings.setApplyToPitch(self_similarity_settings_hash.has_key?(:pitch))
-          self_similarity_settings.setApplyToRhythm(self_similarity_settings_hash.has_key?(:rhythm))
-          self_similarity_settings.setApplyToVolume(self_similarity_settings_hash.has_key?(:volume))
-        end # end voice_sections hash loop
-      end # end voices_or_sections hash loop
-            
-      render :nothing => true
-    end # end the method
-  end # end define method
+      # dynamically get the voice or section
+      voice_or_section = get_voice_or_section(voices_or_sections, voice_or_section_index)
 
+      # iterate over the hash key/values for this voice or section...
+      voice_or_section_hash[:voice_sections].each_pair do |voice_section_index, voice_section_hash|
+
+        # get the particular voice section
+        voice_section = voice_or_section.getVoiceSections.get(voice_section_index.to_i)
+
+        # set the values.
+        # we use eval for the combo box fields, because eval {boolean string} 
+        # returns the proper value, and eval "" returns nil, which is the correct value.
+        # for boolean values, the hash will only have the key if the box is 
+        # checked, so we use has_key?          
+        voice_section.setApplyInversion(eval(voice_section_hash[:apply_inversion]))          
+        voice_section.setApplyRetrograde(eval(voice_section_hash[:apply_retrograde]))
+        voice_section.setRest(voice_section_hash.has_key?(:rest))
+
+        # self similarity settings are in another hash...
+        if voice_section_hash.has_key?(:self_similarity_settings)
+          self_similarity_settings_hash = voice_section_hash[:self_similarity_settings]
+        else
+          # provide an empty hash, as we will not have one if all three options
+          # are set to false
+          self_similarity_settings_hash = Hash.new
+        end
+        self_similarity_settings = voice_section.getSelfSimilaritySettings
+        self_similarity_settings.setApplyToPitch(self_similarity_settings_hash.has_key?(:pitch))
+        self_similarity_settings.setApplyToRhythm(self_similarity_settings_hash.has_key?(:rhythm))
+        self_similarity_settings.setApplyToVolume(self_similarity_settings_hash.has_key?(:volume))
+      end # end voice_sections hash loop
+    end # end voices_or_sections hash loop
+
+    render :nothing => true    
+  end
+  
   protected
   
   def save_germ_to_midi_file        
