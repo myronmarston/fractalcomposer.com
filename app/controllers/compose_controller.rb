@@ -14,6 +14,7 @@ class ComposeController < ApplicationController
   before_filter :load_fractal_piece_from_session
   after_filter :store_fractal_piece_in_session
   
+  # this is the only action that supports a regular get rather than an XHR...
   def index      
     @scale_names = Hash.new    
     Scale::SCALE_TYPES.keySet.each do |type|    
@@ -56,6 +57,16 @@ class ComposeController < ApplicationController
   def sections_tab_selected_xhr
     puts "sections_tab_selected_xhr params: #{params.inspect}"
     render :nothing => true
+  end
+  
+  def get_voice_sections_xhr      
+    @tristate_options = {'Use Section Default' => nil, 'Yes' => true, 'No' => false}        
+    @voice_or_section = eval "@fractal_piece.get#{params[:voices_or_sections].titleize}.get(#{params[:index]})"
+    @fieldset_div_id = params[:fieldset_div_id] 
+    @loading_div_id = params[:loading_div_id]
+    respond_to do |format|
+      format.js
+    end
   end
   
   def add_voice_xhr    
@@ -106,9 +117,7 @@ class ComposeController < ApplicationController
     end
   end  
   
-  def load_fractal_piece_from_session
-    @tristate_options = {'Use Section Default' => nil, 'Yes' => true, 'No' => false}
-    
+  def load_fractal_piece_from_session        
     begin
       @fractal_piece = FractalPiece.loadFromXml(session[:fractal_piece]) if session[:fractal_piece]
     rescue NativeException => ex

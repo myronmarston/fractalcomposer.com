@@ -1,22 +1,7 @@
-<% 
-    human_readable_index = @voice_or_section_index + 1 
-    input_name_prefix = "sections[#{@voice_or_section_index}]"
-    input_id_prefix = sanatize_input_id(input_name_prefix)
--%>
-
-<div id="section_<%= human_readable_index %> " class="one_voice_or_section">  
-  <% render :layout => 'togglable_fieldset_wrapper', :locals => {:link_text => "Section #{human_readable_index}", :id_prefix => input_id_prefix, :show_fieldset_initially => true } do %> 
-
+<% render :layout => 'one_voice_or_section_wrapper' do %>
     <p>      
-        Apply Inversion: <%= check_box_tag "#{input_name_prefix}[apply_inversion]", 1, @voice_or_section.getApplyInversion, :id => "#{input_id_prefix}_apply_inversion" %>
+        Apply Inversion: <%= check_box_tag "#{@input_name_prefix}[apply_inversion]", 1, @voice_or_section.getApplyInversion, :id => "#{@input_id_prefix}_apply_inversion" %>
         <br />
-        Apply Retrograde: <%= check_box_tag "#{input_name_prefix}[apply_retrograde]", 1, @voice_or_section.getApplyRetrograde, :id => "#{input_id_prefix}_apply_retrograde" %>
+        Apply Retrograde: <%= check_box_tag "#{@input_name_prefix}[apply_retrograde]", 1, @voice_or_section.getApplyRetrograde, :id => "#{@input_id_prefix}_apply_retrograde" %>
     </p>
-    
-    <% render :layout => 'togglable_fieldset_wrapper', :locals => {:link_text => "Voice Sections", :id_prefix => "#{input_id_prefix}_voice_sections", :show_fieldset_initially => false } do %> 
-        <h3>Loading...</h3>
-        <%= render :partial => 'spinner', :locals => {:display => 'inline'} %>   
-    <% end -%>
-
-  <% end -%>
-</div>
+<% end -%>

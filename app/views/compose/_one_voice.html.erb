@@ -1,24 +1,12 @@
-<% 
-    human_readable_index = @voice_or_section_index + 1 
-    input_name_prefix = "voices[#{@voice_or_section_index}]"
-    input_id_prefix = sanatize_input_id(input_name_prefix)
--%>
-
-<div id="voice_<%= human_readable_index %> " class="one_voice_or_section">  
-  <% render :layout => 'togglable_fieldset_wrapper', :locals => {:link_text => "Voice #{human_readable_index}", :id_prefix => input_id_prefix, :show_fieldset_initially => true } do %> 
+<% render :layout => 'one_voice_or_section_wrapper' do %>
     <p>
       Instrument:
-      <%= select_tag "#{input_name_prefix}[instrument]", options_for_select(@instrument_names, @voice_or_section.getInstrumentName), :id => "#{input_id_prefix}_instrument" %>    
+      <%= select_tag "#{@input_name_prefix}[instrument]", options_for_select(@instrument_names, @voice_or_section.getInstrumentName), :id => "#{@input_id_prefix}_instrument" %>    
       <br />
       Octave Adjustment:
-      <%= text_field_tag "#{input_name_prefix}[octave_adjustment]", @voice_or_section.getOctaveAdjustment, :size => 2, :id => "#{input_id_prefix}_octave_adjustment" %>
+      <%= text_field_tag "#{@input_name_prefix}[octave_adjustment]", @voice_or_section.getOctaveAdjustment, :size => 2, :id => "#{@input_id_prefix}_octave_adjustment" %>
       <br />
       Speed Scale Factor:
-      <%= text_field_tag "#{input_name_prefix}[speed_scale_factor]", @voice_or_section.speedScaleFactor, :size => 2, :id => "#{input_id_prefix}_speed_scale_factor" %>
+      <%= text_field_tag "#{@input_name_prefix}[speed_scale_factor]", @voice_or_section.speedScaleFactor, :size => 2, :id => "#{@input_id_prefix}_speed_scale_factor" %>
     </p>
-    <% render :layout => 'togglable_fieldset_wrapper', :locals => {:link_text => 'Voice Sections', :id_prefix => "#{input_id_prefix}_voice_sections", :show_fieldset_initially => false } do %> 
-        <h3>Loading...</h3>
-        <%= render :partial => 'spinner', :locals => {:display => 'inline'} %>       
-    <% end -%>
-  <% end -%>
-</div>
+<% end %>
