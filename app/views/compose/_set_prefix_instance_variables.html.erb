@@ -1,0 +1,5 @@
+<%
+    # this partial doesn't render thing, but has some common variable-setting logic used by multiple partials
+    @input_name_prefix = "#{@voices_or_sections_label}[#{@voice_or_section_index}]"
+    @input_id_prefix = sanatize_input_id(@input_name_prefix) 
+%>

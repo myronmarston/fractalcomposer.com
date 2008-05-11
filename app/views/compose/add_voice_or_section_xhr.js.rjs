@@ -1,0 +1,3 @@
+page.insert_html(:before, "add_#{@singular_voices_or_sections_label}_button", :partial => "one_#{@singular_voices_or_sections_label}")
+page.visual_effect(:highlight, "#{@singular_voices_or_sections_label}_#{@voice_or_section_index}", :startcolor => "#316CBC", :endcolor => "#F4F8FD")
+page.hide "add_#{@singular_voices_or_sections_label}_spinner"

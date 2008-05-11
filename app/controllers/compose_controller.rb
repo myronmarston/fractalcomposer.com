@@ -10,9 +10,14 @@ import com.myronmarston.music.NoteStringParseException
 import com.myronmarston.music.Instrument
 import com.myronmarston.util.Fraction
 
+#todo: refactor eval's to use send instead
 class ComposeController < ApplicationController
+  # these filters persist @fractal_piece between requests; all actions need this
   before_filter :load_fractal_piece_from_session
   after_filter :store_fractal_piece_in_session
+  
+  # this filter sets our instrument_names variable; all actions that need it should be included.
+  before_filter :set_instrument_names, :only => [ :index, :add_voice_or_section_xhr ]
   
   # this is the only action that supports a regular get rather than an XHR...
   def index      
@@ -20,8 +25,6 @@ class ComposeController < ApplicationController
     Scale::SCALE_TYPES.keySet.each do |type|    
       @scale_names[type.getSimpleName.titleize] = type
     end     
-
-    @instrument_names = Instrument::AVAILABLE_INSTRUMENTS
   end
   
   def scale_selected_xhr    
@@ -61,8 +64,14 @@ class ComposeController < ApplicationController
     end
   end
   
-  def add_voice_xhr    
-    render :nothing => true
+  def add_voice_or_section_xhr  
+    @singular_voices_or_sections_label = params[:voice_or_section]    
+    @voices_or_sections_label = @singular_voices_or_sections_label.pluralize    
+    @voice_or_section_index = @fractal_piece.send("get#{@voices_or_sections_label.titleize}").size
+    @voice_or_section = @fractal_piece.send("create#{@singular_voices_or_sections_label.titleize}")    
+    respond_to do |format|
+      format.js
+    end
   end
     
   def generate_piece_xhr    
@@ -190,6 +199,10 @@ class ComposeController < ApplicationController
   def store_fractal_piece_in_session            
     session[:fractal_piece] = @fractal_piece.getXmlRepresentation if @fractal_piece     
     session[:germ_filename] = @germ_filename if @germ_filename
+  end
+  
+  def set_instrument_names
+    @instrument_names = Instrument::AVAILABLE_INSTRUMENTS
   end
   
 end

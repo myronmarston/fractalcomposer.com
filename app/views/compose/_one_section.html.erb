@@ -1,7 +1,8 @@
+<%= render :partial => 'set_prefix_instance_variables' %>
 <% render :layout => 'one_voice_or_section_wrapper' do %>
     <p>      
-        Apply Inversion: <%= check_box_tag "#{@input_name_prefix}[apply_inversion]", 1, @voice_or_section.getApplyInversion, :id => "#{@input_id_prefix}_apply_inversion" %>
+        Apply Inversion <%= check_box_tag "#{@input_name_prefix}[apply_inversion]", 1, @voice_or_section.getApplyInversion, :id => "#{@input_id_prefix}_apply_inversion" %>
         <br />
-        Apply Retrograde: <%= check_box_tag "#{@input_name_prefix}[apply_retrograde]", 1, @voice_or_section.getApplyRetrograde, :id => "#{@input_id_prefix}_apply_retrograde" %>
+        Apply Retrograde <%= check_box_tag "#{@input_name_prefix}[apply_retrograde]", 1, @voice_or_section.getApplyRetrograde, :id => "#{@input_id_prefix}_apply_retrograde" %>
     </p>
 <% end -%>
