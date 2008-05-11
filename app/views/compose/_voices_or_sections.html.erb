@@ -1,0 +1,10 @@
+<% @fractal_piece.send("get#{@voices_or_sections_label.titleize}").each_with_index do |@voice_or_section, @voice_or_section_index| %>
+    <%
+        @input_name_prefix = "#{@voices_or_sections_label}[#{@voice_or_section_index}]"
+        @input_id_prefix = sanatize_input_id(@input_name_prefix) 
+    %>
+    <%= render :partial => "one_#{@voices_or_sections_label.singularize}" %>
+<% end %>
+<%= submit_tag "Add a #{@voices_or_sections_label.singularize.titleize}", 
+    :class => 'button',
+    :onclick => remote_function(:url => {:action => 'add_voice_or_section_xhr'}) %>           

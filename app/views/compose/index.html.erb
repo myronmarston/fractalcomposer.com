@@ -1,6 +1,11 @@
 <%
   div_ids = ['piece_settings', 'voices', 'sections']
-  div_names = ['Piece Settings', 'Voices', 'Sections']  
+  div_names = ['Piece Settings', 'Voices', 'Sections']
+  partials = {
+    'piece_settings' => 'piece_settings',
+    'voices' => 'voices_or_sections',
+    'sections' => 'voices_or_sections'
+  }
 -%>
 
 <%= render :partial => 'layouts/tabpanel_js', :locals => {:div_ids => div_ids} -%>
@@ -10,16 +15,16 @@
                     :update => 'piece_midi_player_wrapper',
                     :before => "$('piece_spinner').show()",
                     :complete => "$('piece_spinner').hide()" do %>
-    <% div_ids.each do |div_id| -%>
-        <div id="<%= div_id %>" style="display:<%= if div_id == 'voices' then 'block' else 'none' end %>;">
+    <% div_ids.each do |@voices_or_sections_label| -%>
+        <div id="<%= @voices_or_sections_label %>" style="display:<%= if @voices_or_sections_label == 'voices' then 'block' else 'none' end %>;">
           <%= render :partial => 'layouts/tabpanel_list',
                      :locals => {
                         :div_ids => div_ids,                      
                         :div_names => div_names,
-                        :div_current => div_id,
-                        :additional_tab_js => get_additional_tab_javascript(div_id) } %>
+                        :div_current => @voices_or_sections_label,
+                        :additional_tab_js => get_additional_tab_javascript(@voices_or_sections_label) } %>
           <div class="tab_panel_body">
-            <%= render :partial => div_id %>
+            <%= render :partial => partials[@voices_or_sections_label] %>
           </div>
         </div>
     <% end -%>    
