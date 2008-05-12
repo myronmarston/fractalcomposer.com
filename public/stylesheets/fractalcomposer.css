@@ -15,7 +15,7 @@ img.delete_voice_or_section_image {
     margin-top: -8px;
 }
 
-div.spinner_wrap {
+span.spinner_wrap {
     display: inline;
     width: 16px;
     height: 16px;   

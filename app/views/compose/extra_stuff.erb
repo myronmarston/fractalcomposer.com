@@ -30,3 +30,21 @@ remote_function(:url => {:action => 'finished_editing_voices_tab_xhr'},
         :with => "Form.serialize($('voices'))") + 
         "; $$('div.voice_sections_loading_wrap').each(function(e) {e.show();})" +
         "; $$('div.voice_sections_wrap').each(function(e) {e.remove();});"
+        
+        
+        "if (true) {" +
+                "alert($('#{@voices_or_sections_label}').getElementsBySelector('div.one_voice_or_section').size());" +
+                "Effect.DropOut('#{div_id}');" +                 
+                remote_function(:url => {:action => :delete_voice_or_section_xhr}, :with => "'voice_or_section=#{singular_voices_or_sections_label}&amp;index=#{@voice_or_section_index}'") +
+                "; setTimeout(\"$('#{div_id}').remove()\", 1000);" +
+            "}"
+            
+            
+                if (#{get_prototype_js_for_element_collection(plural_voices_or_sections_label, 'div.one_voice_or_section')}.size == 1) {
+        alert('You cannot delete the last #{singular_voices_or_sections_label}.  There must always be at least one.');
+    } else {
+        Effect.DropOut('#{div_id}');
+        #{notify_server_js};        
+        setTimeout(\"$('#{div_id}').remove()\", 1000);
+    }
+    END_OF_STRING    

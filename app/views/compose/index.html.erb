@@ -31,7 +31,7 @@
     
     <div>      
       <%= submit_tag 'Generate Piece', :id => 'generate_piece_button', :class => 'button' %>           
-      <%= image_tag 'indicator.gif', :style => 'display: none;', :id => 'piece_spinner' %>    
+      <%= render :partial => 'spinner', :locals => {:display => 'none'} %>
       <span id="piece_midi_player_wrapper">  
           <%= render :partial => 'midi_player', :locals => {:midi_filename => @piece_filename, :div_id => 'piece_midi_player'} %>        
       </span>      
