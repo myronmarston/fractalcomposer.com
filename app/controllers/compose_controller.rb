@@ -64,7 +64,8 @@ class ComposeController < ApplicationController
     end
   end
   
-  def add_voice_or_section_xhr  
+  def add_voice_or_section_xhr 
+    # TODO: what if we delete the next-to-last voice, and then add one--won't we have duplicate div_ids?
     @singular_voices_or_sections_label = params[:voice_or_section]    
     @voices_or_sections_label = @singular_voices_or_sections_label.pluralize    
     @voice_or_section_index = @fractal_piece.send("get#{@voices_or_sections_label.titleize}").size
@@ -72,6 +73,18 @@ class ComposeController < ApplicationController
     respond_to do |format|
       format.js
     end
+  end
+  
+  def delete_voice_or_section_xhr  
+    # todo: add visual effect to page when an item is deleted
+    # we would like to use the remove(int) method, but there is also a 
+    # remove(Object) overload, and JRuby seems to always call this since ruby 
+    # ints are objects, not primitives.  So instead we get the correct object
+    # and use the remove(Object) overload.
+    voices_or_sections = @fractal_piece.send("get#{params[:voice_or_section].pluralize.titleize}")
+    voice_or_section = voices_or_sections.get(params[:index].to_i)
+    voices_or_sections.remove(voice_or_section)
+    render :nothing => true
   end
     
   def generate_piece_xhr    
@@ -196,7 +209,7 @@ class ComposeController < ApplicationController
     end
   end
 
-  def store_fractal_piece_in_session            
+  def store_fractal_piece_in_session           
     session[:fractal_piece] = @fractal_piece.getXmlRepresentation if @fractal_piece     
     session[:germ_filename] = @germ_filename if @germ_filename
   end

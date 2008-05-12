@@ -16,7 +16,7 @@
                     :before => "$('piece_spinner').show()",
                     :complete => "$('piece_spinner').hide()" do %>
     <% div_ids.each do |@voices_or_sections_label| -%>
-        <div id="<%= @voices_or_sections_label %>" style="display:<%= if @voices_or_sections_label == 'voices' then 'block' else 'none' end %>;">
+        <div id="<%= @voices_or_sections_label %>" style="display:<%= if @voices_or_sections_label == 'piece_settings' then 'block' else 'none' end %>;">
           <%= render :partial => 'layouts/tabpanel_list',
                      :locals => {
                         :div_ids => div_ids,                      

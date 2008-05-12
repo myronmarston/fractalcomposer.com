@@ -3,10 +3,16 @@
    PURPOSE: contains CSS to override the coolwater style sheet.
  *************************************************************/
 
-img.spinner {
+img.spinner, img.delete_voice_or_section_image {
     background: transparent;
+    border: transparent;
     margin: 0px;
-    padding: 0px;
+    padding: 0px;    
+}
+
+img.delete_voice_or_section_image {
+    float: right;
+    margin-top: -8px;
 }
 
 form {
