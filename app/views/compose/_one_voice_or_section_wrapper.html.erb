@@ -34,8 +34,7 @@
                     :link_class => 'voice_sections_toggle_link',
                     :fieldset_class => 'voice_sections_fieldset'} do %> 
         <div id="<%= loading_div_id %>" class="voice_sections_loading_wrap">
-            <h3>Loading...</h3>
-            <%= render :partial => 'spinner', :locals => {:display => 'inline'} %>       
+            <h3>Loading&hellip; <%= render :partial => 'spinner', :locals => {:display => 'inline'} %>  </h3>                 
         </div>
     <% end -%>
 

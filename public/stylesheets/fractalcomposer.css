@@ -15,6 +15,14 @@ img.delete_voice_or_section_image {
     margin-top: -8px;
 }
 
+div.spinner_wrap {
+    display: inline;
+    width: 16px;
+    height: 16px;   
+    position: relative;
+    bottom: 8px;
+}
+
 form {
   padding: 0px 0px;
 }
@@ -34,7 +42,7 @@ object.midi_player {
 }
 
 form#compose_form input.button {
-    display: block;
+    display: inline;
     margin: 10px 20px;
 }
 
