@@ -31,10 +31,10 @@ module ComposeHelper
     "$('#{parent_element_id}').getElementsBySelector('#{css_element_selector}')"
   end
   
-  def get_delete_voice_or_section_js(voices_or_sections_label, voice_or_section_index, div_id)
+  def get_delete_voice_or_section_js(voices_or_sections_label, voice_or_section, div_id)
     singular_voices_or_sections_label = voices_or_sections_label.singularize
     plural_voices_or_sections_label = voices_or_sections_label.pluralize
-    notify_server_js = remote_function(:url => {:action => :delete_voice_or_section_xhr}, :with => "'voice_or_section=#{singular_voices_or_sections_label}&amp;index=#{voice_or_section_index}'")
+    notify_server_js = remote_function(:url => {:action => :delete_voice_or_section_xhr}, :with => "'voice_or_section=#{singular_voices_or_sections_label}&amp;unique_index=#{voice_or_section.getUniqueIndex}'")
     # this javascript does the following:
     # 1. Gives the user an error message if they are trying to delete the last voice or section
     # 2. Visually show the user the delete

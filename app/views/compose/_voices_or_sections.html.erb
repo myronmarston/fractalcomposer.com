@@ -1,6 +1,6 @@
 <% singular_voices_or_sections_label = @voices_or_sections_label.singularize %>
 <% spinner_id = "add_#{singular_voices_or_sections_label}_spinner" %>
-<% @fractal_piece.send("get#{@voices_or_sections_label.titleize}").each_with_index do |@voice_or_section, @voice_or_section_index| %>        
+<% @fractal_piece.send("get#{@voices_or_sections_label.titleize}").each do |@voice_or_section| %>        
     <%= render :partial => "one_#{singular_voices_or_sections_label}" %>
 <% end %>
 <input type="button" class="button" id="add_<%= singular_voices_or_sections_label %>_button" value="Add a <%= singular_voices_or_sections_label.titleize %>" onclick="<%= remote_function(        

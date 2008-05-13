@@ -1,12 +1,14 @@
 <% 
-    human_readable_index = @voice_section_index + 1 
-    input_name_prefix = "#{@voices_or_sections_label}[#{@voice_or_section_index}][voice_sections][#{@voice_section_index}]"
+    this_type_unique_index = @voice_or_section.getUniqueIndex
+    other_type_unique_index = @voice_section.getOtherVoiceOrSection(@voice_or_section).getUniqueIndex    
+    other_type_label = @voice_section.getOtherVoiceOrSection(@voice_or_section).getClassName
+    input_name_prefix = "#{@voices_or_sections_label}[#{this_type_unique_index}][voice_sections][#{other_type_unique_index}]"
     input_id_prefix = sanatize_input_id(input_name_prefix)
     input_name_prefix_sss = "#{input_name_prefix}[self_similarity_settings]"
     input_id_prefix_sss = sanatize_input_id(input_name_prefix_sss)
 -%>
   
-<% render :layout => 'togglable_fieldset_wrapper', :locals => {:link_text => "Voice Section #{human_readable_index}", :id_prefix => input_id_prefix, :show_fieldset_initially => false } do %> 
+<% render :layout => 'togglable_fieldset_wrapper', :locals => {:link_text => "Voice Section for #{other_type_label} #{other_type_unique_index}", :id_prefix => input_id_prefix, :show_fieldset_initially => false } do %> 
   
   <p>
     Rest: <%= check_box_tag "#{input_name_prefix}[rest]", 1, @voice_section.getRest, :id => "#{input_id_prefix}_rest" %>
@@ -18,6 +20,7 @@
   <fieldset>
     <legend>Apply Self-Similarity To:</legend>
     <p>
+        <%= hidden_field_tag "#{input_name_prefix_sss}[ignore]", 'ensure have hash', :id => "#{input_name_prefix_sss}_ignore" %>
         <span class="self_similarity_settings_field">
             Pitch <%= check_box_tag "#{input_name_prefix_sss}[pitch]", 1, @voice_section.getSelfSimilaritySettings.getApplyToPitch, :id => "#{input_id_prefix_sss}_pitch" %>                
         </span>

@@ -1,10 +1,9 @@
 <% 
     singular_voices_or_sections_label = @voices_or_sections_label.singularize
-    div_id = "#{@voices_or_sections_label.singularize}_#{@voice_or_section_index}"
-    human_readable_index = @voice_or_section_index + 1     
+    div_id = "#{@voices_or_sections_label.singularize}_#{@voice_or_section.getUniqueIndex}"      
     loading_div_id = "#{@input_id_prefix}_voice_sections_loading"    
     load_voice_sections_js = remote_function(:url => {:action => 'get_voice_sections_xhr'},
-            :with => "'voices_or_sections=#{@voices_or_sections_label}&amp;index=#{@voice_or_section_index}&amp;fieldset_div_id=#{@input_id_prefix}_voice_sections_fieldset&amp;loading_div_id=#{loading_div_id}'" )            
+            :with => "'voices_or_sections=#{@voices_or_sections_label}&amp;unique_index=#{@voice_or_section.getUniqueIndex}&amp;fieldset_div_id=#{@input_id_prefix}_voice_sections_fieldset&amp;loading_div_id=#{loading_div_id}'" )            
           
     # wrap our javascript with a conditional--only execute it if the "Loading..." div is visible
     load_voice_sections_js = "if ($('#{loading_div_id}').visible()) {#{load_voice_sections_js};}"
@@ -12,7 +11,7 @@
 
 <div id="<%= div_id %>" class="one_voice_or_section">  
   <% render :layout => 'togglable_fieldset_wrapper', 
-        :locals => {:link_text => "#{singular_voices_or_sections_label.titleize} #{human_readable_index}", 
+        :locals => {:link_text => "#{singular_voices_or_sections_label.titleize} #{@voice_or_section.getUniqueIndex}", 
                     :id_prefix => @input_id_prefix, 
                     :show_fieldset_initially => true } do %> 
     <%= link_to_function( 
@@ -20,7 +19,7 @@
                 :alt => "Delete this #{singular_voices_or_sections_label}",
                 :title => "Delete this #{singular_voices_or_sections_label}",
                 :class => 'delete_voice_or_section_image'),              
-            get_delete_voice_or_section_js(@voices_or_sections_label, @voice_or_section_index, div_id)) %>
+            get_delete_voice_or_section_js(@voices_or_sections_label, @voice_or_section, div_id)) %>
     <%= yield %>
 
     <% render :layout => 'togglable_fieldset_wrapper', 

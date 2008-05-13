@@ -54,9 +54,8 @@ class ComposeController < ApplicationController
 
   def get_voice_sections_xhr      
     @tristate_options = {'Use Section Default' => nil, 'Yes' => true, 'No' => false}        
-    @voices_or_sections_label = params[:voices_or_sections]
-    @voice_or_section_index = params[:index]
-    @voice_or_section = get_voice_or_section(@voices_or_sections_label, @voice_or_section_index)
+    @voices_or_sections_label = params[:voices_or_sections]    
+    @voice_or_section = get_voice_or_section(@voices_or_sections_label, params[:unique_index])
     @fieldset_div_id = params[:fieldset_div_id] 
     @loading_div_id = params[:loading_div_id]
     respond_to do |format|
@@ -64,98 +63,93 @@ class ComposeController < ApplicationController
     end
   end
   
-  def add_voice_or_section_xhr 
-    # TODO: what if we delete the next-to-last voice, and then add one--won't we have duplicate div_ids?
+  def add_voice_or_section_xhr     
     @singular_voices_or_sections_label = params[:voice_or_section]    
-    @voices_or_sections_label = @singular_voices_or_sections_label.pluralize    
-    @voice_or_section_index = @fractal_piece.send("get#{@voices_or_sections_label.titleize}").size
+    @voices_or_sections_label = @singular_voices_or_sections_label.pluralize        
     @voice_or_section = @fractal_piece.send("create#{@singular_voices_or_sections_label.titleize}")    
     respond_to do |format|
       format.js
     end
   end
   
-  def delete_voice_or_section_xhr  
-    # todo: add visual effect to page when an item is deleted
-    # we would like to use the remove(int) method, but there is also a 
-    # remove(Object) overload, and JRuby seems to always call this since ruby 
-    # ints are objects, not primitives.  So instead we get the correct object
-    # and use the remove(Object) overload.
+  def delete_voice_or_section_xhr      
     voices_or_sections = @fractal_piece.send("get#{params[:voice_or_section].pluralize.titleize}")
-    voice_or_section = voices_or_sections.get(params[:index].to_i)
-    voices_or_sections.remove(voice_or_section)
+    voices_or_sections.removeByUniqueIndex(params[:unique_index].to_i)    
     render :nothing => true
   end
     
-  def generate_piece_xhr    
-    # set our fractal piece options based on the params hash...    
-    @fractal_piece.setScale(get_scale(params[:scale], params[:key]))
-    @fractal_piece.setGermString(params[:germ_string])
-    params[:voices].each_pair do |index, voice_settings|       
-      voice = @fractal_piece.getVoices.get(index.to_i)
-      voice.setInstrumentName(voice_settings[:instrument])
-      voice.setOctaveAdjustment(voice_settings[:octave_adjustment].to_i)
-      voice.setSpeedScaleFactor(Fraction.new(voice_settings[:speed_scale_factor]))      
-    end
-    
+  def generate_piece_xhr        
+    update_fractal_piece(params)    
     save_piece_to_midi_file
     render :partial => 'midi_player', :locals => {:midi_filename => @piece_filename, :div_id => 'piece_midi_player'}
   end
   
   def finished_editing_tab_xhr
-    if params.has_key?('voices') && params.has_key?('sections')
-      logger.error("The params hash was expected to have either voices or sections, but it had both.")
-      return
-    elsif params.has_key?('voices')
-      voices_or_sections = 'voices'
-    elsif params.has_key?('sections')
-      voices_or_sections = 'sections'
-    else
-      logger.error("The params hash was expected to have either voices or sections, but it had neither.")
-      return
-    end
-      
-    # iterate over all the voices or sections, as appropriate...
-    params[voices_or_sections].each_pair do |voice_or_section_index, voice_or_section_hash|              
-      next unless voice_or_section_hash.has_key?(:voice_sections)
-
-      # dynamically get the voice or section
-      voice_or_section = get_voice_or_section(voices_or_sections, voice_or_section_index)
-
-      # iterate over the hash key/values for this voice or section...
-      voice_or_section_hash[:voice_sections].each_pair do |voice_section_index, voice_section_hash|
-
-        # get the particular voice section
-        voice_section = voice_or_section.getVoiceSections.get(voice_section_index.to_i)
-
-        # set the values.
-        # we use eval for the combo box fields, because eval {boolean string} 
-        # returns the proper value, and eval "" returns nil, which is the correct value.
-        # for boolean values, the hash will only have the key if the box is 
-        # checked, so we use has_key?          
-        voice_section.setApplyInversion(eval(voice_section_hash[:apply_inversion]))          
-        voice_section.setApplyRetrograde(eval(voice_section_hash[:apply_retrograde]))
-        voice_section.setRest(voice_section_hash.has_key?(:rest))
-
-        # self similarity settings are in another hash...
-        if voice_section_hash.has_key?(:self_similarity_settings)
-          self_similarity_settings_hash = voice_section_hash[:self_similarity_settings]
-        else
-          # provide an empty hash, as we will not have one if all three options
-          # are set to false
-          self_similarity_settings_hash = Hash.new
-        end
-        self_similarity_settings = voice_section.getSelfSimilaritySettings
-        self_similarity_settings.setApplyToPitch(self_similarity_settings_hash.has_key?(:pitch))
-        self_similarity_settings.setApplyToRhythm(self_similarity_settings_hash.has_key?(:rhythm))
-        self_similarity_settings.setApplyToVolume(self_similarity_settings_hash.has_key?(:volume))
-      end # end voice_sections hash loop
-    end # end voices_or_sections hash loop
-
+    update_fractal_piece(params)    
     render :nothing => true    
   end
   
   protected
+  
+  def update_fractal_piece(fractal_piece_hash)
+    # set our fractal piece options based on the params hash...    
+    @fractal_piece.setScale(get_scale(fractal_piece_hash[:scale], fractal_piece_hash[:key])) if fractal_piece_hash.has_key?(:scale) && fractal_piece_hash.has_key?(:key)
+    @fractal_piece.setGermString(fractal_piece_hash[:germ_string]) if fractal_piece_hash.has_key?(:germ_string)
+    
+    {:voices => :update_voice, :sections => :update_section}.each_pair do |voices_or_sections_label, method_name|
+      if fractal_piece_hash.has_key?(voices_or_sections_label)
+        fractal_piece_hash[voices_or_sections_label].each_pair do |unique_voice_or_section_index, voice_or_section_hash|              
+          self.send(method_name, unique_voice_or_section_index, voice_or_section_hash)        
+        end
+      end
+    end
+  end
+  
+  def update_voice(unique_voice_index, voice_hash)
+    voice = @fractal_piece.getVoices.getByUniqueIndex(unique_voice_index.to_i)  
+    
+    voice.setInstrumentName(voice_hash[:instrument])
+    voice.setOctaveAdjustment(voice_hash[:octave_adjustment].to_i)
+    voice.setSpeedScaleFactor(Fraction.new(voice_hash[:speed_scale_factor]))  
+    
+    update_voice_sections(voice.getVoiceSections, voice_hash[:voice_sections]) if voice_hash.has_key?(:voice_sections)
+  end
+  
+  def update_section(unique_section_index, section_hash)
+    section = @fractal_piece.getSections.getByUniqueIndex(unique_section_index.to_i)    
+    
+    section.setApplyInversion(section_hash.has_key?(:apply_inversion))
+    section.setApplyRetrograde(section_hash.has_key?(:apply_retrograde))
+        
+    update_voice_sections(section.getVoiceSections, section_hash[:voice_sections]) if section_hash.has_key?(:voice_sections)
+  end   
+  
+  def update_voice_sections(voice_sections, voice_sections_hash)
+    return if voice_sections_hash == Hash.new.default
+    
+    # iterate over the hash key/values for this voice or section...    
+    voice_sections_hash.each_pair do |voice_section_other_type_unique_index, voice_section_hash|
+
+      # get the particular voice section
+      voice_section = voice_sections.getByOtherTypeUniqueIndex(voice_section_other_type_unique_index.to_i)
+
+      # set the values.
+      # we use eval for the combo box fields, because eval {boolean string} 
+      # returns the proper value, and eval "" returns nil, which is the correct value.
+      # for boolean values, the hash will only have the key if the box is 
+      # checked, so we use has_key?          
+      voice_section.setApplyInversion(eval(voice_section_hash[:apply_inversion]))          
+      voice_section.setApplyRetrograde(eval(voice_section_hash[:apply_retrograde]))
+      voice_section.setRest(voice_section_hash.has_key?(:rest))
+
+      # self similarity settings are in another hash...
+      self_similarity_settings_hash = voice_section_hash[:self_similarity_settings]
+      self_similarity_settings = voice_section.getSelfSimilaritySettings
+      self_similarity_settings.setApplyToPitch(self_similarity_settings_hash.has_key?(:pitch))
+      self_similarity_settings.setApplyToRhythm(self_similarity_settings_hash.has_key?(:rhythm))
+      self_similarity_settings.setApplyToVolume(self_similarity_settings_hash.has_key?(:volume))
+    end # end voice_sections hash loop
+  end
   
   def save_germ_to_midi_file        
     @germ_filename = get_temp_midi_filename('germs')
@@ -172,8 +166,8 @@ class ComposeController < ApplicationController
     "/temp/#{subdirectory}/#{UUID.random_create.to_s}.mid"
   end
   
-  def get_voice_or_section(voices_or_sections_label, voice_or_section_index)    
-    eval "@fractal_piece.get#{voices_or_sections_label.titleize}.get(#{voice_or_section_index})"
+  def get_voice_or_section(voices_or_sections_label, unique_index)    
+    @fractal_piece.send("get#{voices_or_sections_label.titleize}").getByUniqueIndex(unique_index.to_i)    
   end
   
   def get_scale(scale_class_name, key_name) 
@@ -193,7 +187,7 @@ class ComposeController < ApplicationController
       @fractal_piece = FractalPiece.loadFromXml(session[:fractal_piece]) if session[:fractal_piece]
     rescue NativeException => ex
       # if our serialization changes, we will get an exception. in this case, 
-      # just log the error and start the fractal piece over
+      # just log the error and start the fractal piece over      
       logger.error("An error occurred while loading the fractal piece from the session: #{ex.message}")
     end
     
