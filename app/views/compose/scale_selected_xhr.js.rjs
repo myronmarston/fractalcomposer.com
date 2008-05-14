@@ -1,0 +1,1 @@
+page.replace 'key_name_selection', :partial => 'key_name_selection'

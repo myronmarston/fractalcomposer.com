@@ -27,16 +27,11 @@ class ComposeController < ApplicationController
     end     
   end
   
-  def scale_selected_xhr    
-    scale = get_scale(params[:scale], @fractal_piece.getScale.getKeyName.toString)
-    @fractal_piece.setScale(scale)      
-    render :partial => 'key_name_selection'    
-  end
-  
-  def key_selected_xhr                    
-    scale = get_scale(@fractal_piece.getScale.java_class, params[:key])
-    @fractal_piece.setScale(scale)      
-    render :nothing => true    
+  def scale_selected_xhr
+    update_fractal_piece(params)             
+    respond_to do |format|
+      format.js
+    end    
   end
   
   def set_germ_xhr    
@@ -170,9 +165,9 @@ class ComposeController < ApplicationController
     @fractal_piece.send("get#{voices_or_sections_label.titleize}").getByUniqueIndex(unique_index.to_i)    
   end
   
-  def get_scale(scale_class_name, key_name) 
-    # TODO: what if the scale is chromatic and the key_name is blank?
-    # first, test that the key name is valid for this scale...    
+  def get_scale(scale_class_name, key_name)     
+    # first, test that the key name is valid for this scale... 
+    key_name = @fractal_piece.getScale.getKeyName.toString if key_name == ''        
     scale_class = eval("#{scale_class_name}.java_class")    
     valid_keys = Scale::SCALE_TYPES.get(scale_class)    
     if (valid_keys.contains(NoteName.getNoteName(key_name)))            

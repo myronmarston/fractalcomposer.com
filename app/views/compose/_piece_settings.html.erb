@@ -2,16 +2,13 @@
   <p id="scale_selection">Scale Type:
     <%= select_tag :scale, options_for_select(@scale_names, @fractal_piece.getScale.java_class) %>
     <%= observe_field :scale, 
-        :url => { :action => :scale_selected_xhr }, 
-        :update => :key_name_selection, 
-        :with => "'scale='+encodeURIComponent(value)",
-        :before => "$('scale_spinner').show()",
-        :complete => "$('scale_spinner').hide()" %>
+        :url => { :action => :scale_selected_xhr },          
+        :with  => "'scale=' + encodeURIComponent(value) + '&key=' + encodeURIComponent($('key').value)",
+        :before  => "$('scale_spinner').show()",
+        :complete  => "$('scale_spinner').hide()" %>
         
-    &nbsp;
-    <span id="key_name_selection">
-        <%= render :partial => 'key_name_selection' %>
-    </span>
+    &nbsp;    
+    <%= render :partial => 'key_name_selection' %>    
     <%= render :partial => 'spinner', :locals => {:div_id => 'scale_spinner', :display => 'none'} %>    
   </p>      
   

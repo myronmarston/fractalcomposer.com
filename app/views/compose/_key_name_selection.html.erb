@@ -1,9 +1,11 @@
-<% unless  @fractal_piece.getScale.getValidKeyNames.size == 0 -%>
+<% 
+    keys = @fractal_piece.getScale.getValidKeyNames
+    if keys.size == 0
+        style = "style=\"display: none;\""
+        keys = [nil] # give us one option to have valid html...
+    end    
+-%>
+<span id="key_name_selection"<%= style %>>
   Key:
-  <%= select_tag :key, options_for_select(@fractal_piece.getScale.getValidKeyNames, @fractal_piece.getScale.getKeyName) %>
-  <%= observe_field :key, 
-      :url => { :action => :key_selected_xhr }, 
-      :with => "'key='+encodeURIComponent(value)",
-      :before => "$('scale_spinner').show()",
-      :complete => "$('scale_spinner').hide()" %>
-<% end -%>
+  <%= select_tag :key, options_for_select(keys, @fractal_piece.getScale.getKeyName) %>  
+</span>
