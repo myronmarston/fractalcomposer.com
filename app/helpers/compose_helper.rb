@@ -1,15 +1,15 @@
 module ComposeHelper
   
-  def get_additional_tab_javascript(tab_name)
-    # we only want this javascript to be for voices and sections....
-    return '' unless tab_name == 'voices' || tab_name == 'sections'
-    
+  def get_additional_tab_javascript(tab_name)       
     # notify the controller that the user has finished editing this tab,
     # so that it can update the voice sections to keep everything in sync
     additional_js = remote_function(:url => {
         :action => 'finished_editing_tab_xhr'}, 
         :with => "Form.serialize($('#{tab_name}'))") + "; "
       
+    # we only want this javascript to be for voices and sections....
+    return additional_js unless tab_name == 'voices' || tab_name == 'sections'
+    
     # show the "Loading..." div for the voice sections
     additional_js += get_prototype_js_do_method_on_element_collection(tab_name, 'div.voice_sections_loading_wrap', 'show')
     

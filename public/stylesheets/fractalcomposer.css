@@ -33,7 +33,7 @@ textarea#germ_string {
 }
 
 #germ_midi_player_wrapper {    
-    padding-left: 20px;
+    padding-left: 0px;
     padding-right: 20px;
 }
 
@@ -85,7 +85,7 @@ a.fieldset_toggle_link:hover {
 }
 
 form#compose_form fieldset {
-    border: 1px solid #ccc;
+    border: 1px solid transparent; /*#ccc;*/
     margin-left: 20px;
     margin-right: 20px;
     margin-bottom: 10px;
@@ -120,7 +120,7 @@ padding: 0;
 .tablist a:link, .tablist a:visited
 {
 border: 1px solid #BBB;
-background: #DDD;
+background: transparent; /*#DDD;*/
 float: left;
 font-size: small;
 font-weight: normal;
@@ -136,9 +136,9 @@ height: 18px;
 
 .tablist a:link.current, .tablist a:visited.current
 {
-border-bottom: 1px solid #F4F8FD;
+border-bottom: 1px solid transparent;/*#F4F8FD;*/
 color: #f00;
-background:transparent;
+background-color: #E5EFF9;
 }
 
 .tablist a:hover { color:#f00;   }
@@ -146,10 +146,27 @@ background:transparent;
 
 
 div.tab_panel_body {
-    margin-top: -1px; /* to make the border overlap with the border of the tabs */
+    /* margin-top: -1px; to make the border overlap with the border of the tabs */
     border-left: 1px solid #CCCCCC;
     border-bottom: 1px solid #CCCCCC;
-    border-right: 1px solid #CCCCCC;    
+    border-right: 1px solid #CCCCCC;  
+    background-color: #E5EFF9;
+}
+
+div.tab_panel_body fieldset {
+    background-color: #D9E8F9;    
+}
+
+div.tab_panel_body fieldset fieldset {
+    background-color: #CCE1F9;
+}
+
+div.tab_panel_body fieldset fieldset fieldset {
+    background-color: #C0DBF9;
+}
+
+div.tab_panel_body fieldset fieldset fieldset fieldset {
+    background-color: #B3D4F9;
 }
 
 div.tab_panel_body, #main ul.tablist {

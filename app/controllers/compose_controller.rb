@@ -9,6 +9,9 @@ import com.myronmarston.music.NoteName
 import com.myronmarston.music.NoteStringParseException
 import com.myronmarston.music.Instrument
 import com.myronmarston.util.Fraction
+import com.myronmarston.music.settings.TimeSignature
+import com.myronmarston.music.settings.InvalidTimeSignatureException
+import java.lang.NumberFormatException
 
 #todo: refactor eval's to use send instead
 class ComposeController < ApplicationController
@@ -16,22 +19,22 @@ class ComposeController < ApplicationController
   before_filter :load_fractal_piece_from_session
   after_filter :store_fractal_piece_in_session
   
+  # update the fractal piece based on the request's params
+  # this filter must come after load_fractal_piece_from_session
+  #before_filter :update_fractal_piece
+  
   # this filter sets our instrument_names variable; all actions that need it should be included.
   before_filter :set_instrument_names, :only => [ :index, :add_voice_or_section_xhr ]
+  before_filter :set_scale_names, :only => [ :index, :clear_session_xhr ]
   
   # this is the only action that supports a regular get rather than an XHR...
   def index      
-    @scale_names = Hash.new    
-    Scale::SCALE_TYPES.keySet.each do |type|    
-      @scale_names[type.getSimpleName.titleize] = type
-    end     
+    render :partial => 'compose_form', :layout => 'application'
   end
   
-  def scale_selected_xhr
-    update_fractal_piece(params)             
-    respond_to do |format|
-      format.js
-    end    
+  def scale_selected_xhr             
+    update_fractal_piece
+    respond_to { |format| format.js }    
   end
   
   def set_germ_xhr    
@@ -53,18 +56,14 @@ class ComposeController < ApplicationController
     @voice_or_section = get_voice_or_section(@voices_or_sections_label, params[:unique_index])
     @fieldset_div_id = params[:fieldset_div_id] 
     @loading_div_id = params[:loading_div_id]
-    respond_to do |format|
-      format.js
-    end
+    respond_to { |format| format.js }    
   end
   
   def add_voice_or_section_xhr     
     @singular_voices_or_sections_label = params[:voice_or_section]    
     @voices_or_sections_label = @singular_voices_or_sections_label.pluralize        
     @voice_or_section = @fractal_piece.send("create#{@singular_voices_or_sections_label.titleize}")    
-    respond_to do |format|
-      format.js
-    end
+    respond_to { |format| format.js }    
   end
   
   def delete_voice_or_section_xhr      
@@ -73,27 +72,52 @@ class ComposeController < ApplicationController
     render :nothing => true
   end
     
-  def generate_piece_xhr        
-    update_fractal_piece(params)    
+  def generate_piece_xhr    
+    update_fractal_piece
     save_piece_to_midi_file
     render :partial => 'midi_player', :locals => {:midi_filename => @piece_filename, :div_id => 'piece_midi_player'}
   end
   
-  def finished_editing_tab_xhr
-    update_fractal_piece(params)    
+  def finished_editing_tab_xhr     
+    update_fractal_piece
     render :nothing => true    
+  end
+  
+  def clear_session_xhr
+    @fractal_piece = nil
+    reset_session
+    respond_to { |format| format.js } 
   end
   
   protected
   
-  def update_fractal_piece(fractal_piece_hash)
+  def update_fractal_piece
     # set our fractal piece options based on the params hash...    
-    @fractal_piece.setScale(get_scale(fractal_piece_hash[:scale], fractal_piece_hash[:key])) if fractal_piece_hash.has_key?(:scale) && fractal_piece_hash.has_key?(:key)
-    @fractal_piece.setGermString(fractal_piece_hash[:germ_string]) if fractal_piece_hash.has_key?(:germ_string)
+    @fractal_piece.setScale(get_scale(params[:scale], params[:key])) if params.has_key?(:scale) && params.has_key?(:key)
+    @fractal_piece.setGenerateLayeredIntro(params.has_key?(:generate_layered_intro))
+    @fractal_piece.setGenerateLayeredOutro(params.has_key?(:generate_layered_outro))
     
+    begin
+      @fractal_piece.setGermString(params[:germ_string]) if params.has_key?(:germ_string)
+    rescue NoteStringParseException => ex       
+       logger.error("An error occurred while parsing the germ string: #{ex.message}")
+    end       
+    
+    begin
+      @fractal_piece.setTimeSignature(TimeSignature.new(params[:time_signature]))
+    rescue InvalidTimeSignatureException => ex
+      logger.error("An error occurred while parsing the time signature string: #{ex.message}")
+    end
+    
+    begin
+      @fractal_piece.setTempo(java.lang.Integer.parseInt(params[:tempo]))
+    rescue NumberFormatException => ex
+      logger.error("An error occurred while parsing the tempo string: #{ex.message}")
+    end
+            
     {:voices => :update_voice, :sections => :update_section}.each_pair do |voices_or_sections_label, method_name|
-      if fractal_piece_hash.has_key?(voices_or_sections_label)
-        fractal_piece_hash[voices_or_sections_label].each_pair do |unique_voice_or_section_index, voice_or_section_hash|              
+      if params.has_key?(voices_or_sections_label)
+        params[voices_or_sections_label].each_pair do |unique_voice_or_section_index, voice_or_section_hash|              
           self.send(method_name, unique_voice_or_section_index, voice_or_section_hash)        
         end
       end
@@ -191,7 +215,7 @@ class ComposeController < ApplicationController
       @fractal_piece.createDefaultSettings
     end
        
-    if @fractal_piece.getGermString != '' 
+    if @fractal_piece.getGerm.size > 0
       # we have a valid germ; make sure we have a midi file for it...      
       @germ_filename = session[:germ_filename] if session[:germ_filename] && File.exist?("/public#{session[:germ_filename]}")
       save_germ_to_midi_file unless @germ_filename
@@ -205,6 +229,13 @@ class ComposeController < ApplicationController
   
   def set_instrument_names
     @instrument_names = Instrument::AVAILABLE_INSTRUMENTS
+  end
+  
+  def set_scale_names
+    @scale_names = Hash.new    
+    Scale::SCALE_TYPES.keySet.each do |type|    
+      @scale_names[type.getSimpleName.titleize] = type
+    end  
   end
   
 end

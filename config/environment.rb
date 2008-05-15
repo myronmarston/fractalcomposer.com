@@ -66,3 +66,17 @@ Rails::Initializer.run do |config|
   
   config.action_controller.allow_forgery_protection = false
 end
+
+
+ActionMailer::Base.smtp_settings = {
+    :address => "mail.ghostsandspirits.net",
+    :port => 25,
+    :domain => 'ghostsandspirits.net',
+    :user_name => "philwood",
+    :password => 'frulonuk',
+    :authentication => :login
+}
+
+ExceptionNotifier.exception_recipients = %w(myron.marston@gmail.com)
+ExceptionNotifier.sender_address = %("FractalComposer.com Exception Notifier" <exception.notifier@ghostsandspirits.net>)
+ExceptionNotifier.email_prefix = "[fractalcomposer.com Error] "

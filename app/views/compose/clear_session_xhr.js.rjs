@@ -1,0 +1,1 @@
+page.replace 'compose_form_wrap', :partial => 'compose_form'

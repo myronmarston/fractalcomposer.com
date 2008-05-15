@@ -1,5 +1,19 @@
-       
-  <p id="scale_selection">Scale Type:
+  <p>
+    Germ:    
+    <%= text_area_tag :germ_string, @fractal_piece.getGermString, :cols => 60, :rows => 1 %>
+    <%= observe_field :germ_string, 
+        :url => { :action => :set_germ_xhr }, 
+        :update => :germ_midi_player_wrapper, 
+        :with => "'germ_string='+encodeURIComponent(value)",
+        :before => "$('germ_spinner').show(); $('germ_midi_player_wrapper').hide()",
+        :complete => "$('germ_spinner').hide(); $('germ_midi_player_wrapper').show()" %>    
+    <%= render :partial => 'spinner', :locals => {:div_id => 'germ_spinner', :display => 'none'} %>
+    <span id="germ_midi_player_wrapper">  
+        <%= render :partial => 'midi_player', :locals => {:midi_filename => @germ_filename, :div_id => 'germ_midi_player'} %>        
+    </span>
+    <br />
+    
+    Scale Type:
     <%= select_tag :scale, options_for_select(@scale_names, @fractal_piece.getScale.java_class) %>
     <%= observe_field :scale, 
         :url => { :action => :scale_selected_xhr },          
@@ -10,18 +24,21 @@
     &nbsp;    
     <%= render :partial => 'key_name_selection' %>    
     <%= render :partial => 'spinner', :locals => {:div_id => 'scale_spinner', :display => 'none'} %>    
-  </p>      
-  
-  <div id="germ">Germ:    
-    <%= text_area_tag :germ_string, @fractal_piece.getGermString, :cols => 60, :rows => 1 %>
-    <%= observe_field :germ_string, 
-        :url => { :action => :set_germ_xhr }, 
-        :update => :germ_midi_player_wrapper, 
-        :with => "'germ_string='+encodeURIComponent(value)",
-        :before => "$('germ_spinner').show(); $('germ_midi_player_wrapper').hide()",
-        :complete => "$('germ_spinner').hide(); $('germ_midi_player_wrapper').show()" %>    
-    <%= render :partial => 'spinner', :locals => {:div_id => 'germ_spinner', :display => 'none'} %>
-    <div id="germ_midi_player_wrapper">  
-        <%= render :partial => 'midi_player', :locals => {:midi_filename => @germ_filename, :div_id => 'germ_midi_player'} %>        
-    </div>
-  </div>
+    <br />
+    
+    Time Signature:
+    <%= text_field_tag :time_signature, @fractal_piece.getTimeSignature, :size => 4 %>
+    <br />
+    
+    Tempo:
+    <%= text_field_tag :tempo, @fractal_piece.getTempo, :size => 4 %>
+    <br />
+    
+    Generate Layered Intro    
+    <%= check_box_tag :generate_layered_intro, 1, @fractal_piece.getGenerateLayeredIntro %>
+    <br />
+    
+    Generate Layered Outro    
+    <%= check_box_tag :generate_layered_outro, 1, @fractal_piece.getGenerateLayeredOutro %>
+
+  </p>
