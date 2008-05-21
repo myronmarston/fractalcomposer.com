@@ -46,6 +46,10 @@ form#compose_form input.button {
     margin: 10px 20px;
 }
 
+div#start_over_button_wrap {
+    float: right;
+}
+
 .germ_string_error {
     color: #f00; 
 }

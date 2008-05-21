@@ -7,33 +7,19 @@
     'sections' => 'voices_or_sections'
   }
 -%>
-
-<%= render :partial => 'layouts/tabpanel_js', :locals => {:div_ids => div_ids} -%>
-
-<% form_remote_tag  :url => {:action => 'generate_piece_xhr'},
-                    :html => {:id => 'compose_form'},
-                    :update => 'piece_midi_player_wrapper',
-                    :before => "$('piece_spinner').show()",
-                    :complete => "$('piece_spinner').hide()" do %>
-    <% div_ids.each do |@voices_or_sections_label| -%>
-        <div id="<%= @voices_or_sections_label %>" style="display:<%= if @voices_or_sections_label == 'piece_settings' then 'block' else 'none' end %>;">
-          <%= render :partial => 'layouts/tabpanel_list',
-                     :locals => {
-                        :div_ids => div_ids,                      
-                        :div_names => div_names,
-                        :div_current => @voices_or_sections_label,
-                        :additional_tab_js => get_additional_tab_javascript(@voices_or_sections_label) } %>
-          <div class="tab_panel_body">
-            <%= render :partial => partials[@voices_or_sections_label] %>
-          </div>
+<div id="compose_form_wrap">
+  <%= render :partial => 'layouts/tabpanel_js', :locals => {:div_ids => div_ids} -%>
+  <% div_ids.each do |@voices_or_sections_label| -%>
+      <div id="<%= @voices_or_sections_label %>" style="display:<%= if @voices_or_sections_label == 'piece_settings' then 'block' else 'none' end %>;">
+        <%= render :partial => 'layouts/tabpanel_list',
+                   :locals => {
+                      :div_ids => div_ids,                      
+                      :div_names => div_names,
+                      :div_current => @voices_or_sections_label,
+                      :additional_tab_js => get_additional_tab_javascript(@voices_or_sections_label) } %>
+        <div class="tab_panel_body">
+          <%= render :partial => partials[@voices_or_sections_label] %>
         </div>
-    <% end -%>    
-    
-    <div>      
-      <%= submit_tag 'Generate Piece', :id => 'generate_piece_button', :class => 'button' %>           
-      <%= render :partial => 'spinner', :locals => {:display => 'none'} %>
-      <span id="piece_midi_player_wrapper">  
-          <%= render :partial => 'midi_player', :locals => {:midi_filename => @piece_filename, :div_id => 'piece_midi_player'} %>        
-      </span>      
-    </div>
-<% end %>
+      </div>
+  <% end -%>  
+</div>  

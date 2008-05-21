@@ -1,1 +1,2 @@
 page.replace 'compose_form_wrap', :partial => 'compose_form'
+page.visual_effect(:highlight, 'compose_form_wrap')

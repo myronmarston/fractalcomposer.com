@@ -2,6 +2,8 @@
 # Likewise, all the methods added will be available for all controllers.
 
 class ApplicationController < ActionController::Base
+  include ExceptionNotifiable
+  local_addresses.clear
   before_filter :protect_xhr_actions  
   helper :all # include all helpers, all the time
 
@@ -14,6 +16,8 @@ class ApplicationController < ActionController::Base
   # protects all actions which end with '_xhr' against a direct call (no xhr)
   # taken from http://www.webdevbros.net/2007/12/05/protect-your-xhr-actions-ror/
   def protect_xhr_actions
+    logger.info "xhr = #{request.xhr?.inspect}"
+    logger.info "action = #{self.action_name}"
     redirect_to '/compose' and false if self.action_name.ends_with?('_xhr') and !request.xhr?
   end
 

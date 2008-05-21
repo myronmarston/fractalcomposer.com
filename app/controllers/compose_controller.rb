@@ -24,12 +24,12 @@ class ComposeController < ApplicationController
   #before_filter :update_fractal_piece
   
   # this filter sets our instrument_names variable; all actions that need it should be included.
-  before_filter :set_instrument_names, :only => [ :index, :add_voice_or_section_xhr ]
+  before_filter :set_instrument_names, :only => [ :index, :add_voice_or_section_xhr, :clear_session_xhr ]
   before_filter :set_scale_names, :only => [ :index, :clear_session_xhr ]
   
   # this is the only action that supports a regular get rather than an XHR...
   def index      
-    render :partial => 'compose_form', :layout => 'application'
+    #render :partial => 'compose_form', :layout => 'application'
   end
   
   def scale_selected_xhr             
@@ -83,9 +83,10 @@ class ComposeController < ApplicationController
     render :nothing => true    
   end
   
-  def clear_session_xhr
-    @fractal_piece = nil
+  def clear_session_xhr    
     reset_session
+    @fractal_piece = get_new_fractal_piece     
+    @germ_filename = nil
     respond_to { |format| format.js } 
   end
   
@@ -210,10 +211,7 @@ class ComposeController < ApplicationController
       logger.error("An error occurred while loading the fractal piece from the session: #{ex.message}")
     end
     
-    if (@fractal_piece.nil?) 
-      @fractal_piece = FractalPiece.new
-      @fractal_piece.createDefaultSettings
-    end
+    @fractal_piece = get_new_fractal_piece if @fractal_piece.nil?      
        
     if @fractal_piece.getGerm.size > 0
       # we have a valid germ; make sure we have a midi file for it...      
@@ -225,6 +223,12 @@ class ComposeController < ApplicationController
   def store_fractal_piece_in_session           
     session[:fractal_piece] = @fractal_piece.getXmlRepresentation if @fractal_piece     
     session[:germ_filename] = @germ_filename if @germ_filename
+  end
+  
+  def get_new_fractal_piece
+    fractal_piece = FractalPiece.new
+    fractal_piece.createDefaultSettings
+    return fractal_piece
   end
   
   def set_instrument_names

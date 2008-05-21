@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="" />
+<title>scale_selection</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">scale_selection</td></tr>
+</thead><tbody>
+<tr>
+	<td>include</td>
+	<td>partials/clear_session</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertVisible</td>
+	<td>piece_settings</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertNotVisible</td>
+	<td>voices</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertNotVisible</td>
+	<td>sections</td>
+	<td></td>
+</tr>
+<!--Select a major scale and verify that we get our list of valid keys-->
+<tr>
+	<td>include</td>
+	<td>partials/ajax_action</td>
+	<td>command=select,target=scale,value=Major Scale</td>
+</tr>
+<tr>
+	<td>verifyVisible</td>
+	<td>key_name_selection</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Cb Gb Db Ab Eb Bb F C G D A E B F# C#</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextNotPresent</td>
+	<td>Ab Eb Bb F C G D A E B F# C# G# D# A#</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyValue</td>
+	<td>//select[@id='key']/option[@selected='selected']</td>
+	<td>C</td>
+</tr>
+<!--Change to a minor key; we should still have C as our key, but a different list of keys-->
+<tr>
+	<td>include</td>
+	<td>partials/ajax_action</td>
+	<td>command=select,target=scale,value=Minor Scale</td>
+</tr>
+
+<tr>
+	<td>verifyVisible</td>
+	<td>key_name_selection</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Ab Eb Bb F C G D A E B F# C# G# D# A#</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextNotPresent</td>
+	<td>Cb Gb Db Ab Eb Bb F C G D A E B F# C#</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyValue</td>
+	<td>//select[@id='key']/option[@selected='selected']</td>
+	<td>C</td>
+</tr>
+<!--Select a different key that is also valid for major keys, and change back to major scale-->
+<tr>
+	<td>select</td>
+	<td>key</td>
+	<td>label=B</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/ajax_action</td>
+	<td>command=select,target=scale,value=Major Pentatonic Scale</td>
+</tr>
+
+<tr>
+	<td>verifyVisible</td>
+	<td>key_name_selection</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Cb Gb Db Ab Eb Bb F C G D A E B F# C#</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextNotPresent</td>
+	<td>Ab Eb Bb F C G D A E B F# C# G# D# A#</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyValue</td>
+	<td>//select[@id='key']/option[@selected='selected']</td>
+	<td>B</td>
+</tr>
+<!--Select a key that is invalid for minor keys, and change to minor scale-->
+<tr>
+	<td>select</td>
+	<td>key</td>
+	<td>label=Cb</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/ajax_action</td>
+	<td>command=select,target=scale,value=Harmonic Minor Scale</td>
+</tr>
+
+<tr>
+	<td>verifyVisible</td>
+	<td>key_name_selection</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Ab Eb Bb F C G D A E B F# C# G# D# A#</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextNotPresent</td>
+	<td>Cb Gb Db Ab Eb Bb F C G D A E B F# C#</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyValue</td>
+	<td>//select[@id='key']/option[@selected='selected']</td>
+	<td>A</td>
+</tr>
+<!--Select a key that is invalid for major keys, and change to a major scale-->
+<tr>
+	<td>select</td>
+	<td>key</td>
+	<td>label=A#</td>
+</tr>
+
+<tr>
+	<td>include</td>
+	<td>partials/ajax_action</td>
+	<td>command=select,target=scale,value=Major Pentatonic Scale</td>
+</tr>
+
+<tr>
+	<td>verifyVisible</td>
+	<td>key_name_selection</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Cb Gb Db Ab Eb Bb F C G D A E B F# C#</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextNotPresent</td>
+	<td>Ab Eb Bb F C G D A E B F# C# G# D# A#</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyValue</td>
+	<td>//select[@id='key']/option[@selected='selected']</td>
+	<td>C</td>
+</tr>
+<!--Select a key besides C, and change to Chromatic scale-->
+<tr>
+	<td>select</td>
+	<td>key</td>
+	<td>label=D</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/ajax_action</td>
+	<td>command=select,target=scale,value=Chromatic Scale</td>
+</tr>
+
+<tr>
+	<td>verifyNotVisible</td>
+	<td>key_name_selection</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextNotPresent</td>
+	<td>Cb Gb Db Ab Eb Bb F C G D A E B F# C#</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextNotPresent</td>
+	<td>Ab Eb Bb F C G D A E B F# C# G# D# A#</td>
+	<td></td>
+</tr>
+<!--Change to another scale; the key should be C-->
+<tr>
+	<td>include</td>
+	<td>partials/ajax_action</td>
+	<td>command=select,target=scale,value=Minor Pentatonic Scale</td>
+</tr>
+
+<tr>
+	<td>verifyVisible</td>
+	<td>key_name_selection</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Ab Eb Bb F C G D A E B F# C# G# D# A#</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextNotPresent</td>
+	<td>Cb Gb Db Ab Eb Bb F C G D A E B F# C#</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyValue</td>
+	<td>//select[@id='key']/option[@selected='selected']</td>
+	<td>C</td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

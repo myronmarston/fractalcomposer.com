@@ -8,21 +8,21 @@ import com.myronmarston.music.scales.MajorPentatonicScale
 import com.myronmarston.music.scales.ChromaticScale
 
 class GeneralTest < ActionController::IntegrationTest
-#  def test_non_xhr_redirection
-#    # todo: add every xml_http_request  method here...
-#    ['scale_selected_xhr', 'set_germ_xhr', 'get_voice_sections_xhr',
-#     'add_voice_or_section_xhr', 'delete_voice_or_section_xhr',
-#     'generate_voice_xhr', 'finished_editing_tab_xhr', 'clear_session_xhr'
-#     ].each do |action|
-#      get '/compose'
-#      assert_response :success
-#      
-#      post "/compose/#{action}"      
-#      assert_redirected_to :controller => "compose", :action => "index"
-#      follow_redirect!
-#      assert_response :success
-#    end
-#  end
+  def test_non_xhr_redirection
+    # todo: add every xml_http_request  method here...
+    ['scale_selected_xhr', 'set_germ_xhr', 'get_voice_sections_xhr',
+     'add_voice_or_section_xhr', 'delete_voice_or_section_xhr',
+     'generate_voice_xhr', 'finished_editing_tab_xhr', 'clear_session_xhr'
+     ].each do |action|
+      get '/compose'
+      assert_response :success
+      
+      post "/compose/#{action}"      
+      assert_redirected_to :controller => "compose", :action => "index"
+      follow_redirect!
+      assert_response :success
+    end
+  end
   
   def test_clear_session
     open_session do |session|
@@ -41,7 +41,7 @@ class GeneralTest < ActionController::IntegrationTest
       
       xml_http_request :post, '/compose/clear_session_xhr'
       assert_response :success      
-      assert_equal nil, get_fractal_piece
+      assert_equal '', get_fractal_piece.getGermString
       
       get '/compose'
       assert_response :success
