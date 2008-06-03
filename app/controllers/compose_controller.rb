@@ -1,3 +1,5 @@
+require 'lib/uuidtools.rb'
+require 'fileutils.rb'
 require 'lib/FractalComposer.jar'
 require 'lib/simple-xml-1.7.2.jar'
 import com.myronmarston.util.ClassHelper
@@ -6,6 +8,7 @@ import com.myronmarston.music.scales.Scale
 import com.myronmarston.music.scales.ChromaticScale
 import com.myronmarston.music.scales.MajorScale
 import com.myronmarston.music.NoteName
+import com.myronmarston.music.OutputManager
 import com.myronmarston.music.NoteStringParseException
 import com.myronmarston.music.Instrument
 import com.myronmarston.util.Fraction
@@ -28,30 +31,37 @@ class ComposeController < ApplicationController
   before_filter :set_scale_names, :only => [ :index, :clear_session_xhr ]
   
   # this is the only action that supports a regular get rather than an XHR...
-  def index      
-    #render :partial => 'compose_form', :layout => 'application'
+  def index   
+    # todo: if the user refreshes without tabbing off of the germ string, the text box contains
+    # additional characters not found in the germ    
   end
   
   def scale_selected_xhr             
     update_fractal_piece
+    save_germ_files(false, true)
     respond_to { |format| format.js }    
   end
   
+  def set_time_signature_xhr
+    update_fractal_piece
+    save_germ_files(false, true)
+    respond_to { |format| format.js }
+  end
+  
   def set_germ_xhr    
+    @germ_error_message = nil
     begin
       @fractal_piece.setGermString(params[:germ_string])
     rescue NoteStringParseException => ex
-      @error_message = ex.message.sub(/[^:]*: /, '')
-      render :partial => 'germ_string_error'
-      return
+      @germ_error_message = ex.message.sub(/[^:]*: /, '')      
     end    
-    
-    save_germ_to_midi_file
-    render :partial => 'midi_player', :locals => {:midi_filename => @germ_filename, :div_id => 'germ_midi_player'}
+        
+    save_germ_files(true, true) unless @germ_error_message
+    respond_to { |format| format.js } 
   end
 
   def get_voice_sections_xhr      
-    @tristate_options = {'Use Section Default' => nil, 'Yes' => true, 'No' => false}        
+    #@tristate_options = {'Use Section Default' => nil, 'Yes' => true, 'No' => false}        
     @voices_or_sections_label = params[:voices_or_sections]    
     @voice_or_section = get_voice_or_section(@voices_or_sections_label, params[:unique_index])
     @fieldset_div_id = params[:fieldset_div_id] 
@@ -84,15 +94,17 @@ class ComposeController < ApplicationController
   end
   
   def clear_session_xhr    
+    delete_temp_directory_for_session
     reset_session
     @fractal_piece = get_new_fractal_piece     
-    @germ_filename = nil
+    @germ_midi_filename = nil
+    @germ_image_filename = nil
     respond_to { |format| format.js } 
   end
   
   protected
   
-  def update_fractal_piece
+  def update_fractal_piece    
     # set our fractal piece options based on the params hash...    
     @fractal_piece.setScale(get_scale(params[:scale], params[:key])) if params.has_key?(:scale) && params.has_key?(:key)
     @fractal_piece.setGenerateLayeredIntro(params.has_key?(:generate_layered_intro))
@@ -105,24 +117,24 @@ class ComposeController < ApplicationController
     end       
     
     begin
-      @fractal_piece.setTimeSignature(TimeSignature.new(params[:time_signature]))
+      @fractal_piece.setTimeSignature(TimeSignature.new(params[:time_signature])) if params.has_key?(:time_signature)
     rescue InvalidTimeSignatureException => ex
       logger.error("An error occurred while parsing the time signature string: #{ex.message}")
     end
     
     begin
-      @fractal_piece.setTempo(java.lang.Integer.parseInt(params[:tempo]))
+      @fractal_piece.setTempo(java.lang.Integer.parseInt(params[:tempo])) if params.has_key?(:tempo)
     rescue NumberFormatException => ex
       logger.error("An error occurred while parsing the tempo string: #{ex.message}")
     end
-            
-    {:voices => :update_voice, :sections => :update_section}.each_pair do |voices_or_sections_label, method_name|
-      if params.has_key?(voices_or_sections_label)
-        params[voices_or_sections_label].each_pair do |unique_voice_or_section_index, voice_or_section_hash|              
-          self.send(method_name, unique_voice_or_section_index, voice_or_section_hash)        
-        end
-      end
-    end
+#            
+#    {:voices => :update_voice, :sections => :update_section}.each_pair do |voices_or_sections_label, method_name|
+#      if params.has_key?(voices_or_sections_label)
+#        params[voices_or_sections_label].each_pair do |unique_voice_or_section_index, voice_or_section_hash|              
+#          self.send(method_name, unique_voice_or_section_index, voice_or_section_hash)        
+#        end
+#      end
+#    end
   end
   
   def update_voice(unique_voice_index, voice_hash)
@@ -171,20 +183,62 @@ class ComposeController < ApplicationController
     end # end voice_sections hash loop
   end
   
-  def save_germ_to_midi_file        
-    @germ_filename = get_temp_midi_filename('germs')
-    @fractal_piece.saveGermToMidiFile("public#{@germ_filename}")    
+  def save_germ_files(save_midi, save_image)
+    @germ_midi_filename = get_germ_midi_filename
+    @germ_image_filename = get_germ_image_filename
+    output_manager = @fractal_piece.createGermOutputManager
+    output_manager.saveMidiFile(get_local_filename(@germ_midi_filename)) if save_midi
+    output_manager.getSheetMusicCreator.saveAsGifImage(get_local_filename(@germ_image_filename)) if save_image
   end
   
   def save_piece_to_midi_file
-    @piece_filename = get_temp_midi_filename('pieces')
-    @fractal_piece.createAndSaveMidiFile("public#{@piece_filename}")    
+    #@piece_filename = get_temp_midi_filename('pieces')
+    #@fractal_piece.createAndSaveMidiFile("public#{@piece_filename}")    
   end
   
-  def get_temp_midi_filename(subdirectory)
-    require 'lib/uuidtools.rb'    
-    "/temp/#{subdirectory}/#{UUID.random_create.to_s}.mid"
+  def get_temp_directory_for_session    
+    temp_dir = session[:session_temp_dir] || temp_dir = "/temp/dir_#{UUID.random_create.to_s}"
+    
+    # File.exist? also works on directories
+    # mode 0755 is read/write/execute for the user who creates the file, 
+    # and read/execute for everyone else
+    Dir.mkdir(get_local_filename(temp_dir), 0755) unless File.exist?(get_local_filename(temp_dir)) 
+    session[:session_temp_dir] = temp_dir
+    return temp_dir
   end
+  
+  def delete_temp_directory_for_session
+    temp_dir = session[:session_temp_dir]
+    if temp_dir
+      local_temp_dir = get_local_filename(temp_dir)      
+      if File.exist?(local_temp_dir)
+        FileUtils.remove_dir(local_temp_dir, true)
+      end
+    end
+  end
+  
+  def get_url_filename(filename)
+    # remove the "public/" from the front of the string, if it has it
+    filename.gsub(/^public\//, '')
+  end
+  
+  def get_local_filename(filename)
+    # add public/ to the start of the string, unless it already has it
+    "public/#{filename}" unless filename =~ /^public\//
+  end
+  
+  def get_germ_midi_filename
+    "#{get_temp_directory_for_session}/germ.mid"
+  end
+  
+  def get_germ_image_filename
+    "#{get_temp_directory_for_session}/germ.gif"
+  end
+  
+#  def get_temp_midi_filename(subdirectory)
+#    require 'lib/uuidtools.rb'    
+#    "/temp/#{subdirectory}/#{UUID.random_create.to_s}.mid"
+#  end
   
   def get_voice_or_section(voices_or_sections_label, unique_index)    
     @fractal_piece.send("get#{voices_or_sections_label.titleize}").getByUniqueIndex(unique_index.to_i)    
@@ -212,12 +266,16 @@ class ComposeController < ApplicationController
     end
     
     @fractal_piece = get_new_fractal_piece if @fractal_piece.nil?      
-       
+    
     if @fractal_piece.getGerm.size > 0
-      # we have a valid germ; make sure we have a midi file for it...      
-      @germ_filename = session[:germ_filename] if session[:germ_filename] && File.exist?("/public#{session[:germ_filename]}")
-      save_germ_to_midi_file unless @germ_filename
+      # we have a valid germ
+      @germ_midi_filename = get_germ_midi_filename
+      @germ_midi_filename = nil unless File.exists?(get_local_filename(@germ_midi_filename))
+      
+      @germ_image_filename = get_germ_image_filename
+      @germ_image_filename = nil unless File.exists?(get_local_filename(@germ_image_filename))
     end
+
   end
 
   def store_fractal_piece_in_session           

@@ -1,9 +1,9 @@
 <%= render :partial => 'set_prefix_instance_variables' %>
+<%
+    @section_settings = @voice_or_section.getSettings
+    @section_settings_input_name_prefix = "#{@voice_or_section_input_name_prefix}[section_settings]"
+    @section_settings_input_id_prefix = sanatize_input_id(@section_settings_input_name_prefix)    
+-%>
 <% render :layout => 'one_voice_or_section_wrapper' do %>
-    <p>      
-        <%= hidden_field_tag "#{@input_name_prefix}[ignore]", 'ensure have hash', :id => "#{@input_id_prefix}_ignore" %>
-        Apply Inversion <%= check_box_tag "#{@input_name_prefix}[apply_inversion]", 1, @voice_or_section.getApplyInversion, :id => "#{@input_id_prefix}_apply_inversion" %>
-        <br />
-        Apply Retrograde <%= check_box_tag "#{@input_name_prefix}[apply_retrograde]", 1, @voice_or_section.getApplyRetrograde, :id => "#{@input_id_prefix}_apply_retrograde" %>
-    </p>
+    <%= render :partial => 'section_settings' %>
 <% end -%>

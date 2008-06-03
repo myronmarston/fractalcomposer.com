@@ -3,33 +3,15 @@
     other_type_unique_index = @voice_section.getOtherVoiceOrSection(@voice_or_section).getUniqueIndex    
     other_type_label = @voice_section.getOtherVoiceOrSection(@voice_or_section).getClassName
     input_name_prefix = "#{@voices_or_sections_label}[#{this_type_unique_index}][voice_sections][#{other_type_unique_index}]"
-    input_id_prefix = sanatize_input_id(input_name_prefix)
-    input_name_prefix_sss = "#{input_name_prefix}[self_similarity_settings]"
-    input_id_prefix_sss = sanatize_input_id(input_name_prefix_sss)
+    input_id_prefix = sanatize_input_id(input_name_prefix)    
 -%>
   
-<% render :layout => 'togglable_fieldset_wrapper', :locals => {:link_text => "Voice Section for #{other_type_label} #{other_type_unique_index}", :id_prefix => input_id_prefix, :show_fieldset_initially => false } do %> 
-  
+<% render :layout => 'togglable_fieldset_wrapper', :locals => {:link_text => "Voice Section for #{other_type_label} #{other_type_unique_index}", :id_prefix => input_id_prefix, :show_fieldset_initially => false } do %>   
   <p>
-    Rest: <%= check_box_tag "#{input_name_prefix}[rest]", 1, @voice_section.getRest, :id => "#{input_id_prefix}_rest" %>
+    Rest <%= check_box_tag "#{input_name_prefix}[rest]", 1, @voice_section.getRest, :id => "#{input_id_prefix}_rest" %>
+    <br />    
+    Use Default Voice Settings <%= check_box_tag "#{input_name_prefix}[use_default_voice_settings]", 1, @voice_section.getUseDefaultVoiceSettings %>
     <br />
-    Apply Inversion: <%= select_tag "#{input_name_prefix}[apply_inversion]", options_for_select(@tristate_options, @voice_section.getApplyInversion), :id => "#{input_id_prefix}_apply_inversion" %>
-    <br />
-    Apply Retrograde: <%= select_tag "#{input_name_prefix}[apply_retrograde]", options_for_select(@tristate_options, @voice_section.getApplyRetrograde), :id => "#{input_id_prefix}_apply_retrograde" %>
-  </p>
-  <fieldset>
-    <legend>Apply Self-Similarity To:</legend>
-    <p>
-        <%= hidden_field_tag "#{input_name_prefix_sss}[ignore]", 'ensure have hash', :id => "#{input_name_prefix_sss}_ignore" %>
-        <span class="self_similarity_settings_field">
-            Pitch <%= check_box_tag "#{input_name_prefix_sss}[pitch]", 1, @voice_section.getSelfSimilaritySettings.getApplyToPitch, :id => "#{input_id_prefix_sss}_pitch" %>                
-        </span>
-        <span class="self_similarity_settings_field">
-            Rhythm <%= check_box_tag "#{input_name_prefix_sss}[rhythm]", 1, @voice_section.getSelfSimilaritySettings.getApplyToRhythm, :id => "#{input_id_prefix_sss}_rhythm" %>                
-        </span>
-        <span class="self_similarity_settings_field">
-            Volume <%= check_box_tag "#{input_name_prefix_sss}[volume]", 1, @voice_section.getSelfSimilaritySettings.getApplyToVolume, :id => "#{input_id_prefix_sss}_volume" %>
-        </span>
-    </p>
-  </fieldset>  
+    Use Default Section Settings <%= check_box_tag "#{input_name_prefix}[use_default_section_settings]", 1, @voice_section.getUseDefaultSectionSettings %>
+  </p>    
 <% end -%>

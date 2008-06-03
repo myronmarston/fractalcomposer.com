@@ -1,2 +1,6 @@
 <%= check_box_tag "advanced_options_toggle", 1, false, :onclick => "switchid('piece_settings'); $$('ul.tablist').each(function(e) {e.toggle();});" %>
+
+<span id="germ_midi_player_wrapper">  
+        <%= render :partial => 'midi_player', :locals => {:midi_filename => @germ_filename, :div_id => 'germ_midi_player'} %>        
+    </span>
     

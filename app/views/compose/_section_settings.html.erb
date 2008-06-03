@@ -1,0 +1,6 @@
+<p>      
+    <%= hidden_field_tag "#{@section_settings_input_name_prefix}[ignore]", 'ensure have hash', :id => "#{@section_settings_input_id_prefix}_ignore" %>
+    Apply Inversion <%= check_box_tag "#{@section_settings_input_name_prefix}[apply_inversion]", 1, @section_settings.getApplyInversion, :id => "#{@section_settings_input_id_prefix}_apply_inversion" %>
+    <br />
+    Apply Retrograde <%= check_box_tag "#{@section_settings_input_name_prefix}[apply_retrograde]", 1, @section_settings.getApplyRetrograde, :id => "#{@section_settings_input_id_prefix}_apply_retrograde" %>
+</p>

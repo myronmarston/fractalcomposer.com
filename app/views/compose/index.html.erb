@@ -12,7 +12,7 @@
     <%= render :partial => 'compose_form' %>
 
     <div id="start_over_button_wrap">      
-      <%= render :partial => 'spinner', :locals => {:display => 'none', :div_id => start_over_spinner_id} %>                
+      <%= render :partial => 'spinner', :locals => {:display => 'none', :div_id => start_over_spinner_id, :bottom_px => 8} %>                
       <input type="button" class="button" id="start_over_button" value="Start Over" onclick="<%= remote_function(        
               :url => {:action => 'clear_session_xhr'}, 
               :before => "$('#{start_over_spinner_id}').show()",
@@ -20,7 +20,7 @@
     </div>
     
     <%= submit_tag 'Generate Piece', :id => 'generate_piece_button', :class => 'button' %>            
-    <%= render :partial => 'spinner', :locals => {:display => 'none', :div_id => piece_spinner_id} %>      
+    <%= render :partial => 'spinner', :locals => {:display => 'none', :div_id => piece_spinner_id, :bottom_px => 8} %>      
     <span id="piece_midi_player_wrapper">  
         <%= render :partial => 'midi_player', :locals => {:midi_filename => @piece_filename, :div_id => 'piece_midi_player'} %>        
     </span>          

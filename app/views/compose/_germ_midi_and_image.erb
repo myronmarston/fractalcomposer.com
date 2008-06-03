@@ -1,0 +1,18 @@
+<%
+    # the midi_player partial only includes the midi player if the filename is not null
+    # for the image tag, we need to check that here.
+-%>
+<% if @germ_error_message -%>
+  <div class='germ_string_error'>
+      <%= h @germ_error_message %>
+  </div>
+<% else -%>
+  <%= render :partial => 'midi_player', 
+             :locals => {:midi_filename => @germ_midi_filename, 
+                         :div_id => 'germ_midi_player'} %>
+  <br />
+  <% if @germ_image_filename %>
+      <% clear_computed_public_path(@germ_image_filename) %>
+      <%= image_tag(@germ_image_filename, :alt => 'Germ Notation') %>
+  <% end -%>
+<% end -%>

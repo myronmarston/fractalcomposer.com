@@ -19,8 +19,7 @@ span.spinner_wrap {
     display: inline;
     width: 16px;
     height: 16px;   
-    position: relative;
-    bottom: 8px;
+    position: relative;    
 }
 
 form {
@@ -60,6 +59,10 @@ div.one_voice_or_section {
 
 div.one_voice_or_section p {
   line-height: 2.2em;  
+}
+
+div.voice_voice_settings {
+    margin: 0px 20px;
 }
 
 form#compose_form fieldset legend {

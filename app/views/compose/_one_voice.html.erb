@@ -1,13 +1,14 @@
 <%= render :partial => 'set_prefix_instance_variables' %>
+<%    
+    @voice_settings = @voice_or_section.getSettings
+    @voice_settings_input_name_prefix = "#{@voice_or_section_input_name_prefix}[voice_settings]"
+    @voice_settings_input_id_prefix = sanatize_input_id(@voice_settings_input_name_prefix)        
+-%>
 <% render :layout => 'one_voice_or_section_wrapper' do %>
-    <p>
+    <div class="voice_voice_settings">
       Instrument:
-      <%= select_tag "#{@input_name_prefix}[instrument]", options_for_select(@instrument_names, @voice_or_section.getInstrumentName), :id => "#{@input_id_prefix}_instrument" %>    
-      <br />
-      Octave Adjustment:
-      <%= text_field_tag "#{@input_name_prefix}[octave_adjustment]", @voice_or_section.getOctaveAdjustment, :size => 2, :id => "#{@input_id_prefix}_octave_adjustment" %>
-      <br />
-      Speed Scale Factor:
-      <%= text_field_tag "#{@input_name_prefix}[speed_scale_factor]", @voice_or_section.speedScaleFactor, :size => 2, :id => "#{@input_id_prefix}_speed_scale_factor" %>
-    </p>
+      <%= select_tag "#{@voice_or_section_input_name_prefix}[instrument]", options_for_select(@instrument_names, @voice_or_section.getInstrumentName), :id => "#{@voice_or_section_input_id_prefix}_instrument" %>    
+      <br />  
+      <%= render :partial => 'voice_settings' %>
+    </div>
 <% end %>

@@ -1,39 +1,42 @@
   <p>
-    Germ:    
-    <%= text_area_tag :germ_string, @fractal_piece.getGermString, :cols => 60, :rows => 1 %>
-    <%= observe_field :germ_string, 
-        :url => { :action => :set_germ_xhr }, 
-        :update => :germ_midi_player_wrapper, 
-        :with => "'germ_string='+encodeURIComponent(value)",
-        :before => "$('germ_spinner').show(); $('germ_midi_player_wrapper').hide()",
-        :complete => "$('germ_spinner').hide(); $('germ_midi_player_wrapper').show()" %>    
-    <%= render :partial => 'spinner', :locals => {:div_id => 'germ_spinner', :display => 'none'} %>
-    <span id="germ_midi_player_wrapper">  
-        <%= render :partial => 'midi_player', :locals => {:midi_filename => @germ_filename, :div_id => 'germ_midi_player'} %>        
-    </span>
-    <br />
-    
     Scale Type:
     <%= select_tag :scale, options_for_select(@scale_names, @fractal_piece.getScale.java_class) %>
     <%= observe_field :scale, 
         :url => { :action => :scale_selected_xhr },          
         :with  => "'scale=' + encodeURIComponent(value) + '&key=' + encodeURIComponent($('key').value)",
-        :before  => "$('scale_spinner').show()",
-        :complete  => "$('scale_spinner').hide()" %>
+        :before  => "$('scale_spinner').show(); $('germ_spinner').show(); $('germ_midi_player_wrapper').hide()",
+        :complete  => "$('scale_spinner').hide(); $('germ_spinner').hide(); $('germ_midi_player_wrapper').show()" %>
         
     &nbsp;    
     <%= render :partial => 'key_name_selection' %>    
-    <%= render :partial => 'spinner', :locals => {:div_id => 'scale_spinner', :display => 'none'} %>    
+    <%= render :partial => 'spinner', :locals => {:div_id => 'scale_spinner', :display => 'none', :bottom_px => -2} %>    
     <br />
     
     Time Signature:
     <%= text_field_tag :time_signature, @fractal_piece.getTimeSignature, :size => 4 %>
-    <br />
-    
+    <%= observe_field :time_signature, 
+        :url => { :action => :set_time_signature_xhr },          
+        :with  => "'time_signature=' + encodeURIComponent(value)",
+        :before  => "$('germ_spinner').show(); $('germ_midi_player_wrapper').hide()",
+        :complete  => "$('germ_spinner').hide(); $('germ_midi_player_wrapper').show()" %>
+            
     Tempo:
     <%= text_field_tag :tempo, @fractal_piece.getTempo, :size => 4 %>
     <br />
     
+    Germ:    
+    <%= text_area_tag :germ_string, @fractal_piece.getGermString, :cols => 60, :rows => 1 %>
+    <%= observe_field :germ_string, 
+        :url => { :action => :set_germ_xhr },         
+        :with => "'germ_string='+encodeURIComponent(value)",
+        :before => "$('germ_spinner').show(); $('germ_midi_player_wrapper').hide()",
+        :complete => "$('germ_spinner').hide(); $('germ_midi_player_wrapper').show()" %>    
+    <%= render :partial => 'spinner', :locals => {:div_id => 'germ_spinner', :display => 'none', :bottom_px => -4} %>
+    <span id="germ_midi_player_wrapper">  
+        <%= render :partial => 'germ_midi_and_image' %>
+    </span>
+    <br />
+        
     Generate Layered Intro    
     <%= check_box_tag :generate_layered_intro, 1, @fractal_piece.getGenerateLayeredIntro %>
     <br />

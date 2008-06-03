@@ -1,0 +1,25 @@
+<%
+    self_similarity_settings = @voice_settings.getSelfSimilaritySettings        
+    input_name_prefix_sss = "#{@voice_settings_input_name_prefix}[self_similarity_settings]"
+    input_id_prefix_sss = sanatize_input_id(input_name_prefix_sss)
+-%>
+Octave Adjustment:
+<%= text_field_tag "#{@voice_settings_input_name_prefix}[octave_adjustment]", @voice_settings.getOctaveAdjustment, :size => 2, :id => "#{@voice_or_section_input_id_prefix}_octave_adjustment" %>
+<br />
+Speed Scale Factor:
+<%= text_field_tag "#{@voice_settings_input_name_prefix}[speed_scale_factor]", @voice_settings.speedScaleFactor, :size => 2, :id => "#{@voice_or_section_input_id_prefix}_speed_scale_factor" %>
+<fieldset>
+    <legend>Apply Self-Similarity To:</legend>
+    <p>
+        <%= hidden_field_tag "#{input_name_prefix_sss}[ignore]", 'ensure have hash', :id => "#{input_id_prefix_sss}_ignore" %>
+        <span class="self_similarity_settings_field">
+            Pitch <%= check_box_tag "#{input_name_prefix_sss}[pitch]", 1, self_similarity_settings.getApplyToPitch, :id => "#{input_id_prefix_sss}_pitch" %>                
+        </span>
+        <span class="self_similarity_settings_field">
+            Rhythm <%= check_box_tag "#{input_name_prefix_sss}[rhythm]", 1, self_similarity_settings.getApplyToRhythm, :id => "#{input_id_prefix_sss}_rhythm" %>                
+        </span>
+        <span class="self_similarity_settings_field">
+            Volume <%= check_box_tag "#{input_name_prefix_sss}[volume]", 1, self_similarity_settings.getApplyToVolume, :id => "#{input_id_prefix_sss}_volume" %>
+        </span>
+    </p>
+  </fieldset>

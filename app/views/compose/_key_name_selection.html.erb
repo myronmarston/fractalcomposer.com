@@ -8,4 +8,9 @@
 <span id="key_name_selection"<%= style %>>
   Key:
   <%= select_tag :key, options_for_select(keys, @fractal_piece.getScale.getKeyName) %>  
+  <%= observe_field :key, 
+        :url => { :action => :scale_selected_xhr },                  
+        :with  => "'scale=' + encodeURIComponent($('scale').value) + '&key=' + encodeURIComponent(value)",
+        :before  => "$('scale_spinner').show(); $('germ_spinner').show(); $('germ_midi_player_wrapper').hide()",
+        :complete  => "$('scale_spinner').hide(); $('germ_spinner').hide(); $('germ_midi_player_wrapper').show()" %>        
 </span>
