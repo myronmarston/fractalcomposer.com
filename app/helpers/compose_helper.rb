@@ -51,4 +51,51 @@ module ComposeHelper
     END_OF_STRING
   end
   
+  def get_scale_or_key_observe_field(fieldname)
+    observe_field fieldname, 
+        :url => { :action => :scale_selected_xhr },                  
+        :with  => "'scale=' + encodeURIComponent($('scale').value) + '&key=' + encodeURIComponent($('key').value)",
+        :before  => "$('scale_spinner').show(); $('germ_spinner').show(); $('germ_midi_player_wrapper').hide()",
+        :complete  => "$('scale_spinner').hide(); $('germ_spinner').hide(); $('germ_midi_player_wrapper').show()"        
+  end    
+  
+  def get_override_checkbox_onclick_javascript(parent_voice_or_section_id, settings_type, checkbox_id, loading_div_id, content_div_id, main_unique_index, other_unique_index)
+                   
+    remote_func_js = remote_function(
+      :url => {:action => 'get_voice_section_overriden_settings_xhr'},
+      :with => "Form.serialize($('#{parent_voice_or_section_id}')) + " +
+               "'&amp;voices_or_sections=#{@voices_or_sections_label}" +
+               "&amp;settings_type=#{settings_type}" +
+               "&amp;main_unique_index=#{main_unique_index}" + 
+               "&amp;other_unique_index=#{other_unique_index}" + 
+               "&amp;settings_content_wrap_id=#{content_div_id}'",
+      :before    => "$('#{checkbox_id}').disable(); $('#{loading_div_id}').show();",
+      :complete  => "$('#{checkbox_id}').enable();  $('#{loading_div_id}').hide();")
+    
+    <<-END_OF_STRING
+      if ($('#{checkbox_id}').checked) {
+        #{remote_func_js}        
+      } else {
+        Element.update('#{content_div_id}', '');
+      }
+    END_OF_STRING
+    
+  end
+  
+  def set_prefix_instance_variables
+    # set prefix instance variables used by multiple partials
+    if @voices_or_sections_label && @voice_or_section
+      @voice_or_section_input_name_prefix = "#{@voices_or_sections_label}[#{@voice_or_section.getUniqueIndex}]"
+      @voice_or_section_input_id_prefix = sanatize_input_id(@voice_or_section_input_name_prefix)             
+    
+      if @voice_section
+        @this_type_unique_index = @voice_or_section.getUniqueIndex
+        @other_type_unique_index = @voice_section.getOtherVoiceOrSection(@voice_or_section).getUniqueIndex    
+        @other_type_label = @voice_section.getOtherVoiceOrSection(@voice_or_section).getClassName
+        @voice_section_input_name_prefix = "#{@voices_or_sections_label}[#{@this_type_unique_index}][voice_sections][#{@other_type_unique_index}]"
+        @voice_section_input_id_prefix = sanatize_input_id(@voice_section_input_name_prefix)  
+      end    
+    end    
+  end
+  
 end

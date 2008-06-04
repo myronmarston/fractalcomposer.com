@@ -1,0 +1,8 @@
+<%  if (scale) -%>
+  Scale Type:
+  <%= select_tag :scale, options_for_select(@scale_names, scale.java_class) %>
+  <%= get_scale_or_key_observe_field(:scale) if observe_fields %>
+  &nbsp;    
+  <%= render :partial => 'key_name_selection', :locals => {:scale => scale, :observe_fields => observe_fields} %>    
+  <%= render :partial => 'spinner', :locals => {:div_id => 'scale_spinner', :display => 'none', :bottom_px => -2} %>    
+<% end -%>

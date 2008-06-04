@@ -1,5 +1,5 @@
 <% 
-    keys = @fractal_piece.getScale.getValidKeyNames
+    keys = scale.getValidKeyNames
     if keys.size == 0
         style = "style=\"display: none;\""
         keys = [nil] # give us one option to have valid html...
@@ -7,10 +7,6 @@
 -%>
 <span id="key_name_selection"<%= style %>>
   Key:
-  <%= select_tag :key, options_for_select(keys, @fractal_piece.getScale.getKeyName) %>  
-  <%= observe_field :key, 
-        :url => { :action => :scale_selected_xhr },                  
-        :with  => "'scale=' + encodeURIComponent($('scale').value) + '&key=' + encodeURIComponent(value)",
-        :before  => "$('scale_spinner').show(); $('germ_spinner').show(); $('germ_midi_player_wrapper').hide()",
-        :complete  => "$('scale_spinner').hide(); $('germ_spinner').hide(); $('germ_midi_player_wrapper').show()" %>        
+  <%= select_tag :key, options_for_select(keys, scale.getKeyName) %>  
+  <%= get_scale_or_key_observe_field(:key) if observe_fields %>
 </span>

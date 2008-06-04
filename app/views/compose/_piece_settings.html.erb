@@ -1,15 +1,5 @@
   <p>
-    Scale Type:
-    <%= select_tag :scale, options_for_select(@scale_names, @fractal_piece.getScale.java_class) %>
-    <%= observe_field :scale, 
-        :url => { :action => :scale_selected_xhr },          
-        :with  => "'scale=' + encodeURIComponent(value) + '&key=' + encodeURIComponent($('key').value)",
-        :before  => "$('scale_spinner').show(); $('germ_spinner').show(); $('germ_midi_player_wrapper').hide()",
-        :complete  => "$('scale_spinner').hide(); $('germ_spinner').hide(); $('germ_midi_player_wrapper').show()" %>
-        
-    &nbsp;    
-    <%= render :partial => 'key_name_selection' %>    
-    <%= render :partial => 'spinner', :locals => {:div_id => 'scale_spinner', :display => 'none', :bottom_px => -2} %>    
+    <%= render :partial => 'scale_selection', :locals => {:scale => @fractal_piece.getScale, :observe_fields => true} %>    
     <br />
     
     Time Signature:

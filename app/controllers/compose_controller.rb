@@ -36,7 +36,8 @@ class ComposeController < ApplicationController
     # additional characters not found in the germ    
   end
   
-  def scale_selected_xhr             
+  def scale_selected_xhr    
+    # todo: if there is no germ, this fails
     update_fractal_piece
     save_germ_files(false, true)
     respond_to { |format| format.js }    
@@ -62,11 +63,32 @@ class ComposeController < ApplicationController
 
   def get_voice_sections_xhr      
     #@tristate_options = {'Use Section Default' => nil, 'Yes' => true, 'No' => false}        
+    @voice_or_section_div_id = params[:voice_or_section_div_id]
     @voices_or_sections_label = params[:voices_or_sections]    
     @voice_or_section = get_voice_or_section(@voices_or_sections_label, params[:unique_index])
     @fieldset_div_id = params[:fieldset_div_id] 
     @loading_div_id = params[:loading_div_id]
     respond_to { |format| format.js }    
+  end
+  
+  def get_voice_section_overriden_settings_xhr
+    update_fractal_piece # update or voice or section settings, so we can clone them if need be... 
+    @settings_type = params[:settings_type]
+    @settings_content_wrap_id = params[:settings_content_wrap_id]
+    @voices_or_sections_label = params[:voices_or_sections]    
+    @voice_or_section = get_voice_or_section(@voices_or_sections_label, params[:main_unique_index])
+    @voice_section = @voice_or_section.getVoiceSections.getByOtherTypeUniqueIndex(params[:other_unique_index].to_i)
+    
+    # override the settings, first turning it to false if it's not already false.
+    # this is necessary because we don't make an ajax call when the override is set 
+    # to false, and the settings copy the voice or section settings when it is
+    # set from false to true.  So, we want to make sure it is false before setting
+    # it to true.
+    @voice_section.send("setOverride#{@settings_type}Settings", false)    
+    @voice_section.send("setOverride#{@settings_type}Settings", true)    
+    
+    @settings = @voice_section.send("get#{@settings_type}Settings")
+    respond_to { |format| format.js } 
   end
   
   def add_voice_or_section_xhr     
@@ -127,60 +149,74 @@ class ComposeController < ApplicationController
     rescue NumberFormatException => ex
       logger.error("An error occurred while parsing the tempo string: #{ex.message}")
     end
-#            
-#    {:voices => :update_voice, :sections => :update_section}.each_pair do |voices_or_sections_label, method_name|
-#      if params.has_key?(voices_or_sections_label)
-#        params[voices_or_sections_label].each_pair do |unique_voice_or_section_index, voice_or_section_hash|              
-#          self.send(method_name, unique_voice_or_section_index, voice_or_section_hash)        
-#        end
-#      end
-#    end
+            
+    {:voices => :update_voice, :sections => :update_section}.each_pair do |voices_or_sections_label, method_name|
+      if params.has_key?(voices_or_sections_label)
+        params[voices_or_sections_label].each_pair do |unique_voice_or_section_index, voice_or_section_hash|              
+          self.send(method_name, unique_voice_or_section_index, voice_or_section_hash)        
+        end
+      end
+    end
   end
   
   def update_voice(unique_voice_index, voice_hash)
     voice = @fractal_piece.getVoices.getByUniqueIndex(unique_voice_index.to_i)  
     
-    voice.setInstrumentName(voice_hash[:instrument])
-    voice.setOctaveAdjustment(voice_hash[:octave_adjustment].to_i)
-    voice.setSpeedScaleFactor(Fraction.new(voice_hash[:speed_scale_factor]))  
+    voice.setInstrumentName(voice_hash[:instrument])    
+    #update_voice_settings(voice.getSettings, voice_hash[:voice_settings])
     
     update_voice_sections(voice.getVoiceSections, voice_hash[:voice_sections]) if voice_hash.has_key?(:voice_sections)
+  end
+  
+  def update_voice_settings(voice_settings, voice_settings_hash)
+    logger.info "   updating voice settings object using hash #{voice_settings_hash.inspect}"
+    
+    # todo: validate the values before setting them...
+    voice_settings.setOctaveAdjustment(voice_settings_hash[:octave_adjustment].to_i)
+    voice_settings.setSpeedScaleFactor(Fraction.new(voice_settings_hash[:speed_scale_factor]))  
+    
+    # self similarity settings are in another hash...
+    self_similarity_settings_hash = voice_settings_hash[:self_similarity_settings]
+    self_similarity_settings = voice_settings.getSelfSimilaritySettings
+    self_similarity_settings.setApplyToPitch(self_similarity_settings_hash.has_key?(:pitch))
+    self_similarity_settings.setApplyToRhythm(self_similarity_settings_hash.has_key?(:rhythm))
+    self_similarity_settings.setApplyToVolume(self_similarity_settings_hash.has_key?(:volume))
   end
   
   def update_section(unique_section_index, section_hash)
     section = @fractal_piece.getSections.getByUniqueIndex(unique_section_index.to_i)    
     
-    section.setApplyInversion(section_hash.has_key?(:apply_inversion))
-    section.setApplyRetrograde(section_hash.has_key?(:apply_retrograde))
-        
+    # todo: update the scale...
+    update_section_settings(section.getSettings, section_hash[:section_settings])        
     update_voice_sections(section.getVoiceSections, section_hash[:voice_sections]) if section_hash.has_key?(:voice_sections)
-  end   
+  end       
+  
+  def update_section_settings(section_settings, section_settings_hash)
+    section_settings.setApplyInversion(section_settings_hash.has_key?(:apply_inversion))
+    section_settings.setApplyRetrograde(section_settings_hash.has_key?(:apply_retrograde))
+  end
   
   def update_voice_sections(voice_sections, voice_sections_hash)
     return if voice_sections_hash == Hash.new.default
     
     # iterate over the hash key/values for this voice or section...    
     voice_sections_hash.each_pair do |voice_section_other_type_unique_index, voice_section_hash|
-
+      logger.info "hash for #{voice_section_other_type_unique_index} = #{voice_section_hash.inspect}"
       # get the particular voice section
       voice_section = voice_sections.getByOtherTypeUniqueIndex(voice_section_other_type_unique_index.to_i)
 
       # set the values.
-      # we use eval for the combo box fields, because eval {boolean string} 
-      # returns the proper value, and eval "" returns nil, which is the correct value.
-      # for boolean values, the hash will only have the key if the box is 
-      # checked, so we use has_key?          
-      voice_section.setApplyInversion(eval(voice_section_hash[:apply_inversion]))          
-      voice_section.setApplyRetrograde(eval(voice_section_hash[:apply_retrograde]))
+      # for boolean values, the hash will only have the key if the box is checked, so we use has_key?  
       voice_section.setRest(voice_section_hash.has_key?(:rest))
-
-      # self similarity settings are in another hash...
-      self_similarity_settings_hash = voice_section_hash[:self_similarity_settings]
-      self_similarity_settings = voice_section.getSelfSimilaritySettings
-      self_similarity_settings.setApplyToPitch(self_similarity_settings_hash.has_key?(:pitch))
-      self_similarity_settings.setApplyToRhythm(self_similarity_settings_hash.has_key?(:rhythm))
-      self_similarity_settings.setApplyToVolume(self_similarity_settings_hash.has_key?(:volume))
-    end # end voice_sections hash loop
+      
+      override_voice_settings = voice_section_hash.has_key?(:override_voice_settings)      
+      voice_section.setOverrideVoiceSettings(override_voice_settings) unless override_voice_settings == voice_section.getOverrideVoiceSettings
+      update_voice_settings(voice_section.getVoiceSettings, voice_section_hash[:voice_settings]) if override_voice_settings
+      
+      override_section_settings = voice_section_hash.has_key?(:override_section_settings)
+      voice_section.setOverrideSectionSettings(override_section_settings) unless override_section_settings == voice_section.getOverrideSectionSettings
+      update_section_settings(voice_section.getSectionSettings, voice_section_hash[:section_settings]) if override_section_settings
+    end
   end
   
   def save_germ_files(save_midi, save_image)
@@ -188,7 +224,7 @@ class ComposeController < ApplicationController
     @germ_image_filename = get_germ_image_filename
     output_manager = @fractal_piece.createGermOutputManager
     output_manager.saveMidiFile(get_local_filename(@germ_midi_filename)) if save_midi
-    output_manager.getSheetMusicCreator.saveAsGifImage(get_local_filename(@germ_image_filename)) if save_image
+    output_manager.saveGifImage(get_local_filename(@germ_image_filename)) if save_image
   end
   
   def save_piece_to_midi_file

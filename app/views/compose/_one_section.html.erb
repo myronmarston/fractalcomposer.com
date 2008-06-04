@@ -1,9 +1,6 @@
-<%= render :partial => 'set_prefix_instance_variables' %>
-<%
-    @section_settings = @voice_or_section.getSettings
-    @section_settings_input_name_prefix = "#{@voice_or_section_input_name_prefix}[section_settings]"
-    @section_settings_input_id_prefix = sanatize_input_id(@section_settings_input_name_prefix)    
--%>
+<% set_prefix_instance_variables #render :partial => 'set_prefix_instance_variables' %>
 <% render :layout => 'one_voice_or_section_wrapper' do %>
-    <%= render :partial => 'section_settings' %>
+    <%# todo: add check box for overriding scale  %>
+    <%= render :partial => 'scale_selection', :locals => {:scale => @voice_or_section.getScale, :observe_fields => false} %>
+    <%= render :partial => 'section_settings', :locals => {:settings => @voice_or_section.getSettings, :input_prefix => @voice_or_section_input_name_prefix} %>
 <% end -%>

@@ -3,7 +3,7 @@
     div_id = "#{@voices_or_sections_label.singularize}_#{@voice_or_section.getUniqueIndex}"      
     loading_div_id = "#{@voice_or_section_input_id_prefix}_voice_sections_loading"    
     load_voice_sections_js = remote_function(:url => {:action => 'get_voice_sections_xhr'},
-            :with => "'voices_or_sections=#{@voices_or_sections_label}&amp;unique_index=#{@voice_or_section.getUniqueIndex}&amp;fieldset_div_id=#{@voice_or_section_input_id_prefix}_voice_sections_fieldset&amp;loading_div_id=#{loading_div_id}'" )            
+            :with => "'voices_or_sections=#{@voices_or_sections_label}&amp;unique_index=#{@voice_or_section.getUniqueIndex}&amp;fieldset_div_id=#{@voice_or_section_input_id_prefix}_voice_sections_fieldset&amp;loading_div_id=#{loading_div_id}&amp;voice_or_section_div_id=#{div_id}'" )            
           
     # wrap our javascript with a conditional--only execute it if the "Loading..." div is visible
     load_voice_sections_js = "if ($('#{loading_div_id}').visible()) {#{load_voice_sections_js};}"        
@@ -30,7 +30,7 @@
                     :link_class => 'voice_sections_toggle_link',
                     :fieldset_class => 'voice_sections_fieldset'} do %> 
         <div id="<%= loading_div_id %>" class="voice_sections_loading_wrap">
-            <h3>Loading&hellip; <%= render :partial => 'spinner', :locals => {:display => 'inline'} %>  </h3>                 
+            <h3>Loading&hellip; <%= render :partial => 'spinner', :locals => {:display => 'inline', :bottom_px => -4} %>  </h3>                 
         </div>
     <% end -%>
 

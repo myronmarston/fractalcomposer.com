@@ -1,0 +1,4 @@
+set_prefix_instance_variables
+page.replace_html @settings_content_wrap_id, 
+  :partial => "#{@settings_type.downcase}_settings",
+  :locals => {:settings => @settings, :input_prefix => @voice_section_input_name_prefix}

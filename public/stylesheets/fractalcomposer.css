@@ -61,10 +61,6 @@ div.one_voice_or_section p {
   line-height: 2.2em;  
 }
 
-div.voice_voice_settings {
-    margin: 0px 20px;
-}
-
 form#compose_form fieldset legend {
     margin-left: 20px;
     margin-bottom: 0px;
@@ -99,7 +95,17 @@ form#compose_form fieldset {
 }
 
 span.self_similarity_settings_field {
-    margin: 10px 12px;
+    margin: 10px 10px;
+}
+
+div.voice_or_section_settings {
+    margin: 0px 25px 10px 20px;
+    padding: 10px 0px 0px 0px;
+}
+
+fieldset.self_similarity_fieldset {
+    margin-left: 0px;
+    margin-right: 0px;
 }
 
 /*** Tabbed Panels ***/
