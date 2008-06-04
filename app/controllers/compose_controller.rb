@@ -163,14 +163,12 @@ class ComposeController < ApplicationController
     voice = @fractal_piece.getVoices.getByUniqueIndex(unique_voice_index.to_i)  
     
     voice.setInstrumentName(voice_hash[:instrument])    
-    #update_voice_settings(voice.getSettings, voice_hash[:voice_settings])
+    update_voice_settings(voice.getSettings, voice_hash[:voice_settings])
     
     update_voice_sections(voice.getVoiceSections, voice_hash[:voice_sections]) if voice_hash.has_key?(:voice_sections)
   end
   
-  def update_voice_settings(voice_settings, voice_settings_hash)
-    logger.info "   updating voice settings object using hash #{voice_settings_hash.inspect}"
-    
+  def update_voice_settings(voice_settings, voice_settings_hash)       
     # todo: validate the values before setting them...
     voice_settings.setOctaveAdjustment(voice_settings_hash[:octave_adjustment].to_i)
     voice_settings.setSpeedScaleFactor(Fraction.new(voice_settings_hash[:speed_scale_factor]))  
@@ -201,7 +199,6 @@ class ComposeController < ApplicationController
     
     # iterate over the hash key/values for this voice or section...    
     voice_sections_hash.each_pair do |voice_section_other_type_unique_index, voice_section_hash|
-      logger.info "hash for #{voice_section_other_type_unique_index} = #{voice_section_hash.inspect}"
       # get the particular voice section
       voice_section = voice_sections.getByOtherTypeUniqueIndex(voice_section_other_type_unique_index.to_i)
 
