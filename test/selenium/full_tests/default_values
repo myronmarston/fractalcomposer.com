@@ -74,17 +74,17 @@
 <tr>
 	<td>include</td>
 	<td>partials/verify_voice_values</td>
-	<td>voice_index=1,instrument=Piano,octave_adjustment=1,speed_scale_factor=2</td>
+	<td>voice_index=1,instrument=Piano,octave_adjustment=1,speed_scale_factor=2,self_similarity_iterations=1,pitch=on,rhythm=off,volume=on</td>
 </tr>
 <tr>
 	<td>include</td>
 	<td>partials/verify_voice_values</td>
-	<td>voice_index=2,instrument=Piano,octave_adjustment=0,speed_scale_factor=1</td>
+	<td>voice_index=2,instrument=Piano,octave_adjustment=0,speed_scale_factor=1,self_similarity_iterations=1,pitch=off,rhythm=off,volume=off</td>
 </tr>
 <tr>
 	<td>include</td>
 	<td>partials/verify_voice_values</td>
-	<td>voice_index=3,instrument=Piano,octave_adjustment=-1,speed_scale_factor=1/2</td>
+	<td>voice_index=3,instrument=Piano,octave_adjustment=-1,speed_scale_factor=1/2,self_similarity_iterations=1,pitch=off,rhythm=off,volume=off</td>
 </tr>
 
 <!--Verify that we don't have a 4th voice-->
