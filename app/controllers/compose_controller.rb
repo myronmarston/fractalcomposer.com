@@ -175,6 +175,7 @@ class ComposeController < ApplicationController
     # self similarity settings are in another hash...
     self_similarity_settings_hash = voice_settings_hash[:self_similarity_settings]
     self_similarity_settings = voice_settings.getSelfSimilaritySettings
+    self_similarity_settings.setSelfSimilarityIterations(self_similarity_settings_hash[:self_similarity_iterations].to_i)
     self_similarity_settings.setApplyToPitch(self_similarity_settings_hash.has_key?(:pitch))
     self_similarity_settings.setApplyToRhythm(self_similarity_settings_hash.has_key?(:rhythm))
     self_similarity_settings.setApplyToVolume(self_similarity_settings_hash.has_key?(:volume))
