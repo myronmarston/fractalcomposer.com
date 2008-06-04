@@ -39,7 +39,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>${toggle_link_id}</td>
+	<td>link=${link_text}&hellip;</td>
 	<td></td>
 </tr>
 <tr>
