@@ -9,6 +9,7 @@ import com.myronmarston.music.scales.ChromaticScale
 import com.myronmarston.music.scales.MajorScale
 import com.myronmarston.music.NoteName
 import com.myronmarston.music.OutputManager
+import com.myronmarston.music.GermIsEmptyException
 import com.myronmarston.music.NoteStringParseException
 import com.myronmarston.music.Instrument
 import com.myronmarston.util.Fraction
@@ -37,7 +38,6 @@ class ComposeController < ApplicationController
   end
   
   def scale_selected_xhr    
-    # todo: if there is no germ, this fails
     update_fractal_piece
     save_germ_files(false, true)
     respond_to { |format| format.js }    
@@ -62,7 +62,6 @@ class ComposeController < ApplicationController
   end
 
   def get_voice_sections_xhr      
-    #@tristate_options = {'Use Section Default' => nil, 'Yes' => true, 'No' => false}        
     @voice_or_section_div_id = params[:voice_or_section_div_id]
     @voices_or_sections_label = params[:voices_or_sections]    
     @voice_or_section = get_voice_or_section(@voices_or_sections_label, params[:unique_index])
@@ -106,8 +105,8 @@ class ComposeController < ApplicationController
     
   def generate_piece_xhr    
     update_fractal_piece
-    save_piece_to_midi_file
-    render :partial => 'midi_player', :locals => {:midi_filename => @piece_filename, :div_id => 'piece_midi_player'}
+    save_piece_files
+    respond_to { |format| format.js }
   end
   
   def finished_editing_tab_xhr     
@@ -217,16 +216,31 @@ class ComposeController < ApplicationController
   end
   
   def save_germ_files(save_midi, save_image)
-    @germ_midi_filename = get_germ_midi_filename
-    @germ_image_filename = get_germ_image_filename
-    output_manager = @fractal_piece.createGermOutputManager
-    output_manager.saveMidiFile(get_local_filename(@germ_midi_filename)) if save_midi
-    output_manager.saveGifImage(get_local_filename(@germ_image_filename)) if save_image
+    begin
+      @germ_midi_filename = get_germ_midi_filename
+      @germ_image_filename = get_germ_image_filename    
+      output_manager = @fractal_piece.createGermOutputManager    
+      output_manager.saveMidiFile(get_local_filename(@germ_midi_filename)) if save_midi
+      output_manager.saveGifImage(get_local_filename(@germ_image_filename)) if save_image
+    rescue GermIsEmptyException => ex
+      logger.info "The germ could not be saved because the germ is empty."
+      @germ_midi_filename = nil
+      @germ_image_filename = nil
+    end
   end
   
-  def save_piece_to_midi_file
-    #@piece_filename = get_temp_midi_filename('pieces')
-    #@fractal_piece.createAndSaveMidiFile("public#{@piece_filename}")    
+  def save_piece_files
+    begin
+      @piece_midi_filename = get_piece_midi_filename            
+      @piece_image_filename = get_piece_image_filename    
+      output_manager = @fractal_piece.createPieceResultOutputManager    
+      output_manager.saveMidiFile(get_local_filename(@piece_midi_filename))
+      output_manager.saveGifImage(get_local_filename(@piece_image_filename))
+    rescue GermIsEmptyException => ex
+      logger.info "The piece could not be saved because the germ is empty."
+      @piece_midi_filename = nil    
+      @piece_image_filename = nil
+    end    
   end
   
   def get_temp_directory_for_session    
@@ -266,12 +280,15 @@ class ComposeController < ApplicationController
   
   def get_germ_image_filename
     "#{get_temp_directory_for_session}/germ.gif"
+  end  
+  
+  def get_piece_midi_filename
+    "#{get_temp_directory_for_session}/generated_piece.mid"
   end
   
-#  def get_temp_midi_filename(subdirectory)
-#    require 'lib/uuidtools.rb'    
-#    "/temp/#{subdirectory}/#{UUID.random_create.to_s}.mid"
-#  end
+  def get_piece_image_filename
+    "#{get_temp_directory_for_session}/generated_piece.gif"
+  end
   
   def get_voice_or_section(voices_or_sections_label, unique_index)    
     @fractal_piece.send("get#{voices_or_sections_label.titleize}").getByUniqueIndex(unique_index.to_i)    

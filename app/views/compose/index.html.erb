@@ -4,8 +4,7 @@
 %>
 
 <% form_remote_tag  :url => {:action => 'generate_piece_xhr'},
-                    :html => {:id => 'compose_form'},
-                    :update => 'piece_midi_player_wrapper',
+                    :html => {:id => 'compose_form'},                    
                     :before => "$('#{piece_spinner_id}').show()",
                     :complete => "$('#{piece_spinner_id}').hide()" do %>
 
@@ -21,7 +20,10 @@
     
     <%= submit_tag 'Generate Piece', :id => 'generate_piece_button', :class => 'button' %>            
     <%= render :partial => 'spinner', :locals => {:display => 'none', :div_id => piece_spinner_id, :bottom_px => 8} %>      
-    <span id="piece_midi_player_wrapper">  
-        <%= render :partial => 'midi_player', :locals => {:midi_filename => @piece_filename, :div_id => 'piece_midi_player'} %>        
+    <span id="generated_piece_image_and_notation">  
+        <%= render :partial => 'midi_player_and_notation', 
+            :locals => {:midi_player_div_id => 'piece_midi_player', 
+                        :midi_filename => @image_midi_filename, 
+                        :image_filename => @image_image_filename } %>
     </span>          
 <% end %>

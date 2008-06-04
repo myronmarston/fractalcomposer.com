@@ -7,12 +7,8 @@
       <%= h @germ_error_message %>
   </div>
 <% else -%>
-  <%= render :partial => 'midi_player', 
-             :locals => {:midi_filename => @germ_midi_filename, 
-                         :div_id => 'germ_midi_player'} %>
-  <br />
-  <% if @germ_image_filename %>
-      <% clear_computed_public_path(@germ_image_filename) %>
-      <%= image_tag(@germ_image_filename, :alt => 'Germ Notation') %>
-  <% end -%>
+  <%= render :partial => 'midi_player_and_notation', 
+        :locals => {:midi_player_div_id => 'germ_midi_player', 
+                    :midi_filename => @germ_midi_filename, 
+                    :image_filename => @germ_image_filename } %>
 <% end -%>

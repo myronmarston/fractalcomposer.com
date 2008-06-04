@@ -5,7 +5,7 @@ module ApplicationHelper
     input_name.gsub(/[^-a-zA-Z0-9:.]/, "_").sub(/_$/, "")
   end
   
-  def clear_computed_public_path(source)
+  def clear_computed_public_path_for_image(source)
     # Paths that are formed by calling methods like image_tag are cached.
     # This causes issues for my dynamically generated images, as new versions
     # are not returned to the browser.  To fix this, we can remove the computed

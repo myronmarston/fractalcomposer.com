@@ -1,24 +1,10 @@
 <%= check_box_tag "advanced_options_toggle", 1, false, :onclick => "switchid('piece_settings'); $$('ul.tablist').each(function(e) {e.toggle();});" %>
 
-<%= observe_field :key, 
-        :url => { :action => :scale_selected_xhr },                  
-        :with  => "'scale=' + encodeURIComponent($('scale').value) + '&key=' + encodeURIComponent(value)",
-        :before  => "$('scale_spinner').show(); $('germ_spinner').show(); $('germ_midi_player_wrapper').hide()",
-        :complete  => "$('scale_spinner').hide(); $('germ_spinner').hide(); $('germ_midi_player_wrapper').show()" %>        
 
-<%= observe_field :scale, 
-    :url => { :action => :scale_selected_xhr },          
-    :with  => "'scale=' + encodeURIComponent(value) + '&key=' + encodeURIComponent($('key').value)",
-    :before  => "$('scale_spinner').show(); $('germ_spinner').show(); $('germ_midi_player_wrapper').hide()",
-    :complete  => "$('scale_spinner').hide(); $('germ_spinner').hide(); $('germ_midi_player_wrapper').show()" %>
-
-<%= select_tag :scale, options_for_select(@scale_names, @fractal_piece.getScale.java_class) %>
-    <%= observe_field :scale, 
-        :url => { :action => :scale_selected_xhr },          
-        :with  => "'scale=' + encodeURIComponent(value) + '&key=' + encodeURIComponent($('key').value)",
-        :before  => "$('scale_spinner').show(); $('germ_spinner').show(); $('germ_midi_player_wrapper').hide()",
-        :complete  => "$('scale_spinner').hide(); $('germ_spinner').hide(); $('germ_midi_player_wrapper').show()" %>
-        
-    &nbsp;    
-    <%= render :partial => 'key_name_selection' %>    
-    <%= render :partial => 'spinner', :locals => {:div_id => 'scale_spinner', :display => 'none', :bottom_px => -2} %>    
+<span id="piece_midi_player_wrapper">  
+        <%= render :partial => 'midi_player', :locals => {:midi_filename => @piece_midi_filename, :div_id => 'piece_midi_player'} %>        
+        <% if @piece_image_filename %>
+          <% clear_computed_public_path_for_image(@piece_image_filename) %>
+          <%= image_tag(@piece_image_filename, :alt => 'Piece Notation') %>
+      <% end -%>
+    </span>       
