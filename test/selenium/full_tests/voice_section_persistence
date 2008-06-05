@@ -4,12 +4,12 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="" />
-<title>get_voice_sections</title>
+<title>voice_section_persistence</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">get_voice_sections</td></tr>
+<tr><td rowspan="1" colspan="3">voice_section_persistence</td></tr>
 </thead><tbody>
 
 <tr>
@@ -24,21 +24,6 @@
 	<td></td>
 </tr>
 
-<tr>
-	<td>click</td>
-	<td>voices_1_voice_sections_show_link</td>
-	<td></td>
-</tr>
-<tr>
-	<td>verifyVisible</td>
-	<td>voices_1_voice_sections_loading</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForNotVisible</td>
-	<td>voices_1_voice_sections_loading</td>
-	<td></td>
-</tr>
 
 </tbody></table>
 </body>
