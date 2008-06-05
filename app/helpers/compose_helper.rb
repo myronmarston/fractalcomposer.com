@@ -54,10 +54,22 @@ module ComposeHelper
   def get_scale_or_key_observe_field(fieldname)
     observe_field fieldname, 
         :url => { :action => :scale_selected_xhr },                  
-        :with  => "'scale=' + encodeURIComponent($('scale').value) + '&key=' + encodeURIComponent($('key').value)",
-        :before  => "$('scale_spinner').show(); $('germ_spinner').show(); $('germ_midi_player_wrapper').hide()",
-        :complete  => "$('scale_spinner').hide(); $('germ_spinner').hide(); $('germ_midi_player_wrapper').show()"        
+        :with  => "'scale=' + encodeURIComponent($('scale').value) + '&key=' + encodeURIComponent($('key').value) +" + observe_field_with_js_for_field_that_effects_germ,
+        :before  => "$('scale_spinner').show();" + observe_field_before_js_for_field_that_effects_germ,
+        :complete  => "$('scale_spinner').hide();" + observe_field_complete_js_for_field_that_effects_germ
   end    
+  
+  def observe_field_before_js_for_field_that_effects_germ
+    " if ($('germ_midi_player') != null) { $('germ_spinner').show(); $('germ_midi_player_wrapper').hide(); }"
+  end
+  
+  def observe_field_complete_js_for_field_that_effects_germ
+    " $('germ_spinner').hide(); $('germ_midi_player_wrapper').show();"        
+  end
+  
+  def observe_field_with_js_for_field_that_effects_germ
+    " '&update_germ=' + ($('germ_midi_player') != null)"
+  end
   
   def get_override_checkbox_onclick_javascript(parent_voice_or_section_id, settings_type, checkbox_id, loading_div_id, content_div_id, main_unique_index, other_unique_index)
                    

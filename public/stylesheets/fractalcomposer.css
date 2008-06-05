@@ -49,7 +49,7 @@ div#start_over_button_wrap {
     float: right;
 }
 
-.germ_string_error {
+#germ_string_error {
     color: #f00; 
 }
 

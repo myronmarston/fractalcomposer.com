@@ -6,16 +6,16 @@
     <%= text_field_tag :time_signature, @fractal_piece.getTimeSignature, :size => 4 %>
     <%= observe_field :time_signature, 
         :url => { :action => :set_time_signature_xhr },          
-        :with  => "'time_signature=' + encodeURIComponent(value)",
-        :before  => "$('germ_spinner').show(); $('germ_midi_player_wrapper').hide()",
-        :complete  => "$('germ_spinner').hide(); $('germ_midi_player_wrapper').show()" %>
+        :with  => "'time_signature=' + encodeURIComponent(value) +" + observe_field_with_js_for_field_that_effects_germ,
+        :before  => observe_field_before_js_for_field_that_effects_germ,
+        :complete  => observe_field_complete_js_for_field_that_effects_germ %>
             
     Tempo:
     <%= text_field_tag :tempo, @fractal_piece.getTempo, :size => 4 %>
     <br />
     
     Germ:    
-    <%= text_area_tag :germ_string, @fractal_piece.getGermString, :cols => 60, :rows => 1 %>
+    <%= text_area_tag :germ_string, h(session[:germ_string]), :cols => 60, :rows => 1 %>
     <%= observe_field :germ_string, 
         :url => { :action => :set_germ_xhr },         
         :with => "'germ_string='+encodeURIComponent(value)",

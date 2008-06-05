@@ -37,27 +37,22 @@ class ComposeController < ApplicationController
     # additional characters not found in the germ    
   end
   
-  def scale_selected_xhr    
+  def scale_selected_xhr
+    @update_germ = (params[:update_germ] == 'true')
     update_fractal_piece
-    save_germ_files(false, true)
+    save_germ_files(false, @update_germ)
     respond_to { |format| format.js }    
   end
   
   def set_time_signature_xhr
+    @update_germ = (params[:update_germ] == 'true')
     update_fractal_piece
-    save_germ_files(false, true)
+    save_germ_files(false, @update_germ)
     respond_to { |format| format.js }
   end
   
-  def set_germ_xhr    
-    @germ_error_message = nil
-    begin
-      @fractal_piece.setGermString(params[:germ_string])
-    rescue NoteStringParseException => ex
-      @germ_error_message = ex.message.sub(/[^:]*: /, '')      
-    end    
-        
-    save_germ_files(true, true) unless @germ_error_message
+  def set_germ_xhr        
+    update_germ(true, params[:germ_string])    
     respond_to { |format| format.js } 
   end
 
@@ -118,12 +113,24 @@ class ComposeController < ApplicationController
     delete_temp_directory_for_session
     reset_session
     @fractal_piece = get_new_fractal_piece     
-    @germ_midi_filename = nil
-    @germ_image_filename = nil
+    clear_germ_files
     respond_to { |format| format.js } 
   end
   
   protected
+  
+  def update_germ(save_files, germ_string) 
+    logger.info "germ string = #{germ_string}"
+    session[:germ_string] = germ_string
+    begin
+      @fractal_piece.setGermString(germ_string)
+      save_germ_files(true, true) if save_files
+      session[:germ_error_message] = nil
+    rescue NoteStringParseException => ex      
+      session[:germ_error_message] = ex.message.sub(/[^:]*: /, '')      
+      clear_germ_files
+    end
+  end  
   
   def update_fractal_piece    
     # set our fractal piece options based on the params hash...    
@@ -131,12 +138,8 @@ class ComposeController < ApplicationController
     @fractal_piece.setGenerateLayeredIntro(params.has_key?(:generate_layered_intro))
     @fractal_piece.setGenerateLayeredOutro(params.has_key?(:generate_layered_outro))
     
-    begin
-      @fractal_piece.setGermString(params[:germ_string]) if params.has_key?(:germ_string)
-    rescue NoteStringParseException => ex       
-       logger.error("An error occurred while parsing the germ string: #{ex.message}")
-    end       
-    
+    update_germ(false, params[:germ_string]) if params.has_key?(:germ_string)
+
     begin
       @fractal_piece.setTimeSignature(TimeSignature.new(params[:time_signature])) if params.has_key?(:time_signature)
     rescue InvalidTimeSignatureException => ex
@@ -216,6 +219,12 @@ class ComposeController < ApplicationController
     end
   end
   
+  def clear_germ_files
+    delete_germ_files_for_session
+    @germ_midi_filename = nil
+    @germ_image_filename = nil    
+  end
+  
   def save_germ_files(save_midi, save_image)
     begin
       @germ_midi_filename = get_germ_midi_filename
@@ -225,8 +234,7 @@ class ComposeController < ApplicationController
       output_manager.saveGifImage(get_local_filename(@germ_image_filename)) if save_image
     rescue GermIsEmptyException => ex
       logger.info "The germ could not be saved because the germ is empty."
-      @germ_midi_filename = nil
-      @germ_image_filename = nil
+      clear_germ_files
     end
   end
   
@@ -261,6 +269,15 @@ class ComposeController < ApplicationController
       local_temp_dir = get_local_filename(temp_dir)      
       if File.exist?(local_temp_dir)
         FileUtils.remove_dir(local_temp_dir, true)
+      end
+    end
+  end
+  
+  def delete_germ_files_for_session
+    temp_dir = session[:session_temp_dir]
+    if temp_dir        
+      if File.exist?(get_local_filename(temp_dir))
+        FileUtils.rm [get_local_filename(get_germ_midi_filename), get_local_filename(get_germ_image_filename)], :force => true
       end
     end
   end
@@ -319,7 +336,11 @@ class ComposeController < ApplicationController
     @fractal_piece = get_new_fractal_piece if @fractal_piece.nil?      
     
     if @fractal_piece.getGerm.size > 0
-      # we have a valid germ
+      # we have a valid germ; set our instance variables if the files exist
+      if (session[:germ_string].nil?)
+        update_germ(false, params[:germ_string] || @fractal_piece.getGermString)
+      end
+      
       @germ_midi_filename = get_germ_midi_filename
       @germ_midi_filename = nil unless File.exists?(get_local_filename(@germ_midi_filename))
       
