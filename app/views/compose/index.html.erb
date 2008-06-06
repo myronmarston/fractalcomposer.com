@@ -18,12 +18,14 @@
               :complete => "$('#{start_over_spinner_id}').hide()") %>" />  
     </div>
     
-    <%= submit_tag 'Generate Piece', :id => 'generate_piece_button', :class => 'button' %>            
-    <%= render :partial => 'spinner', :locals => {:display => 'none', :div_id => piece_spinner_id, :bottom_px => 8} %>      
-    <span id="generated_piece_image_and_notation">  
-        <%= render :partial => 'midi_player_and_notation', 
-            :locals => {:midi_player_div_id => 'piece_midi_player', 
-                        :midi_filename => @image_midi_filename, 
-                        :image_filename => @image_image_filename } %>
-    </span>          
+    <div>
+      <%= submit_tag 'Generate Piece', :id => 'generate_piece_button', :class => 'button' %>            
+      <%= render :partial => 'spinner', :locals => {:display => 'none', :div_id => piece_spinner_id, :bottom_px => 8} %>      
+      <span id="generated_piece_image_and_notation">  
+          <%= render :partial => 'midi_player_and_notation', 
+              :locals => {:midi_player_div_id => 'piece_midi_player', 
+                          :midi_filename => @image_midi_filename, 
+                          :image_filename => @image_image_filename } %>
+      </span>   
+    </div>
 <% end %>
