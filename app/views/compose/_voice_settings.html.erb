@@ -13,7 +13,7 @@ Speed Scale Factor:
 <%= text_field_tag "#{voice_settings_input_name_prefix}[speed_scale_factor]", settings.getSpeedScaleFactor, :size => 2, :id => "#{voice_settings_input_id_prefix}_speed_scale_factor" %>
 <br />
 Self-Similarity Iterations:
-<%= text_field_tag "#{input_name_prefix_sss}[self_similarity_iterations]", self_similarity_settings.getSelfSimilarityIterations, :size => 2, :id => "#{voice_settings_input_id_prefix}_self_similarity_iterations" %>
+<%= text_field_tag "#{input_name_prefix_sss}[self_similarity_iterations]", self_similarity_settings.getSelfSimilarityIterations, :size => 2, :id => "#{input_id_prefix_sss}_self_similarity_iterations" %>
 <fieldset style="margin-left: 0px; margin-right: 0px;"> <% #we have default fieldset settings based on id, that always override settings based on class, so we put these settings here instead... %>
     <legend>Apply Self-Similarity To</legend>
     <p>

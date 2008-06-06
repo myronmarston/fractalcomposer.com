@@ -28,6 +28,12 @@
 	<td>10000</td>
 	<td></td>
 </tr>
+<!--Wait a little while for javascript sent back by the AJAX request to run-->
+<tr>
+	<td>pause</td>
+	<td>50</td>
+	<td></td>
+</tr>
 
 </tbody></table>
 </body>

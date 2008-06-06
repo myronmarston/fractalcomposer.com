@@ -46,7 +46,7 @@
 </tr>
 <tr>
 	<td>verifyValue</td>
-	<td>voices_${voice_index}__voice_settings_self_similarity_iterations</td>
+	<td>voices_${voice_index}__voice_settings__self_similarity_settings_self_similarity_iterations</td>
 	<td>${self_similarity_iterations}</td>
 </tr>
 <tr>
