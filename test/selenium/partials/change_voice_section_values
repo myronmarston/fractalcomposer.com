@@ -11,11 +11,21 @@
 <thead>
 <tr><td rowspan="1" colspan="3">change_section_values</td></tr>
 </thead><tbody>
-<!--TODO: change scale selection once that has been added to the page-->
+<!--This assumes that the override checkboxes are already checked-->
+<tr>
+	<td>include</td>
+	<td>partials/change_checkbox_value</td>
+	<td>checkbox_id=${voice_section_prefix}_rest,checkbox_value=${rest}</td>
+</tr>
 <tr>
 	<td>include</td>
 	<td>partials/change_section_settings_values</td>
-	<td>section_settings_prefix=sections_${section_index},apply_inversion=${apply_inversion},apply_retrograde=${apply_retrograde}</td>
+	<td>section_settings_prefix=${voice_section_prefix},apply_inversion=${apply_inversion},apply_retrograde=${apply_retrograde}</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/change_voice_settings_values</td>
+	<td>voice_settings_prefix=${voice_section_prefix},octave_adjustment=${octave_adjustment},speed_scale_factor=${speed_scale_factor},self_similarity_iterations=${self_similarity_iterations},pitch=${pitch},rhythm=${rhythm},volume=${volume}</td>
 </tr>
 
 </tbody></table>

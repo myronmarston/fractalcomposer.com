@@ -8,3 +8,37 @@
           <%= image_tag(@piece_image_filename, :alt => 'Piece Notation') %>
       <% end -%>
     </span>       
+    
+    
+    
+<!--New stuff
+<tr>
+	<td>include</td>
+	<td>partials/change_voice_section_values</td>
+	<td>voice_section_prefix=sections_1__voice_sections__1,rest=on,octave_adjustment=-3,speed_scale_factor=4/3,self_similarity_iterations=4,pitch=on,rhythm=off,volume=on,apply_inversion=off,apply_retrograde=off</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/ajax_action</td>
+	<td>command=click,target=sections_voices_tab_link</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/ajax_action</td>
+	<td>command=click,target=voices_1_voice_sections_show_link,value=</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/expand_fieldset</td>
+	<td>toggle_link_id=voices_1__voice_sections__1_show_link</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/verify_voice_section_values</td>
+	<td>voice_section_prefix=voices_1__voice_sections__1,rest=on,octave_adjustment=-3,speed_scale_factor=4/3,self_similarity_iterations=4,pitch=on,rhythm=off,volume=on,apply_inversion=off,apply_retrograde=off</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/collapse_fieldset</td>
+	<td>fieldset_id=voices_1__voice_sections__1_fieldset</td>
+</tr>-->

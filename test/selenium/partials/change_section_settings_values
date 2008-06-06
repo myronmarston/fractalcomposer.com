@@ -4,18 +4,23 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="" />
-<title>change_section_values</title>
+<title>change_section_settings_values</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">change_section_values</td></tr>
+<tr><td rowspan="1" colspan="3">change_section_settings_values</td></tr>
 </thead><tbody>
-<!--TODO: change scale selection once that has been added to the page-->
+
 <tr>
 	<td>include</td>
-	<td>partials/change_section_settings_values</td>
-	<td>section_settings_prefix=sections_${section_index},apply_inversion=${apply_inversion},apply_retrograde=${apply_retrograde}</td>
+	<td>partials/change_checkbox_value</td>
+	<td>checkbox_id=${section_settings_prefix}__section_settings_apply_inversion,checkbox_value=${apply_inversion}</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/change_checkbox_value</td>
+	<td>checkbox_id=${section_settings_prefix}__section_settings_apply_retrograde,checkbox_value=${apply_retrograde}</td>
 </tr>
 
 </tbody></table>

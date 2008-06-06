@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="" />
+<title>verify_voice_section_values</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">verify_voice_section_values</td></tr>
+</thead><tbody>
+<tr>
+	<td>verifyValue</td>
+	<td>${voice_section_prefix}_rest</td>
+	<td>${rest}</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/verify_voice_settings_values</td>
+	<td>voice_settings_prefix=${voice_section_prefix},octave_adjustment=${octave_adjustment},speed_scale_factor=${speed_scale_factor},self_similarity_iterations=${self_similarity_iterations},pitch=${pitch},rhythm=${rhythm},volume=${volume}</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/verify_section_settings_values</td>
+	<td>section_settings_prefix=${voice_section_prefix},apply_inversion=${apply_inversion},apply_retrograde=${apply_retrograde}</td>
+</tr>
+</tbody></table>
+</body>
+</html>
