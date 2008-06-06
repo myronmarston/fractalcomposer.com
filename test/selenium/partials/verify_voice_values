@@ -35,34 +35,9 @@
 	<td>${instrument}</td>
 </tr>
 <tr>
-	<td>verifyValue</td>
-	<td>voices_${voice_index}__voice_settings_octave_adjustment</td>
-	<td>${octave_adjustment}</td>
-</tr>
-<tr>
-	<td>verifyValue</td>
-	<td>voices_${voice_index}__voice_settings_speed_scale_factor</td>
-	<td>${speed_scale_factor}</td>
-</tr>
-<tr>
-	<td>verifyValue</td>
-	<td>voices_${voice_index}__voice_settings__self_similarity_settings_self_similarity_iterations</td>
-	<td>${self_similarity_iterations}</td>
-</tr>
-<tr>
-	<td>verifyValue</td>
-	<td>voices_${voice_index}__voice_settings__self_similarity_settings_pitch</td>
-	<td>${pitch}</td>
-</tr>
-<tr>
-	<td>verifyValue</td>
-	<td>voices_${voice_index}__voice_settings__self_similarity_settings_rhythm</td>
-	<td>${rhythm}</td>
-</tr>
-<tr>
-	<td>verifyValue</td>
-	<td>voices_${voice_index}__voice_settings__self_similarity_settings_volume</td>
-	<td>${volume}</td>
+	<td>include</td>
+	<td>partials/verify_voice_settings_values</td>
+	<td>voice_settings_prefix=voices_${voice_index},octave_adjustment=${octave_adjustment},speed_scale_factor=${speed_scale_factor},self_similarity_iterations=${self_similarity_iterations},pitch=${pitch},rhythm=${rhythm},volume=${volume}</td>
 </tr>
 </tbody></table>
 </body>

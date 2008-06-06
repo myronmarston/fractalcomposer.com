@@ -29,15 +29,11 @@
 </tr>
 
 <!--Verify the contents of each section-->
+<!--TODO: verify the scale selection-->
 <tr>
-	<td>verifyValue</td>
-	<td>sections_${section_index}__section_settings_apply_inversion</td>
-	<td>${apply_inversion}</td>
-</tr>
-<tr>
-	<td>verifyValue</td>
-	<td>sections_${section_index}__section_settings_apply_retrograde</td>
-	<td>${apply_retrograde}</td>
+	<td>include</td>
+	<td>partials/verify_section_settings_values</td>
+	<td>section_settings_prefix=sections_${section_index},apply_inversion=${apply_inversion},apply_retrograde=${apply_retrograde}</td>
 </tr>
 
 </tbody></table>

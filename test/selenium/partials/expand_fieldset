@@ -12,47 +12,16 @@
 <tr><td rowspan="1" colspan="3">toggle_link</td></tr>
 </thead><tbody>
 
+
 <tr>
-	<td>verifyVisible</td>
-	<td>${fieldset_id}</td>
-	<td></td>
-</tr>
-<tr>
-	<td>verifyNotVisible</td>
+	<td>click</td>
 	<td>${toggle_link_id}</td>
 	<td></td>
 </tr>
+<!--Wait a little while for javascript to run-->
 <tr>
-	<td>include</td>
-	<td>partials/collapse_fieldset</td>
-	<td>fieldset_id=${fieldset_id}</td>
-</tr>
-
-<tr>
-	<td>verifyNotVisible</td>
-	<td>${fieldset_id}</td>
-	<td></td>
-</tr>
-<tr>
-	<td>verifyVisible</td>
-	<td>${toggle_link_id}</td>
-	<td></td>
-</tr>
-
-<tr>
-	<td>include</td>
-	<td>partials/expand_fieldset</td>
-	<td>toggle_link_id=${toggle_link_id}</td>
-</tr>
-
-<tr>
-	<td>verifyVisible</td>
-	<td>${fieldset_id}</td>
-	<td></td>
-</tr>
-<tr>
-	<td>verifyNotVisible</td>
-	<td>${toggle_link_id}</td>
+	<td>pause</td>
+	<td>50</td>
 	<td></td>
 </tr>
 
