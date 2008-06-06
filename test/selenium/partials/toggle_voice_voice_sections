@@ -14,7 +14,7 @@
 <tr>
 	<td>include</td>
 	<td>partials/ajax_action</td>
-	<td>command=click,target=voices_${voice_index}_voice_sections_show_link</td>
+	<td>command=click,target=voices_${voice_index}_voice_sections_show_link,value=</td>
 </tr>
 <!--Check the togglability of each Voice Section-->
 <tr>

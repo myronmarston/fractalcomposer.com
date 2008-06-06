@@ -20,7 +20,7 @@
 <tr>
 	<td>include</td>
 	<td>partials/ajax_action</td>
-	<td>command=click,target=start_over_button</td>
+	<td>command=click,target=start_over_button,value=</td>
 </tr>
 
 </tbody></table>

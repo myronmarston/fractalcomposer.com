@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="" />
+<title>set_germ</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">set_germ</td></tr>
+</thead><tbody>
+<!--Test that setting the germ works properly-->
+<tr>
+	<td>include</td>
+	<td>partials/clear_session</td>
+	<td></td>
+</tr>
+<!--None of the germ outputs should be present-->
+<tr>
+	<td>verifyElementNotPresent</td>
+	<td>germ_midi_player</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementNotPresent</td>
+	<td>germ_image</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementNotPresent</td>
+	<td>germ_string_error</td>
+	<td></td>
+</tr>
+<!--Set the germ to a valid value-->
+<tr>
+	<td>include</td>
+	<td>partials/ajax_action</td>
+	<td>command=type,target=germ_string,value=G4 A4 B4</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/germ_output_present</td>
+	<td></td>
+</tr>
+
+<!--Change the germ to another valid value-->
+<tr>
+	<td>storeElementWidth</td>
+	<td>germ_image</td>
+	<td>germ_image_width</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/ajax_action</td>
+	<td>command=type,target=germ_string,value=G4 A4 B4 G4,1/8</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/germ_output_present</td>
+	<td></td>
+</tr>
+<!--The width should be different because of the updated germ-->
+<tr>
+	<td>verifyNotElementWidth</td>
+	<td>germ_image</td>
+	<td>germ_image_width</td>
+</tr>
+<!--Change the Scale type; this should update the output-->
+<tr>
+	<td>storeElementWidth</td>
+	<td>germ_image</td>
+	<td>germ_image_width</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/ajax_action</td>
+	<td>command=select,target=scale,value=Minor Scale</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/germ_output_present</td>
+	<td></td>
+</tr>
+<!--The width should be different because of the update of the key signature-->
+<tr>
+	<td>verifyNotElementWidth</td>
+	<td>germ_image</td>
+	<td>germ_image_width</td>
+</tr>
+<!--Change the Key; this should update the output-->
+<tr>
+	<td>storeElementWidth</td>
+	<td>germ_image</td>
+	<td>germ_image_width</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/ajax_action</td>
+	<td>command=select,target=key,value=Ab</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/germ_output_present</td>
+	<td></td>
+</tr>
+<!--The width should be different because of the update of the key signature-->
+<tr>
+	<td>verifyNotElementWidth</td>
+	<td>germ_image</td>
+	<td>germ_image_width</td>
+</tr>
+<!--Change the Time Signature; this should update the output-->
+<tr>
+	<td>storeElementWidth</td>
+	<td>germ_image</td>
+	<td>germ_image_width</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/ajax_action</td>
+	<td>command=type,target=time_signature,value=99/64</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/germ_output_present</td>
+	<td></td>
+</tr>
+<!--The width should be different because of the update of the time signature-->
+<tr>
+	<td>verifyNotElementWidth</td>
+	<td>germ_image</td>
+	<td>germ_image_width</td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

@@ -8,5 +8,5 @@
 <br />
 <% if image_filename %>
     <% clear_computed_public_path_for_image(image_filename) %>
-    <%= image_tag(image_filename, :alt => 'Music Notation') %>
+    <%= image_tag(image_filename, :alt => 'Music Notation', :id => image_div_id) %>
 <% end -%>
