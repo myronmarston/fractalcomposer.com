@@ -44,7 +44,11 @@
 	<td>partials/germ_output_present</td>
 	<td></td>
 </tr>
-
+<tr>
+	<td>include</td>
+	<td>partials/refresh_page_and_verify_germ_output</td>
+	<td></td>
+</tr>
 <!--Change the germ to another valid value-->
 <tr>
 	<td>storeElementWidth</td>
@@ -54,7 +58,7 @@
 <tr>
 	<td>include</td>
 	<td>partials/ajax_action</td>
-	<td>command=type,target=germ_string,value=G4 A4 B4 G4,1/8</td>
+	<td>command=type,target=germ_string,value=G4 A4 B4 G4</td>
 </tr>
 <tr>
 	<td>include</td>
@@ -65,7 +69,12 @@
 <tr>
 	<td>verifyNotElementWidth</td>
 	<td>germ_image</td>
-	<td>germ_image_width</td>
+	<td>${germ_image_width}</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/refresh_page_and_verify_germ_output</td>
+	<td></td>
 </tr>
 <!--Change the Scale type; this should update the output-->
 <tr>
@@ -87,7 +96,12 @@
 <tr>
 	<td>verifyNotElementWidth</td>
 	<td>germ_image</td>
-	<td>germ_image_width</td>
+	<td>${germ_image_width}</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/refresh_page_and_verify_germ_output</td>
+	<td></td>
 </tr>
 <!--Change the Key; this should update the output-->
 <tr>
@@ -109,7 +123,12 @@
 <tr>
 	<td>verifyNotElementWidth</td>
 	<td>germ_image</td>
-	<td>germ_image_width</td>
+	<td>${germ_image_width}</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/refresh_page_and_verify_germ_output</td>
+	<td></td>
 </tr>
 <!--Change the Time Signature; this should update the output-->
 <tr>
@@ -131,7 +150,92 @@
 <tr>
 	<td>verifyNotElementWidth</td>
 	<td>germ_image</td>
-	<td>germ_image_width</td>
+	<td>${germ_image_width}</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/refresh_page_and_verify_germ_output</td>
+	<td></td>
+</tr>
+<!--Set a bad germ string-->
+<tr>
+	<td>include</td>
+	<td>partials/ajax_action</td>
+	<td>command=type,target=germ_string,value=asdfasfd</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/germ_error_present</td>
+	<td></td>
+</tr>
+<!--Refresh the form; the same germ error should be present-->
+<tr>
+	<td>storeText</td>
+	<td>germ_string_error</td>
+	<td>germ_error_string</td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/compose</td>
+	<td></td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/germ_error_present</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>germ_string_error</td>
+	<td>${germ_error_string}</td>
+</tr>
+<!--Change the various things we changed before; the germ error should stay.-->
+<tr>
+	<td>include</td>
+	<td>partials/ajax_action</td>
+	<td>command=select,target=scale,value=Major Pentatonic Scale</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/germ_error_present</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>germ_string_error</td>
+	<td>${germ_error_string}</td>
+</tr>
+
+<tr>
+	<td>include</td>
+	<td>partials/ajax_action</td>
+	<td>command=select,target=key,value=D</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/germ_error_present</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>germ_string_error</td>
+	<td>${germ_error_string}</td>
+</tr>
+
+<tr>
+	<td>include</td>
+	<td>partials/ajax_action</td>
+	<td>command=type,target=time_signature,value=4/4</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/germ_error_present</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>germ_string_error</td>
+	<td>${germ_error_string}</td>
 </tr>
 
 </tbody></table>
