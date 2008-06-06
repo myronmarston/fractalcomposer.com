@@ -18,7 +18,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>link=Voices</td>
+	<td>piece_settings_voices_tab_link</td>
 	<td></td>
 </tr>
 <tr>
@@ -48,7 +48,7 @@
 
 <tr>
 	<td>click</td>
-	<td>link=Sections</td>
+	<td>voices_sections_tab_link</td>
 	<td></td>
 </tr>
 <tr>
@@ -105,7 +105,7 @@
 <!--Verify that we can toggle our voice sections on the Voices tab-->
 <tr>
 	<td>click</td>
-	<td>link=Voices</td>
+	<td>sections_voices_tab_link</td>
 	<td></td>
 </tr>
 <tr>

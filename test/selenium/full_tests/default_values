@@ -61,7 +61,7 @@
 <!--Navigate to Voices-->
 <tr>
 	<td>click</td>
-	<td>link=Voices</td>
+	<td>piece_settings_voices_tab_link</td>
 	<td></td>
 </tr>
 <tr>
@@ -97,7 +97,7 @@
 <!--Navigate to Sections-->
 <tr>
 	<td>click</td>
-	<td>link=Sections</td>
+	<td>voices_sections_tab_link</td>
 	<td></td>
 </tr>
 <tr>
