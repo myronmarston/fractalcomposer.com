@@ -1,4 +1,5 @@
 <% 
+    set_prefix_instance_variables
     singular_voices_or_sections_label = @voices_or_sections_label.singularize
     div_id = "#{@voices_or_sections_label.singularize}_#{@voice_or_section.getUniqueIndex}"      
     loading_div_id = "#{@voice_or_section_input_id_prefix}_voice_sections_loading"    
@@ -18,7 +19,8 @@
             image_tag('cross.png', 
                 :alt => "Delete this #{singular_voices_or_sections_label}",
                 :title => "Delete this #{singular_voices_or_sections_label}",
-                :class => 'delete_voice_or_section_image'),              
+                :class => 'delete_voice_or_section_image',
+                :id => "#{@voice_or_section_input_id_prefix}_delete_img"),              
             get_delete_voice_or_section_js(@voices_or_sections_label, @voice_or_section, div_id)) %>
     <%= yield %>
 

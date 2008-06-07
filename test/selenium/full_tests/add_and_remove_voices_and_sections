@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="" />
+<title>add_and_remove_voices_and_sections</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">add_and_remove_voices_and_sections</td></tr>
+</thead><tbody>
+<tr>
+	<td>include</td>
+	<td>partials/clear_session</td>
+	<td></td>
+</tr>
+
+<!--Test deleting voices-->
+<tr>
+	<td>include</td>
+	<td>partials/click_tab</td>
+	<td>from_tab=piece_settings,to_tab=voices</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/delete_voice_or_section</td>
+	<td>voice_or_section=voice,index=3</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/delete_voice_or_section</td>
+	<td>voice_or_section=voice,index=1</td>
+</tr>
+<!--Test that the last voice cannot be deleted-->
+<tr>
+	<td>include</td>
+	<td>partials/try_to_delete_last_voice_or_section</td>
+	<td>voice_or_section=voice,index=2</td>
+</tr>
+
+<!--Test the same thing on the sections-->
+<tr>
+	<td>include</td>
+	<td>partials/click_tab</td>
+	<td>from_tab=voices,to_tab=sections</td>
+</tr>
+<!--Test deleting sections-->
+<tr>
+	<td>include</td>
+	<td>partials/delete_voice_or_section</td>
+	<td>voice_or_section=section,index=2</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/delete_voice_or_section</td>
+	<td>voice_or_section=section,index=4</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/delete_voice_or_section</td>
+	<td>voice_or_section=section,index=1</td>
+</tr>
+<!--Test that the last section cannot be deleted-->
+<tr>
+	<td>include</td>
+	<td>partials/try_to_delete_last_voice_or_section</td>
+	<td>voice_or_section=section,index=3</td>
+</tr>
+
+<!--Refresh the page and check that there is still only one voice and section, having the same id as before-->
+<tr>
+	<td>open</td>
+	<td>/compose</td>
+	<td></td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/click_tab</td>
+	<td>from_tab=piece_settings,to_tab=voices</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/verify_voice_or_section_not_present</td>
+	<td>voice_or_section=voice,index=1</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/verify_voice_or_section_present</td>
+	<td>voice_or_section=voice,index=2</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/verify_voice_or_section_not_present</td>
+	<td>voice_or_section=voice,index=3</td>
+</tr>
+<!--Check that we have only one voice section, with the right section index-->
+<tr>
+	<td>include</td>
+	<td>partials/click_voice_sections_link</td>
+	<td>voices_or_sections=voices,index=2</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/verify_voice_section_present</td>
+	<td>this_voice_or_section=voice,this_index=2,other_Voice_or_Section=Section,other_index=3</td>
+</tr>
+
+<!--Now test it on the sections tab-->
+<tr>
+	<td>include</td>
+	<td>partials/click_tab</td>
+	<td>from_tab=voices,to_tab=sections</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/verify_voice_or_section_not_present</td>
+	<td>voice_or_section=section,index=1</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/verify_voice_or_section_not_present</td>
+	<td>voice_or_section=section,index=2</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/verify_voice_or_section_present</td>
+	<td>voice_or_section=section,index=3</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/verify_voice_or_section_not_present</td>
+	<td>voice_or_section=section,index=4</td>
+</tr>
+<!--Check that we have only one voice section, with the right section index-->
+<tr>
+	<td>include</td>
+	<td>partials/click_voice_sections_link</td>
+	<td>voices_or_sections=sections,index=3</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/verify_voice_section_present</td>
+	<td>this_voice_or_section=section,this_index=3,other_Voice_or_Section=Voice,other_index=2</td>
+</tr>
+
+<!--Add some sections-->
+<tr>
+	<td>include</td>
+	<td>partials/add_voice_or_section</td>
+	<td>voice_or_section=section,index=5</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/click_voice_sections_link</td>
+	<td>voices_or_sections=sections,index=5</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/verify_voice_section_present</td>
+	<td>this_voice_or_section=section,this_index=5,other_Voice_or_Section=Voice,other_index=2</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/add_voice_or_section</td>
+	<td>voice_or_section=section,index=5</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/click_voice_sections_link</td>
+	<td>voices_or_sections=sections,index=6</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/verify_voice_section_present</td>
+	<td>this_voice_or_section=section,this_index=6,other_Voice_or_Section=Voice,other_index=2</td>
+</tr>
+
+<!--Verify that the appropriate voice sections were created on the voices tab-->
+<tr>
+	<td>include</td>
+	<td>partials/click_tab</td>
+	<td>from_tab=sections,to_tab=voices</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/click_voice_sections_link</td>
+	<td>voices_or_sections=voices,index=2</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/verify_voice_section_present</td>
+	<td>this_voice_or_section=voice,this_index=2,other_Voice_or_Section=Section,other_index=3</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/verify_voice_section_present</td>
+	<td>this_voice_or_section=voice,this_index=2,other_Voice_or_Section=Section,other_index=5</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/verify_voice_section_present</td>
+	<td>this_voice_or_section=voice,this_index=2,other_Voice_or_Section=Section,other_index=6</td>
+</tr>
+
+<!--Add a voice-->
+<tr>
+	<td>include</td>
+	<td>partials/add_voice_or_section</td>
+	<td>voice_or_section=voice,index=4</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/click_voice_sections_link</td>
+	<td>voices_or_sections=voices,index=4</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/verify_voice_section_present</td>
+	<td>this_voice_or_section=voice,this_index=4,other_Voice_or_Section=Section,other_index=3</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/verify_voice_section_present</td>
+	<td>this_voice_or_section=voice,this_index=4,other_Voice_or_Section=Section,other_index=5</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/verify_voice_section_present</td>
+	<td>this_voice_or_section=voice,this_index=4,other_Voice_or_Section=Section,other_index=6</td>
+</tr>
+
+<!--Verify that the appropriate voice sections were created on the sections tab-->
+<tr>
+	<td>include</td>
+	<td>partials/click_tab</td>
+	<td>from_tab=voices,to_tab=sections</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/click_voice_sections_link</td>
+	<td>voices_or_sections=sections,index=3</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/verify_voice_section_present</td>
+	<td>this_voice_or_section=section,this_index=3,other_Voice_or_Section=Voice,other_index=2</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/verify_voice_section_present</td>
+	<td>this_voice_or_section=section,this_index=3,other_Voice_or_Section=Voice,other_index=4</td>
+</tr>
+
+<tr>
+	<td>include</td>
+	<td>partials/click_voice_sections_link</td>
+	<td>voices_or_sections=sections,index=5</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/verify_voice_section_present</td>
+	<td>this_voice_or_section=section,this_index=5,other_Voice_or_Section=Voice,other_index=2</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/verify_voice_section_present</td>
+	<td>this_voice_or_section=section,this_index=5,other_Voice_or_Section=Voice,other_index=4</td>
+</tr>
+
+<tr>
+	<td>include</td>
+	<td>partials/click_voice_sections_link</td>
+	<td>voices_or_sections=sections,index=6</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/verify_voice_section_present</td>
+	<td>this_voice_or_section=section,this_index=6,other_Voice_or_Section=Voice,other_index=2</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/verify_voice_section_present</td>
+	<td>this_voice_or_section=section,this_index=6,other_Voice_or_Section=Voice,other_index=4</td>
+</tr>
+
+<!--TODO: make sure we can't create more than 16 voices-->
+</tbody></table>
+</body>
+</html>

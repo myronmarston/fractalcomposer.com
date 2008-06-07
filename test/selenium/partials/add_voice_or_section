@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="" />
+<title>add_voice_or_section</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">add_voice_or_section</td></tr>
+</thead><tbody>
+
+<!--This assumes that we are already on the appropriate tab-->
+<tr>
+	<td>include</td>
+	<td>partials/ajax_action</td>
+	<td>command=click,target=add_${voice_or_section}_button,value=</td>
+</tr>
+<!--We have some javascript that animates the addition; wait until it completes-->
+<tr>
+	<td>waitForElementPresent</td>
+	<td>${voice_or_section}_${index}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>${voice_or_section}s_${index}_show_link</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>
