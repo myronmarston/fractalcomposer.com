@@ -5,17 +5,17 @@
 # ENV['RAILS_ENV'] ||= 'production'
 
 # Specifies gem version of Rails to use when vendor/rails is not present
-RAILS_GEM_VERSION = '2.0.2' unless defined? RAILS_GEM_VERSION
+#RAILS_GEM_VERSION = '2.0.2' unless defined? RAILS_GEM_VERSION
 
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
 
 # Inserted by NetBeans Ruby support to support JRuby
-if defined?(JRUBY_VERSION)
-  require 'rubygems'
-  gem 'activerecord-jdbc-adapter'
-  require 'jdbc_adapter'
-end
+#if defined?(JRUBY_VERSION)
+#  require 'rubygems'
+#  gem 'activerecord-jdbc-adapter'
+#  require 'jdbc_adapter'
+#end
 
 Rails::Initializer.run do |config|
   # Settings in config/environments/* take precedence over those specified here.
@@ -57,7 +57,7 @@ Rails::Initializer.run do |config|
   # This is necessary if your schema can't be completely dumped by the schema dumper,
   # like if you have constraints or database-specific column types
   config.active_record.schema_format = :sql
-
+      
   # Activate observers that should always be running
   # config.active_record.observers = :cacher, :garbage_collector
 
@@ -65,6 +65,9 @@ Rails::Initializer.run do |config|
   # config.active_record.default_timezone = :utc
   
   config.action_controller.allow_forgery_protection = false
+  
+  # required gems...
+  #config.gem "activerecord-jdbc-adapter" 
 end
 
 
