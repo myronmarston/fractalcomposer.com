@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="" />
+<title>cannot_add_17th_voice</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">cannot_add_17th_voice</td></tr>
+</thead><tbody>
+
+<!--Make sure we can't create more than 16 voices-->
+<tr>
+	<td>include</td>
+	<td>partials/clear_session</td>
+	<td></td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/click_tab</td>
+	<td>from_tab=piece_settings,to_tab=voices</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/add_voice_or_section</td>
+	<td>voice_or_section=voice,index=4</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/add_voice_or_section</td>
+	<td>voice_or_section=voice,index=5</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/add_voice_or_section</td>
+	<td>voice_or_section=voice,index=6</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/add_voice_or_section</td>
+	<td>voice_or_section=voice,index=7</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/add_voice_or_section</td>
+	<td>voice_or_section=voice,index=8</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/add_voice_or_section</td>
+	<td>voice_or_section=voice,index=9</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/add_voice_or_section</td>
+	<td>voice_or_section=voice,index=10</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/add_voice_or_section</td>
+	<td>voice_or_section=voice,index=11</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/add_voice_or_section</td>
+	<td>voice_or_section=voice,index=12</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/add_voice_or_section</td>
+	<td>voice_or_section=voice,index=13</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/add_voice_or_section</td>
+	<td>voice_or_section=voice,index=14</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/add_voice_or_section</td>
+	<td>voice_or_section=voice,index=15</td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/add_voice_or_section</td>
+	<td>voice_or_section=voice,index=16</td>
+</tr>
+
+<!--Try to add a 17th voice-->
+<tr>
+	<td>click</td>
+	<td>add_voice_button</td>
+	<td></td>
+</tr>
+<!--We have some javascript that creates an alert; wait for it-->
+<tr>
+	<td>waitForAlertPresent</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyAlert</td>
+	<td>You cannot add more than 16 voices.</td>
+	<td></td>
+</tr>
+<!--Test that the voice is not present-->
+<tr>
+	<td>verifyElementNotPresent</td>
+	<td>voice_17</td>
+	<td></td>
+</tr>
+<!--Refresh and make sure the voice is still not present-->
+<tr>
+	<td>open</td>
+	<td>/compose</td>
+	<td></td>
+</tr>
+<tr>
+	<td>include</td>
+	<td>partials/click_tab</td>
+	<td>from_tab=piece_settings,to_tab=voices</td>
+</tr>
+<tr>
+	<td>verifyElementNotPresent</td>
+	<td>voice_17</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

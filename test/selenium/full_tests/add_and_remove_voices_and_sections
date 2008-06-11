@@ -285,7 +285,6 @@
 	<td>this_voice_or_section=section,this_index=6,other_Voice_or_Section=Voice,other_index=4</td>
 </tr>
 
-<!--TODO: make sure we can't create more than 16 voices-->
 </tbody></table>
 </body>
 </html>

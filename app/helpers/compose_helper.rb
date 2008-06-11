@@ -51,6 +51,26 @@ module ComposeHelper
     END_OF_STRING
   end
   
+  def get_add_voice_or_section_js(singular_voices_or_sections_label, spinner_id)
+    add_voice_or_section_js = remote_function(        
+        :url => {:action => 'add_voice_or_section_xhr'}, 
+        :with => "'voice_or_section=#{singular_voices_or_sections_label}'") + 
+        "; $('#{spinner_id}').show()" 
+    
+    # this javascript does the following:
+    # - Gives the user an error message if they are trying to add a 17th voice
+    # - Otherwise, call the remote function on the server, which will add the voice and update the page
+    return add_voice_or_section_js unless singular_voices_or_sections_label == 'voice'
+    
+    <<-END_OF_STRING
+        if (#{get_prototype_js_for_element_collection(singular_voices_or_sections_label.pluralize, 'div.one_voice_or_section')}.length == 16) {
+            alert('You cannot add more than 16 voices.');
+        } else {            
+            #{add_voice_or_section_js};            
+        }
+    END_OF_STRING
+  end    
+  
   def get_scale_or_key_observe_field(fieldname)
     observe_field fieldname, 
         :url => { :action => :scale_selected_xhr },                  

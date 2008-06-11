@@ -3,8 +3,5 @@
 <% @fractal_piece.send("get#{@voices_or_sections_label.titleize}").each do |@voice_or_section| %>        
     <%= render :partial => "one_#{singular_voices_or_sections_label}" %>
 <% end %>
-<input type="button" class="button" id="add_<%= singular_voices_or_sections_label %>_button" value="Add a <%= singular_voices_or_sections_label.titleize %>" onclick="<%= remote_function(        
-        :url => {:action => 'add_voice_or_section_xhr'}, 
-        :with => "'voice_or_section=#{singular_voices_or_sections_label}'") + 
-        "; $('#{spinner_id}').show();" %>" /> 
-<%= render :partial => 'spinner', :locals => {:display => 'none', :div_id => spinner_id} %>
+<input type="button" class="button" id="add_<%= singular_voices_or_sections_label %>_button" value="Add a <%= singular_voices_or_sections_label.titleize %>" onclick="<%= get_add_voice_or_section_js(singular_voices_or_sections_label, spinner_id) %>" /> 
+<%= render :partial => 'spinner', :locals => {:display => 'none', :div_id => spinner_id, :bottom_px => 8} %>
