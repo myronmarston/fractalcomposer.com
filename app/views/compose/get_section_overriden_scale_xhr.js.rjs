@@ -1,0 +1,7 @@
+set_prefix_instance_variables
+page.replace_html @scale_content_wrap_id, 
+  :partial => 'scale_selection', 
+  :locals => {:scale => @voice_or_section.getScale, 
+              :input_prefix => @voice_or_section_input_name_prefix,
+              :id_to_serialize => get_one_voice_or_section_id,
+              :generate_update_germ_js => false}            

@@ -1,0 +1,4 @@
+#verify_xpath_count "//select[@id='#{input_prefix}key']/option", 15
+%w( Cb Gb Db Ab Eb Bb F C G D A E B F# C# ).each do |key|
+    verify_element_present "//select[@id='#{input_prefix}key']/option[@value='#{key}']"    
+end

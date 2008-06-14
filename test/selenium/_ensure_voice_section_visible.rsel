@@ -1,0 +1,34 @@
+# ************** setup stuff **************** #
+require 'uuidtools.rb'
+# this partial assumes that we are already on the correct tab
+random_id = UUID.random_create.to_s
+
+all_vs_show_link_id = "#{voice_section_prefix}_voice_sections_show_link"
+all_vs_fieldset_id = "#{voice_section_prefix}_voice_sections_fieldset"
+individual_vs_show_link_id = "#{voice_section_prefix}__voice_sections__#{voice_section_index}_show_link"  
+individual_vs_fieldset_id = "#{voice_section_prefix}__voice_sections__#{voice_section_index}_fieldset"
+store_element_present(individual_vs_show_link_id, 'individual_vs_show_link_present')
+goto_if('${individual_vs_show_link_present}', "ensure_all_vs_fieldset_expanded_#{random_id}")
+# ************** end setup stuff *************** #
+
+# ************** Load voice sections ************ #
+include_partial 'ajax_action', :cmd => 'click', :target => all_vs_show_link_id
+goto "ensure_individual_vs_fieldset_expanded_#{random_id}"
+# ************** end load voice sections ********** #
+
+# ************** ensure voice sections fieldset expanded *************** #
+label "ensure_all_vs_fieldset_expanded_#{random_id}"
+
+store_visible(all_vs_fieldset_id, 'fieldset_expanded')
+goto_if('${fieldset_expanded}', "ensure_individual_vs_fieldset_expanded_#{random_id}")
+include_partial 'expand_fieldset', :toggle_link_id => all_vs_show_link_id
+# ************** end ensure voice sections fieldset expanded *************** #
+
+# ************** ensure voice section fieldset expanded *************** #
+label "ensure_individual_vs_fieldset_expanded_#{random_id}"
+store_visible(individual_vs_fieldset_id, 'fieldset_expanded')
+goto_if("${fieldset_expanded}", "end_#{random_id}")
+include_partial 'expand_fieldset', :toggle_link_id => individual_vs_show_link_id
+# ************** end ensure voice section fieldset expanded *************** #
+
+label "end_#{random_id}"

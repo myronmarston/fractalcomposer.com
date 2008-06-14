@@ -1,0 +1,19 @@
+# Make sure we can't create more than 16 voices
+include_partial 'clear_session'
+include_partial 'click_tab', :from_tab => 'piece_settings', :to_tab => 'voices'
+4.upto(16) { |i| include_partial 'add_voice_or_section', :voice_or_section => 'voice', :index => i }
+
+# Try to add a 17th voice
+click 'add_voice_button'
+
+# We have some javascript that creates an alert; wait for it
+wait_for_alert_present
+verify_alert 'You cannot add more than 16 voices.'
+
+# Test that the voice is not present
+include_partial 'verify_voice_or_section_presence', :present => false, :voice_or_section => 'voice', :index => 17
+
+# Refresh and make sure the voice is still not present
+open '/compose'
+include_partial 'click_tab', :from_tab => 'piece_settings', :to_tab => 'voices'
+include_partial 'verify_voice_or_section_presence', :present => false, :voice_or_section => 'voice', :index => 17

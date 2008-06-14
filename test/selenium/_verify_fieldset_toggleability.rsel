@@ -1,0 +1,22 @@
+# if the fieldset is collapsed, expand it...
+
+require 'uuidtools.rb'
+label_name = "test_link_toggleability_main_test_#{UUID.random_create.to_s}"
+
+store_visible(fieldset_id, 'fieldset_expanded')
+goto_if("${fieldset_expanded}", label_name)
+include_partial 'expand_fieldset', :toggle_link_id => toggle_link_id
+
+label label_name
+verify_visible fieldset_id
+verify_not_visible toggle_link_id
+
+include_partial 'collapse_fieldset', :fieldset_id => fieldset_id
+
+verify_not_visible fieldset_id
+verify_visible toggle_link_id
+
+include_partial 'expand_fieldset', :toggle_link_id => toggle_link_id
+
+verify_visible fieldset_id
+verify_not_visible toggle_link_id

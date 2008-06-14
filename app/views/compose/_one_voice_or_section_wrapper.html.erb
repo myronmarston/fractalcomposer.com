@@ -1,7 +1,7 @@
 <% 
     set_prefix_instance_variables
     singular_voices_or_sections_label = @voices_or_sections_label.singularize
-    div_id = "#{@voices_or_sections_label.singularize}_#{@voice_or_section.getUniqueIndex}"      
+    div_id = get_one_voice_or_section_id
     loading_div_id = "#{@voice_or_section_input_id_prefix}_voice_sections_loading"    
     load_voice_sections_js = remote_function(:url => {:action => 'get_voice_sections_xhr'},
             :with => "'voices_or_sections=#{@voices_or_sections_label}&amp;unique_index=#{@voice_or_section.getUniqueIndex}&amp;fieldset_div_id=#{@voice_or_section_input_id_prefix}_voice_sections_fieldset&amp;loading_div_id=#{loading_div_id}&amp;voice_or_section_div_id=#{div_id}'" )            

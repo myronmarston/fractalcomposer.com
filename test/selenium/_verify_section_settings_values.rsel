@@ -1,0 +1,8 @@
+include_partial 'verify_checkbox_value', 
+    :id => "#{section_settings_prefix}__section_settings_apply_inversion",
+    :value => apply_inversion
+
+include_partial 'verify_checkbox_value', 
+    :id => "#{section_settings_prefix}__section_settings_apply_retrograde",
+    :value => apply_retrograde
+

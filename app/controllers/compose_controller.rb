@@ -1,7 +1,7 @@
-require 'lib/uuidtools.rb'
+require 'uuidtools.rb'
 require 'fileutils.rb'
-require 'lib/FractalComposer.jar'
-require 'lib/simple-xml-1.7.2.jar'
+require 'FractalComposer.jar'
+require 'simple-xml-1.7.2.jar'
 import com.myronmarston.util.ClassHelper
 import com.myronmarston.music.settings.FractalPiece
 import com.myronmarston.music.scales.Scale
@@ -29,7 +29,7 @@ class ComposeController < ApplicationController
   
   # this filter sets our instrument_names variable; all actions that need it should be included.
   before_filter :set_instrument_names, :only => [ :index, :add_voice_or_section_xhr, :clear_session_xhr ]
-  before_filter :set_scale_names, :only => [ :index, :clear_session_xhr ]
+  before_filter :set_scale_names, :only => [ :index, :get_section_overriden_scale_xhr, :clear_session_xhr ]
   
   # this is the only action that supports a regular get rather than an XHR...
   def index   
@@ -38,7 +38,9 @@ class ComposeController < ApplicationController
   end
   
   def scale_selected_xhr
-    @update_germ = (params[:update_germ] == 'true')
+    @input_prefix = params[:input_prefix]
+    @generate_update_germ_js = (params[:generate_update_germ_js] == 'true')
+    @update_germ = (params[:update_germ] == 'true')    
     update_fractal_piece
     save_germ_files(false, @update_germ)
     respond_to { |format| format.js }    
@@ -63,6 +65,20 @@ class ComposeController < ApplicationController
     @fieldset_div_id = params[:fieldset_div_id] 
     @loading_div_id = params[:loading_div_id]
     respond_to { |format| format.js }    
+  end
+  
+  def get_section_overriden_scale_xhr    
+    @voices_or_sections_label = 'sections'
+    @voice_or_section = get_voice_or_section(@voices_or_sections_label, params[:unique_index])
+    @scale_content_wrap_id = params[:scale_content_wrap_id]
+    # override the settings, first turning it to false if it's not already false.
+    # this is necessary because we don't make an ajax call when the override is set 
+    # to false, and the settings copy the scale when it is
+    # set from false to true.  So, we want to make sure it is false before setting
+    # it to true.
+    @voice_or_section.setOverridePieceScale(false)    
+    @voice_or_section.setOverridePieceScale(true)  
+    respond_to { |format| format.js } 
   end
   
   def get_voice_section_overriden_settings_xhr
@@ -132,9 +148,18 @@ class ComposeController < ApplicationController
     end
   end  
   
+  def update_scale(object_to_update_scale_on, hash)
+    if hash.has_key?(:scale) && hash.has_key?(:key)
+      # set the scale to an instance variable so that we can access it from a partial...
+      @scale = get_scale(object_to_update_scale_on.getScale, hash[:scale], hash[:key])
+      object_to_update_scale_on.setScale(@scale) 
+    end    
+  end
+  
   def update_fractal_piece    
     # set our fractal piece options based on the params hash...    
-    @fractal_piece.setScale(get_scale(params[:scale], params[:key])) if params.has_key?(:scale) && params.has_key?(:key)
+    update_scale(@fractal_piece, params)
+    #@fractal_piece.setScale(get_scale(@fractal_piece.getScale, params[:scale], params[:key])) if params.has_key?(:scale) && params.has_key?(:key)
     @fractal_piece.setGenerateLayeredIntro(params.has_key?(:generate_layered_intro))
     @fractal_piece.setGenerateLayeredOutro(params.has_key?(:generate_layered_outro))
     
@@ -186,8 +211,14 @@ class ComposeController < ApplicationController
   
   def update_section(unique_section_index, section_hash)
     section = @fractal_piece.getSections.getByUniqueIndex(unique_section_index.to_i)    
+        
+    override_scale = section_hash.has_key?(:override_scale)    
+    section.setOverridePieceScale(override_scale)            
+    if override_scale
+      update_scale(section, section_hash)
+      #section.setScale(get_scale(section.getScale, section_hash[:scale], section_hash[:key])) if section_hash.has_key?(:scale) && section_hash.has_key?(:key)
+    end    
     
-    # todo: update the scale...
     update_section_settings(section.getSettings, section_hash[:section_settings])        
     update_voice_sections(section.getVoiceSections, section_hash[:voice_sections]) if section_hash.has_key?(:voice_sections)
   end       
@@ -312,9 +343,9 @@ class ComposeController < ApplicationController
     @fractal_piece.send("get#{voices_or_sections_label.titleize}").getByUniqueIndex(unique_index.to_i)    
   end
   
-  def get_scale(scale_class_name, key_name)     
+  def get_scale(existing_scale, scale_class_name, key_name)     
     # first, test that the key name is valid for this scale... 
-    key_name = @fractal_piece.getScale.getKeyName.toString if key_name == ''        
+    key_name = existing_scale.getKeyName.toString if key_name == ''        
     scale_class = eval("#{scale_class_name}.java_class")    
     valid_keys = Scale::SCALE_TYPES.get(scale_class)    
     if (valid_keys.contains(NoteName.getNoteName(key_name)))            

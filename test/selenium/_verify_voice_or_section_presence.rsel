@@ -1,0 +1,10 @@
+id = "#{voice_or_section}_#{index}"
+link_id = "#{voice_or_section.pluralize}_#{index}_show_link"
+
+if present
+    verify_element_present id
+    verify_element_present link_id
+else
+    verify_element_not_present id 
+    verify_element_not_present link_id
+end

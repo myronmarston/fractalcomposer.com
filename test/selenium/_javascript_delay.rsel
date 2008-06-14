@@ -1,0 +1,2 @@
+# Wait a little while for javascript to run
+pause 500

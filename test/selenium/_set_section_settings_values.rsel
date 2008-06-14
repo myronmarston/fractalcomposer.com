@@ -1,0 +1,14 @@
+# set a default value so we don't have to pass a value
+verify_values_changing = (verify_values_changing.nil? ? false : verify_values_changing)
+
+include_partial 'set_checkbox_value',
+    :id => "#{section_settings_prefix}__section_settings_apply_inversion",
+    :value => apply_inversion,
+    :ajax => false,
+    :verify_value_changing => verify_values_changing
+
+include_partial 'set_checkbox_value',
+    :id => "#{section_settings_prefix}__section_settings_apply_retrograde",
+    :value => apply_retrograde,
+    :ajax => false,
+    :verify_value_changing => verify_values_changing

@@ -1,0 +1,6 @@
+verify_not_value(id, value) if verify_value_changing
+if ajax
+    include_partial 'ajax_action', :cmd => 'type', :target => id, :value => value    
+else
+    type id, value
+end

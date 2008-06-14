@@ -17,19 +17,19 @@
     <%= check_box_tag "#{@voice_section_input_name_prefix}[override_voice_settings]", 
         1, @voice_section.getOverrideVoiceSettings, 
         :id => override_voice_cb_id, 
-        :onclick => get_override_checkbox_onclick_javascript(@voice_or_section_div_id, 'Voice', override_voice_cb_id, voice_loading_div_id, voice_content_div_id, @this_type_unique_index, @other_type_unique_index) %> 
+        :onclick => get_voice_section_override_checkbox_onclick_javascript(override_voice_cb_id, voice_loading_div_id, voice_content_div_id, @voice_or_section_div_id, 'Voice', @this_type_unique_index, @other_type_unique_index) %> 
     <br />
     Override Section Settings 
     <%= check_box_tag "#{@voice_section_input_name_prefix}[override_section_settings]", 
         1, @voice_section.getOverrideSectionSettings, 
         :id => override_section_cb_id, 
-        :onclick => get_override_checkbox_onclick_javascript(@voice_or_section_div_id, 'Section', override_section_cb_id, section_loading_div_id, section_content_div_id, @this_type_unique_index, @other_type_unique_index) %> 
+        :onclick => get_voice_section_override_checkbox_onclick_javascript(override_section_cb_id, section_loading_div_id, section_content_div_id, @voice_or_section_div_id, 'Section', @this_type_unique_index, @other_type_unique_index) %> 
 
     <div id="<%= voice_loading_div_id %>" style="display: none">
         <h3>Loading&hellip; <%= render :partial => 'spinner', :locals => {:display => 'inline', :bottom_px => -4} %>  </h3>                 
     </div>
     <div id="<%= voice_content_div_id %>">
-        <% # this must always be present because our code replaces the inner html -%>
+        <% # this div must always be present because our code replaces the inner html -%>
         <% if @voice_section.getOverrideVoiceSettings -%>
             <%= render :partial => 'voice_settings', :locals => {:settings => @voice_section.getVoiceSettings, :input_prefix => @voice_section_input_name_prefix} %>
         <% end -%>
@@ -38,7 +38,7 @@
         <h3>Loading&hellip; <%= render :partial => 'spinner', :locals => {:display => 'inline', :bottom_px => -4} %>  </h3>                 
     </div>
     <div id="<%= section_content_div_id %>">
-        <% # this must always be present because our code replaces the inner html -%>
+        <% # this div must always be present because our code replaces the inner html -%>
         <% if @voice_section.getOverrideSectionSettings -%>
             <%= render :partial => 'section_settings', :locals => {:settings => @voice_section.getSectionSettings, :input_prefix => @voice_section_input_name_prefix} %>
         <% end -%>

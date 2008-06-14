@@ -1,0 +1,2 @@
+open '/compose'
+include_partial 'ajax_action', :cmd => 'click', :target => 'start_over_button'

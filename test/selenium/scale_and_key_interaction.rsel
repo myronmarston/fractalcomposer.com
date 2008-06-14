@@ -1,0 +1,15 @@
+include_partial 'clear_session'
+include_partial 'test_scale_key_interaction', :input_prefix => ''
+
+# test the scale/key interaction for each section...
+include_partial 'clear_session'
+include_partial 'click_tab', :from_tab => 'piece_settings', :to_tab => 'sections'
+(1..4).each do |section_index|
+    include_partial 'set_section_values', 
+        :section_index => section_index,
+        :apply_inversion => false, 
+        :apply_retrograde => false, 
+        :override_scale => true
+
+    include_partial 'test_scale_key_interaction', :input_prefix => "sections_#{section_index}__"    
+end

@@ -1,0 +1,5 @@
+invisible_tabs = ['piece_settings', 'voices', 'sections']
+invisible_tabs.delete(id)
+
+assert_visible id
+invisible_tabs.each { |inv_id| assert_not_visible inv_id }

@@ -1,0 +1,8 @@
+store_element_width 'germ_image', 'refresh_partial_germ_image_width'
+# Refresh the form; the same germ output should be present
+open '/compose'
+include_partial 'germ_output_present'
+
+# verify that the germ image is the same width (we assume this means its 
+# the same image as there is no better way to test that the image has not changed)
+verify_element_width 'germ_image', '${refresh_partial_germ_image_width}'

@@ -1,0 +1,84 @@
+include_partial 'clear_session'
+include_partial 'click_tab', :from_tab => 'piece_settings', :to_tab => 'sections'
+
+# test that our unique index keeps incrementing, even when a voice or section is removed...
+include_partial 'delete_voice_or_section', :voice_or_section => 'section', :index => 4
+5.upto(6) do |section_index|
+    include_partial 'add_voice_or_section', :voice_or_section => 'section', :index => section_index
+
+    # test that the appropriate voice sections are created...
+    include_partial 'click_voice_sections_link', :voices_or_sections => 'sections', :index => section_index
+    1.upto(3) do |voice_index| 
+        include_partial 'verify_voice_section_presence', 
+            :present => true, 
+            :this_voice_or_section => 'section', 
+            :this_index => section_index, 
+            :other_voice_or_section => 'voice', 
+            :other_index => voice_index
+    end
+end
+
+# verify that the appropriate voice sections were created on the voices tab
+include_partial 'click_tab', :from_tab => 'sections', :to_tab => 'voices'
+1.upto(3) do |voice_index|
+    include_partial 'click_voice_sections_link', :voices_or_sections => 'voices', :index => voice_index
+    [1, 2, 3, 5, 6].each do |section_index| 
+        include_partial 'verify_voice_section_presence', 
+            :present => true, 
+            :this_voice_or_section => 'voice', 
+            :this_index => voice_index, 
+            :other_voice_or_section => 'section', 
+            :other_index => section_index
+    end
+    include_partial 'verify_voice_section_presence', 
+            :present => false, 
+            :this_voice_or_section => 'voice', 
+            :this_index => voice_index, 
+            :other_voice_or_section => 'section', 
+            :other_index => 4
+end
+
+# add a voice
+include_partial 'delete_voice_or_section', :voice_or_section => 'voice', :index => 3
+4.upto(6) do |voice_index|
+    include_partial 'add_voice_or_section', :voice_or_section => 'voice', :index => voice_index
+
+    # test that the appropriate voice sections are created...
+    include_partial 'click_voice_sections_link', :voices_or_sections => 'voices', :index => voice_index
+    [1, 2, 3, 5, 6].each do |section_index| 
+        include_partial 'verify_voice_section_presence', 
+            :present => true, 
+            :this_voice_or_section => 'voice', 
+            :this_index => voice_index, 
+            :other_voice_or_section => 'section', 
+            :other_index => section_index
+    end
+
+    include_partial 'verify_voice_section_presence', 
+            :present => false, 
+            :this_voice_or_section => 'voice', 
+            :this_index => voice_index, 
+            :other_voice_or_section => 'section', 
+            :other_index => 4
+end
+
+# verify that the appropriate voice sections were created on the sections tab
+include_partial 'click_tab', :from_tab => 'voices', :to_tab => 'sections'
+[1, 2, 3, 5, 6].each do |section_index|
+    include_partial 'click_voice_sections_link', :voices_or_sections => 'sections', :index => section_index
+    [1, 2, 4, 5, 6].each do |voice_index| 
+        include_partial 'verify_voice_section_presence', 
+            :present => true, 
+            :this_voice_or_section => 'section', 
+            :this_index => section_index, 
+            :other_voice_or_section => 'voice', 
+            :other_index => voice_index
+    end
+
+    include_partial 'verify_voice_section_presence', 
+            :present => false, 
+            :this_voice_or_section => 'voice', 
+            :this_index => section_index, 
+            :other_voice_or_section => 'section', 
+            :other_index => 3
+end

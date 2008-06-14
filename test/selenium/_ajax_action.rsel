@@ -1,0 +1,8 @@
+target ||= ''
+value ||= ''
+
+watch_ajax_requests
+command cmd, target, value
+wait_for_ajax_request 10000
+# Wait a little while for javascript sent back by the AJAX request to run
+include_partial 'javascript_delay'

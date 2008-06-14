@@ -1,0 +1,22 @@
+prefix = "sections_#{section_index}"
+# Verify that the fieldsets are visible and the toggle links invisible
+verify_visible "#{prefix}_fieldset"
+verify_not_visible "#{prefix}_show_link"
+verify_text_present "Section #{section_index}"
+
+# Verify the contents of each section
+include_partial 'verify_checkbox_value', :id => "#{prefix}_override_scale", :value => override_scale
+
+if override_scale # only verify the scale and key if we're overriding the piece scale...
+    include_partial 'verify_select_value', :id => "#{prefix}__scale", :text => scale
+
+    key ||= nil # make sure the variable is defined
+    if key
+        include_partial 'verify_select_value', :id => "#{prefix}__key", :text => key
+    end
+end
+
+include_partial 'verify_section_settings_values', 
+    :section_settings_prefix => prefix,
+    :apply_inversion => apply_inversion,
+    :apply_retrograde => apply_retrograde

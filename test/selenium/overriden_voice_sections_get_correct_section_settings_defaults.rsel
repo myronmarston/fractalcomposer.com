@@ -1,0 +1,39 @@
+# Test that the voice sections get defaults from the voice and section when
+# overriding the voice settings or section settings
+include_partial 'clear_session'
+
+# Test the voice sections on the sections tab
+include_partial 'click_tab', :from_tab => 'piece_settings', :to_tab => 'sections'
+
+# update section settings so that we can test that they cascade to the voice section 
+# when override occurs
+
+(1..4).each do |section_index|
+    include_partial 'set_section_values', 
+        :section_index => section_index,
+        :verify_values_changing => false,    
+        :override_scale => false,
+        :apply_inversion => true, 
+        :apply_retrograde => true
+
+    (1..3).each do |voice_index|
+        include_partial 'set_voice_section_values',
+            :voice_section_prefix => "sections_#{section_index}",
+            :voice_section_index => voice_index,
+            :rest => true,
+            :override_voice_settings => false,
+            :override_section_settings => true,
+            :set_section_settings_values => false
+
+        include_partial 'verify_voice_section_values',
+            :voice_section_prefix => "sections_#{section_index}",
+            :voice_section_index => voice_index,
+            :rest => true,
+            :override_voice_settings => false,
+            :override_section_settings => true,
+            :apply_inversion => true, 
+            :apply_retrograde => true
+    end
+end
+
+

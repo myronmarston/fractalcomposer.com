@@ -1,0 +1,23 @@
+prefix = "#{voice_section_prefix}__voice_sections__#{voice_section_index}"
+
+include_partial 'ensure_voice_section_visible',
+    :voice_section_prefix => voice_section_prefix,
+    :voice_section_index => voice_section_index
+
+include_partial 'verify_checkbox_value', :id => "#{prefix}_rest", :value => rest
+include_partial 'verify_checkbox_value', :id => "#{prefix}_override_voice_settings", :value => override_voice_settings
+include_partial 'verify_checkbox_value', :id => "#{prefix}_override_section_settings", :value => override_section_settings
+
+include_partial('verify_voice_settings_values',
+    :voice_settings_prefix => prefix,
+    :octave_adjustment => octave_adjustment,
+    :speed_scale_factor => speed_scale_factor,
+    :self_similarity_iterations => self_similarity_iterations,
+    :pitch => pitch,
+    :rhythm => rhythm,
+    :volume => volume) if override_voice_settings
+
+include_partial('verify_section_settings_values',
+    :section_settings_prefix => prefix,
+    :apply_inversion => apply_inversion,
+    :apply_retrograde => apply_retrograde) if override_section_settings

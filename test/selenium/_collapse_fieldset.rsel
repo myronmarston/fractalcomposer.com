@@ -1,0 +1,3 @@
+xpath = "//fieldset[@id='#{fieldset_id}']/legend/a"
+click xpath
+pause 100

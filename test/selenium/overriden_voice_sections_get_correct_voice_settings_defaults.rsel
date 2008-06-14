@@ -1,0 +1,43 @@
+# Test that the voice sections get defaults from the voice and section when
+# overriding the voice settings or section settings
+include_partial 'clear_session'
+
+# Test the voice sections on the voices tab
+include_partial 'click_tab', :from_tab => 'piece_settings', :to_tab => 'voices'
+
+# update voice settings so that we can test that they cascade to the voice section 
+# when override occurs
+
+(1..3).each do |voice_index|
+    include_partial 'set_voice_values', 
+        :voice_index => voice_index,
+        :verify_values_changing => false,
+        :instrument => 'Viola',
+        :octave_adjustment => '4',
+        :speed_scale_factor => '3',
+        :self_similarity_iterations => '3',
+        :pitch => false, :rhythm => true, :volume => false
+
+    (1..4).each do |section_index|
+        include_partial 'set_voice_section_values',
+            :voice_section_prefix => "voices_#{voice_index}",
+            :voice_section_index => section_index,
+            :rest => true,
+            :override_voice_settings => true,
+            :override_section_settings => false,
+            :set_voice_settings_values => false
+
+        include_partial 'verify_voice_section_values',
+            :voice_section_prefix => "voices_#{voice_index}",
+            :voice_section_index => section_index,
+            :rest => true,
+            :override_voice_settings => true,
+            :override_section_settings => false,
+            :octave_adjustment => '4',
+            :speed_scale_factor => '3',
+            :self_similarity_iterations => '3',
+            :pitch => false, :rhythm => true, :volume => false
+    end
+end
+
+

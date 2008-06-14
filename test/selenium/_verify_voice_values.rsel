@@ -1,0 +1,15 @@
+# Verify that the fieldsets are visible and the toggle links invisible
+verify_visible "voices_#{voice_index}_fieldset"
+verify_not_visible "voices_#{voice_index}_show_link"
+verify_text_present "Voice #{voice_index}"
+
+# Verify the contents of the voice
+include_partial 'verify_select_value', :id => "voices_#{voice_index}_instrument", :text => instrument
+include_partial 'verify_voice_settings_values', 
+    :voice_settings_prefix => "voices_#{voice_index}",
+    :octave_adjustment => octave_adjustment,
+    :speed_scale_factor => speed_scale_factor,
+    :self_similarity_iterations => self_similarity_iterations,
+    :pitch => pitch,
+    :rhythm => rhythm,
+    :volume => volume

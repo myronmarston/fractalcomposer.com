@@ -1,0 +1,9 @@
+# This partial assumes that we are already on the appropriate tab, and there is only one voice or section left
+click "#{voice_or_section}s_#{index}_delete_img"
+
+# We have some javascript that creates an alert; wait for it
+wait_for_alert_present
+verify_alert "You cannot delete the last #{voice_or_section}.*"
+
+# Test that the voice or section is still present
+verify_element_present "#{voice_or_section}_#{index}"

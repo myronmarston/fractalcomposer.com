@@ -1,0 +1,10 @@
+# This partial assumes that we are already on the appropriate tab
+
+include_partial 'ajax_action', :cmd => 'click', :target => "add_#{voice_or_section}_button"
+
+# We have some javascript that animates the addition; wait until it completes
+wait_for_element_present "#{voice_or_section}_#{index}"
+include_partial 'verify_voice_or_section_presence', 
+    :present => true, 
+    :voice_or_section => voice_or_section,
+    :index => index

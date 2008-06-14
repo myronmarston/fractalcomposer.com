@@ -1,0 +1,56 @@
+# set a default value so we don't have to pass a value
+verify_values_changing = (verify_values_changing.nil? ? false : verify_values_changing)
+
+include_partial 'ensure_voice_section_visible',
+    :voice_section_prefix => voice_section_prefix,
+    :voice_section_index => voice_section_index
+          
+prefix = "#{voice_section_prefix}__voice_sections__#{voice_section_index}"
+
+include_partial 'set_checkbox_value', 
+    :id => "#{prefix}_rest",
+    :value => rest,
+    :ajax => false,
+    :verify_value_changing => verify_values_changing
+
+include_partial 'set_checkbox_value', 
+    :id => "#{prefix}_override_voice_settings",
+    :value => override_voice_settings,
+    :ajax => override_voice_settings,
+    :verify_value_changing => verify_values_changing
+
+# set_voice_settings_values is an optional parameter
+# that can be passed as false to update the override_voice_settings checkbox
+# but not update any of the voice settings values
+set_voice_settings_values = (set_voice_settings_values.nil? ? true : set_voice_settings_values)
+
+if override_voice_settings && set_voice_settings_values
+    include_partial 'set_voice_settings_values', 
+        :verify_values_changing => verify_values_changing,
+        :voice_settings_prefix => prefix,
+        :octave_adjustment => octave_adjustment,
+        :speed_scale_factor => speed_scale_factor,
+        :self_similarity_iterations => self_similarity_iterations,
+        :pitch => pitch,
+        :rhythm => rhythm,
+        :volume => volume
+end
+
+include_partial 'set_checkbox_value', 
+    :id => "#{prefix}_override_section_settings",
+    :value => override_section_settings,
+    :ajax => override_section_settings,
+    :verify_value_changing => verify_values_changing
+
+# set_section_settings_values is an optional parameter
+# that can be passed as false to update the override_section_settings checkbox
+# but not update any of the section settings values
+set_section_settings_values = (set_section_settings_values.nil? ? true : set_section_settings_values)
+
+if override_section_settings && set_section_settings_values
+    include_partial 'set_section_settings_values',
+        :section_settings_prefix => prefix,
+        :apply_inversion => apply_inversion,
+        :apply_retrograde => apply_retrograde,
+        :verify_values_changing => verify_values_changing
+end 

@@ -71,12 +71,26 @@ module ComposeHelper
     END_OF_STRING
   end    
   
-  def get_scale_or_key_observe_field(fieldname)
-    observe_field fieldname, 
-        :url => { :action => :scale_selected_xhr },                  
-        :with  => "'scale=' + encodeURIComponent($('scale').value) + '&key=' + encodeURIComponent($('key').value) +" + observe_field_with_js_for_field_that_effects_germ,
-        :before  => "$('scale_spinner').show();" + observe_field_before_js_for_field_that_effects_germ,
-        :complete  => "$('scale_spinner').hide();" + observe_field_complete_js_for_field_that_effects_germ
+  def get_scale_or_key_observe_field(id_of_field_to_observe, scale_id, key_id, scale_spinner_id, generate_update_germ_js, input_prefix, id_to_serialize)                
+    if id_to_serialize
+      with = "Form.serialize($('#{id_to_serialize}')) + "
+    else
+      with = "'scale=' + encodeURIComponent($('#{scale_id}').value) + " +
+             "'&key=' + encodeURIComponent($('#{key_id}').value) + "    
+    end
+               
+    with+= "'&generate_update_germ_js=#{generate_update_germ_js}" +
+           "&input_prefix=#{input_prefix}'"           
+    before = "$('#{scale_spinner_id}').show();"
+    complete = "$('#{scale_spinner_id}').hide();"
+    
+    if generate_update_germ_js
+      with     += observe_field_with_js_for_field_that_effects_germ
+      before   += observe_field_before_js_for_field_that_effects_germ
+      complete += observe_field_complete_js_for_field_that_effects_germ
+    end    
+    
+    observe_field id_of_field_to_observe, :url => { :action => :scale_selected_xhr }, :with  => with, :before  => before, :complete  => complete
   end    
   
   def observe_field_before_js_for_field_that_effects_germ
@@ -88,19 +102,14 @@ module ComposeHelper
   end
   
   def observe_field_with_js_for_field_that_effects_germ
-    " '&update_germ=' + ($('germ_midi_player') != null)"
+    " + '&update_germ=' + ($('germ_midi_player') != null)"
   end
   
-  def get_override_checkbox_onclick_javascript(parent_voice_or_section_id, settings_type, checkbox_id, loading_div_id, content_div_id, main_unique_index, other_unique_index)
+  def get_override_checkbox_onclick_javascript(checkbox_id, loading_div_id, content_div_id, action, with)
                    
     remote_func_js = remote_function(
-      :url => {:action => 'get_voice_section_overriden_settings_xhr'},
-      :with => "Form.serialize($('#{parent_voice_or_section_id}')) + " +
-               "'&amp;voices_or_sections=#{@voices_or_sections_label}" +
-               "&amp;settings_type=#{settings_type}" +
-               "&amp;main_unique_index=#{main_unique_index}" + 
-               "&amp;other_unique_index=#{other_unique_index}" + 
-               "&amp;settings_content_wrap_id=#{content_div_id}'",
+      :url => {:action => action},
+      :with => with,
       :before    => "$('#{checkbox_id}').disable(); $('#{loading_div_id}').show();",
       :complete  => "$('#{checkbox_id}').enable();  $('#{loading_div_id}').hide();")
     
@@ -112,6 +121,19 @@ module ComposeHelper
       }
     END_OF_STRING
     
+  end
+  
+  def get_voice_section_override_checkbox_onclick_javascript(checkbox_id, loading_div_id, content_div_id, parent_voice_or_section_id, settings_type, main_unique_index, other_unique_index)
+    get_override_checkbox_onclick_javascript(
+      checkbox_id, loading_div_id, content_div_id,
+      'get_voice_section_overriden_settings_xhr',
+      "Form.serialize($('#{parent_voice_or_section_id}')) + " +
+      "'&amp;voices_or_sections=#{@voices_or_sections_label}" +
+      "&amp;settings_type=#{settings_type}" +
+      "&amp;main_unique_index=#{main_unique_index}" + 
+      "&amp;other_unique_index=#{other_unique_index}" + 
+      "&amp;settings_content_wrap_id=#{content_div_id}'"    
+    )
   end
   
   def set_prefix_instance_variables
@@ -127,7 +149,20 @@ module ComposeHelper
         @voice_section_input_name_prefix = "#{@voices_or_sections_label}[#{@this_type_unique_index}][voice_sections][#{@other_type_unique_index}]"
         @voice_section_input_id_prefix = sanatize_input_id(@voice_section_input_name_prefix)  
       end    
-    end    
+    end            
+  end
+  
+  def set_scale_key_prefix_instance_variables(input_prefix)    
+    @scale_name = (input_prefix == '' ? 'scale' : "#{input_prefix}[scale]")
+    @scale_id = sanatize_input_id(@scale_name)
+    @scale_spinner_id = (input_prefix == '' ? 'scale_spinner' : sanatize_input_id("#{input_prefix}_scale_spinner"))
+    @key_name = (input_prefix == '' ? 'key' : "#{input_prefix}[key]")
+    @key_id = sanatize_input_id(@key_name)
+    @key_name_selection_span = (input_prefix == '' ? 'key_name_selection' : sanatize_input_id("#{input_prefix}_key_name_selection"))
+  end
+  
+  def get_one_voice_or_section_id
+    "#{@voices_or_sections_label.singularize}_#{@voice_or_section.getUniqueIndex}"      
   end
   
 end

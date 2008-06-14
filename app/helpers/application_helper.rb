@@ -29,4 +29,5 @@ module ApplicationHelper
       
     ActionView::Base.computed_public_paths.delete cache_key
   end
+
 end

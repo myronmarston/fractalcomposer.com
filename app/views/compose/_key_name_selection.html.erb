@@ -1,12 +1,15 @@
-<% 
+<%     
+    set_scale_key_prefix_instance_variables(input_prefix)     
     keys = scale.getValidKeyNames
     if keys.size == 0
         style = "style=\"display: none;\""
         keys = [nil] # give us one option to have valid html...
     end    
 -%>
-<span id="key_name_selection"<%= style %>>
+<span id="<%= @key_name_selection_span %>"<%= style %>>
   Key:
-  <%= select_tag :key, options_for_select(keys, scale.getKeyName) %>  
-  <%= get_scale_or_key_observe_field(:key) if observe_fields %>
+  <%= select_tag @key_name, options_for_select(keys, scale.getKeyName), :id => @key_id %>  
+  <%= get_scale_or_key_observe_field(
+        @key_id, @scale_id, @key_id, @scale_spinner_id,
+        generate_update_germ_js, input_prefix, nil) if generate_update_germ_js %>  
 </span>

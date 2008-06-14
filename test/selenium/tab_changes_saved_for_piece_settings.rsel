@@ -1,0 +1,24 @@
+include_partial 'clear_session'
+
+# change the values on the piece settings tab
+include_partial 'set_select_value', :id => 'scale', :text => 'Major Pentatonic Scale', :verify_value_changing => true, :ajax => true
+include_partial 'set_select_value', :id => 'key', :text => 'E', :verify_value_changing => true, :ajax => false
+include_partial 'set_textbox_value', :id => 'time_signature', :value => '6/8', :verify_value_changing => true, :ajax => true
+include_partial 'set_textbox_value', :id => 'tempo', :value => '60', :verify_value_changing => true, :ajax => false
+include_partial 'set_textbox_value', :id => 'germ_string', :value => 'G4 A4 B4 G4', :verify_value_changing => true, :ajax => true
+include_partial 'set_checkbox_value', :id => 'generate_layered_intro', :value => false, :verify_value_changing => true, :ajax => false
+include_partial 'set_checkbox_value', :id => 'generate_layered_outro', :value => false, :verify_value_changing => true, :ajax => false
+
+# navigate to a different tab, and check that the changes were sent to the server
+include_partial 'click_tab', :from_tab => 'piece_settings', :to_tab => 'voices'
+
+# refresh the pages so that we can check that the changed values are still present
+open '/compose'
+include_partial 'verify_select_value', :id => 'scale', :text => 'Major Pentatonic Scale'
+include_partial 'verify_select_value', :id => 'key', :text => 'E'
+verify_value 'time_signature', '6/8'
+verify_value 'tempo', '60'
+verify_value 'germ_string', 'G4 A4 B4 G4'
+include_partial 'germ_output_present'
+include_partial 'verify_checkbox_value', :id => 'generate_layered_intro', :value => false
+include_partial 'verify_checkbox_value', :id => 'generate_layered_outro', :value => false

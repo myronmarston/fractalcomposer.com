@@ -1,2 +1,7 @@
-page.replace 'key_name_selection', :partial => 'key_name_selection', :locals => {:scale => @fractal_piece.getScale, :observe_fields => true}
+set_scale_key_prefix_instance_variables(@input_prefix || '')
+page.replace @key_name_selection_span,
+  :partial => 'key_name_selection', 
+  :locals => {:scale => @scale, 
+              :input_prefix => @input_prefix, 
+              :generate_update_germ_js => @generate_update_germ_js} 
 page.replace_html 'germ_midi_player_wrapper', :partial => 'germ_midi_and_image' if @update_germ

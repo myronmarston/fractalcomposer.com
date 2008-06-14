@@ -1,0 +1,8 @@
+verify_element_not_present 'germ_midi_player'
+verify_element_not_present 'germ_image'
+verify_element_present 'germ_string_error'
+
+germ_error_string_var ||= nil # make sure our variable is defined
+if germ_error_string_var
+    verify_text 'germ_string_error', "${#{germ_error_string_var}}"
+end

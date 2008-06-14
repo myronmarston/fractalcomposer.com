@@ -1,0 +1,65 @@
+# Test that setting the germ works properly
+include_partial 'clear_session'
+
+# None of the germ outputs should be present
+verify_element_not_present 'germ_midi_player'
+verify_element_not_present 'germ_image'
+verify_element_not_present 'germ_string_error'
+
+# Set the germ to a valid value
+include_partial 'set_textbox_value', :id => 'germ_string', :value => 'G4 A4 B4', :ajax => true, :verify_value_changing => false
+include_partial 'germ_output_present'
+include_partial 'refresh_page_and_verify_germ_output'
+
+# Change the germ to another valid value
+store_element_width 'germ_image', 'germ_image_width'
+include_partial 'set_textbox_value', :id => 'germ_string', :value => 'G4 A4 B4 G4', :ajax => true, :verify_value_changing => false
+include_partial 'germ_output_present'
+
+# The width should be different because of the updated germ
+verify_not_element_width 'germ_image', '${germ_image_width}'
+include_partial 'refresh_page_and_verify_germ_output'
+
+# Change the Scale type; this should update the output
+store_element_width 'germ_image', 'germ_image_width'
+include_partial 'set_select_value', :id => 'scale', :text => 'Minor Scale', :ajax => true, :verify_value_changing => false
+include_partial 'germ_output_present'
+
+# The width should be different because of the update of the scale
+verify_not_element_width 'germ_image', '${germ_image_width}'
+include_partial 'refresh_page_and_verify_germ_output'
+
+# Change the Key; this should update the output
+store_element_width 'germ_image', 'germ_image_width'
+include_partial 'set_select_value', :id => 'key', :text => 'Ab', :ajax => true, :verify_value_changing => false
+include_partial 'germ_output_present'
+
+# The width should be different because of the update of the key signature
+verify_not_element_width 'germ_image', '${germ_image_width}'
+include_partial 'refresh_page_and_verify_germ_output'
+
+# Change the Time Signature; this should update the output
+store_element_width 'germ_image', 'germ_image_width'
+include_partial 'set_textbox_value', :id => 'time_signature', :value => '99/64', :ajax => true, :verify_value_changing => false
+include_partial 'germ_output_present'
+
+# The width should be different because of the updated germ
+verify_not_element_width 'germ_image', '${germ_image_width}'
+include_partial 'refresh_page_and_verify_germ_output'
+
+# Set a bad germ string
+include_partial 'set_textbox_value', :id => 'germ_string', :value => 'G4 A4 B4 G4asdfas', :ajax => true, :verify_value_changing => false
+include_partial 'germ_error_present'
+
+# Refresh the form; the same germ error should be present
+store_text 'germ_string_error', 'germ_error_string'
+open '/compose'
+include_partial 'germ_error_present', :germ_error_string_var => 'germ_error_string'
+
+# Change the various things we changed before; the germ error should stay.
+include_partial 'set_select_value', :id => 'scale', :text => 'Major Pentatonic Scale', :ajax => true, :verify_value_changing => false
+include_partial 'germ_error_present', :germ_error_string_var => 'germ_error_string'
+include_partial 'set_select_value', :id => 'key', :text => 'D', :ajax => true, :verify_value_changing => false
+include_partial 'germ_error_present', :germ_error_string_var => 'germ_error_string'
+include_partial 'set_textbox_value', :id => 'time_signature', :value => '4/4', :ajax => true, :verify_value_changing => false
+include_partial 'germ_error_present', :germ_error_string_var => 'germ_error_string'

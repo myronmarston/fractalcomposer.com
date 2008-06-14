@@ -1,0 +1,30 @@
+include_partial 'clear_session'
+
+voice_array = [1, 2, 3]
+section_array = [1, 2, 3, 4]
+
+# Verify that we can toggle our voices
+include_partial 'click_tab', :from_tab => 'piece_settings', :to_tab => 'voices'
+voice_array.each do |i|
+    include_partial 'verify_fieldset_toggleability', 
+        :fieldset_id => "voices_#{i}_fieldset",
+        :toggle_link_id => "voices_#{i}_show_link"
+
+    include_partial 'verify_voice_sections_toggleability', 
+        :voices_or_sections => 'voices',
+        :index_1 => i,
+        :other_indices => section_array
+end
+
+# Verify that we can toggle our sections
+include_partial 'click_tab', :from_tab => 'voices', :to_tab => 'sections'
+section_array.each do |i|
+    include_partial 'verify_fieldset_toggleability', 
+        :fieldset_id => "sections_#{i}_fieldset",
+        :toggle_link_id => "sections_#{i}_show_link"
+
+    include_partial 'verify_voice_sections_toggleability', 
+        :voices_or_sections => 'sections',
+        :index_1 => i,
+        :other_indices => voice_array
+end

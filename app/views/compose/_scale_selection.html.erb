@@ -1,8 +1,9 @@
-<%  if (scale) -%>
+<% if (scale) -%>
+  <% set_scale_key_prefix_instance_variables(input_prefix || '') -%>
   Scale Type:
-  <%= select_tag :scale, options_for_select(@scale_names, scale.java_class) %>
-  <%= get_scale_or_key_observe_field(:scale) if observe_fields %>
+  <%= select_tag @scale_name, options_for_select(@scale_names, scale.java_class), :id => @scale_id %>
+  <%= get_scale_or_key_observe_field(@scale_id, @scale_id, @key_id, @scale_spinner_id, generate_update_germ_js, input_prefix, id_to_serialize) %>
   &nbsp;    
-  <%= render :partial => 'key_name_selection', :locals => {:scale => scale, :observe_fields => observe_fields} %>    
-  <%= render :partial => 'spinner', :locals => {:div_id => 'scale_spinner', :display => 'none', :bottom_px => -2} %>    
+  <%= render :partial => 'key_name_selection', :locals => {:scale => scale, :input_prefix => input_prefix, :generate_update_germ_js => generate_update_germ_js} %>    
+  <%= render :partial => 'spinner', :locals => {:div_id => @scale_spinner_id, :display => 'none', :bottom_px => -2} %>    
 <% end -%>

@@ -1,0 +1,74 @@
+include_partial 'clear_session'
+include_partial 'assert_tab_visibility', :id => 'piece_settings'
+verify_value 'germ_string', ''
+include_partial 'verify_select_value', :id => 'scale', :text => 'Chromatic Scale'
+verify_not_visible 'key_name_selection'
+verify_value 'time_signature', '4/4'
+verify_value 'tempo', '90'
+include_partial 'verify_checkbox_value', :id => 'generate_layered_intro',  :value => true
+include_partial 'verify_checkbox_value', :id => 'generate_layered_outro',  :value => true
+
+# navigate to voices
+include_partial 'click_tab', :from_tab => 'piece_settings', 'to_tab' => 'voices'
+
+# verify our voices
+include_partial 'verify_voice_values', 
+    :voice_index => 1,
+    :instrument => 'Piano',
+    :octave_adjustment => '1',
+    :speed_scale_factor => '2',
+    :self_similarity_iterations => '1',
+    :pitch => true, :rhythm => false, :volume => true
+
+include_partial 'verify_voice_values', 
+    :voice_index => 2,
+    :instrument => 'Piano',
+    :octave_adjustment => '0',
+    :speed_scale_factor => '1',
+    :self_similarity_iterations => '1',
+    :pitch => false, :rhythm => false, :volume => false
+
+include_partial 'verify_voice_values', 
+    :voice_index => 3,
+    :instrument => 'Piano',
+    :octave_adjustment => '-1',
+    :speed_scale_factor => '1/2',
+    :self_similarity_iterations => '1',
+    :pitch => false, :rhythm => false, :volume => false
+
+# verify that we don't have a 4th voice
+verify_text_not_present 'Voice 4'
+
+# Verify our voice sections
+(1..3).each do |voice_index|
+    (1..4).each do |section_index|
+        include_partial 'verify_voice_section_values',        
+            :voice_section_prefix => "voices_#{voice_index}",
+            :voice_section_index => section_index,
+            :rest => false,
+            :override_voice_settings => false,
+            :override_section_settings => false
+    end
+end
+
+# Navigate to Sections
+include_partial 'click_tab', :from_tab => 'voices', 'to_tab' => 'sections'
+include_partial 'verify_section_values', :section_index => 1, :apply_inversion => false, :apply_retrograde => false, :override_scale => false
+include_partial 'verify_section_values', :section_index => 2, :apply_inversion => true, :apply_retrograde => false, :override_scale => false
+include_partial 'verify_section_values', :section_index => 3, :apply_inversion => true, :apply_retrograde => true, :override_scale => false
+include_partial 'verify_section_values', :section_index => 4, :apply_inversion => false, :apply_retrograde => true, :override_scale => false
+
+# Verify that we don't have a 5th section
+verify_text_not_present 'Section 5'
+
+# Verify our voice sections
+(1..4).each do |section_index|
+    (1..3).each do |voice_index|
+        include_partial 'verify_voice_section_values',        
+            :voice_section_prefix => "sections_#{section_index}",
+            :voice_section_index => voice_index,
+            :rest => false,
+            :override_voice_settings => false,
+            :override_section_settings => false
+    end
+end

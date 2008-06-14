@@ -1,0 +1,3 @@
+# This partial assumes that we are already on the appropriate tab
+include_partial 'ajax_action', :cmd => 'click', :target => "#{voice_or_section}s_#{index}_delete_img"
+wait_for_element_not_present "#{voice_or_section}_#{index}"

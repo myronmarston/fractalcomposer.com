@@ -1,0 +1,11 @@
+instrument_id = "voices_#{voice_index}_instrument"
+include_partial 'set_select_value', :id => instrument_id, :text => instrument, :ajax => false, :verify_value_changing => verify_values_changing
+include_partial 'set_voice_settings_values', 
+    :verify_values_changing => verify_values_changing,
+    :voice_settings_prefix => "voices_#{voice_index}",
+    :octave_adjustment => octave_adjustment,
+    :speed_scale_factor => speed_scale_factor,
+    :self_similarity_iterations => self_similarity_iterations,
+    :pitch => pitch,
+    :rhythm => rhythm,
+    :volume => volume

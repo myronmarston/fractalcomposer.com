@@ -1,0 +1,1 @@
+include_partial 'ajax_action', :cmd => 'click', :target => "#{voices_or_sections}_#{index}_voice_sections_show_link"

@@ -1,0 +1,2 @@
+value_text = (value ? 'on' : 'off')
+verify_value(id, value_text)

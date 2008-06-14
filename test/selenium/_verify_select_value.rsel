@@ -1,0 +1,2 @@
+xpath = "//select[@id='#{id}']/option[@selected='selected']"
+verify_text(xpath, text)

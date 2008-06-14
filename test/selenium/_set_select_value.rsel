@@ -1,0 +1,8 @@
+xpath = "//select[@id='#{id}']/option[@selected='selected']"
+
+verify_not_text(xpath, text) if verify_value_changing
+if ajax
+    include_partial 'ajax_action', :cmd => 'select', :target => id, :value => text
+else
+    select id, text
+end    

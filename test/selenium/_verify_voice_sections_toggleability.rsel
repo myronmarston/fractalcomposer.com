@@ -1,0 +1,18 @@
+# click the link to load the voice sections
+voice_sections_prefix = "#{voices_or_sections}_#{index_1}_voice_sections"
+include_partial 'ajax_action', 
+    :cmd => 'click', 
+    :target => "#{voice_sections_prefix}_show_link"
+
+# verify toggleability of each voice section link
+other_indices.each do |index_2|
+    prefix = "#{voices_or_sections}_#{index_1}__voice_sections__#{index_2}"
+    include_partial 'verify_fieldset_toggleability', 
+        :fieldset_id => "#{prefix}_fieldset", 
+        :toggle_link_id => "#{prefix}_show_link"
+end
+
+# verify toggleability of the "Voice Sections..." link
+include_partial 'verify_fieldset_toggleability', 
+    :fieldset_id => "#{voice_sections_prefix}_fieldset", 
+    :toggle_link_id => "#{voice_sections_prefix}_show_link"

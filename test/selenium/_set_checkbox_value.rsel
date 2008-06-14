@@ -1,0 +1,18 @@
+value_text = (value ? 'on' : 'off')
+verify_not_value(id, value_text) if verify_value_changing
+
+require 'uuidtools.rb'
+label_name = "end_change_checkbox_value_#{UUID.random_create.to_s}"
+
+# only click the checkbox if it's not already the correct value
+store_checked(id, 'stored_checkbox_value')
+goto_if("${stored_checkbox_value} == #{value}", label_name)
+
+if ajax
+    include_partial 'ajax_action', :cmd => 'click', :target => id
+else
+    click id
+end
+
+label label_name
+verify_value(id, value_text) if verify_value_changing

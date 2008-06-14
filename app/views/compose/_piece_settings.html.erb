@@ -1,12 +1,12 @@
   <p>
-    <%= render :partial => 'scale_selection', :locals => {:scale => @fractal_piece.getScale, :observe_fields => true} %>    
+    <%= render :partial => 'scale_selection', :locals => {:scale => @fractal_piece.getScale, :input_prefix => '', :id_to_serialize => nil, :generate_update_germ_js => true} %>    
     <br />
     
     Time Signature:
     <%= text_field_tag :time_signature, @fractal_piece.getTimeSignature, :size => 4 %>
     <%= observe_field :time_signature, 
         :url => { :action => :set_time_signature_xhr },          
-        :with  => "'time_signature=' + encodeURIComponent(value) +" + observe_field_with_js_for_field_that_effects_germ,
+        :with  => "'time_signature=' + encodeURIComponent(value)" + observe_field_with_js_for_field_that_effects_germ,
         :before  => observe_field_before_js_for_field_that_effects_germ,
         :complete  => observe_field_complete_js_for_field_that_effects_germ %>
             
