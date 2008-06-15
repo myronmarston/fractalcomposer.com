@@ -94,18 +94,45 @@ form#compose_form fieldset {
     margin-bottom: 10px;
 }
 
-span.self_similarity_settings_field {
-    margin: 10px 10px;
+div.fieldset_content {
+    margin: 0px 25px 10px 20px;
+    padding: 0px 0px 10px 0px; /*10px 0px 0px 0px;*/
+    position: relative;
+    line-height: 1.9em;
 }
 
-div.voice_or_section_settings {
-    margin: 0px 25px 10px 20px;
-    padding: 10px 0px 0px 0px;
+div.no_margin_content {
+    margin: 0px -25px -10px -20px;
+    padding: 0px 0px -10px 0px;
 }
 
 fieldset.self_similarity_fieldset {
     margin-left: 0px;
     margin-right: 0px;
+}
+
+.self_similarity_settings_field_1, .self_similarity_settings_field_2, .self_similarity_settings_field_3 {    
+    position: absolute;
+    top: 0px;
+    text-align: center;
+}
+
+.self_similarity_settings_field_1, .self_similarity_settings_field_3 {
+    width: 33%;       
+}
+
+.self_similarity_settings_field_1 {
+    left: 0px; 
+}
+
+.self_similarity_settings_field_2 {
+    width: 34%;   
+    left: 33%;
+    right: 33%;
+}
+
+.self_similarity_settings_field_3 {
+    right: 0px; 
 }
 
 /*** Tabbed Panels ***/
@@ -171,15 +198,19 @@ div.tab_panel_body fieldset {
 }
 
 div.tab_panel_body fieldset fieldset {
-    background-color: #CCE1F9;
+    background-color: #CFE3F9;
 }
 
 div.tab_panel_body fieldset fieldset fieldset {
-    background-color: #C0DBF9;
+    background-color: #C5DEF9;
 }
 
 div.tab_panel_body fieldset fieldset fieldset fieldset {
-    background-color: #B3D4F9;
+    background-color: #BBD9F9;
+}
+
+div.tab_panel_body fieldset fieldset fieldset fieldset fieldset {
+    background-color: #B2D4F9;
 }
 
 div.tab_panel_body, #main ul.tablist {

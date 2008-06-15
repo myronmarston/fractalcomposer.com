@@ -1,4 +1,5 @@
 <%
+    require 'uuidtools.rb'
     fieldset_id = "#{id_prefix}_fieldset"
     link_id = "#{id_prefix}_show_link"
     additional_link_js ||= ''
@@ -6,9 +7,15 @@
     link_class = "fieldset_toggle_link fieldset_toggle_lone_link #{link_class}"    
     fieldset_class ||= '' # make sure we have a non-nil value
     fieldset_class = " class='#{fieldset_class}'" unless fieldset_class == ''
+    after_yield_identifier ||= nil # make sure this variable is defined
+    before_yield_identifier ||= nil # make sure this variable is defined
 %>
 <%= link_to_function "#{link_text}&hellip;", "Element.hide('#{link_id}'); Element.show('#{fieldset_id}'); #{additional_link_js}", :id => link_id, :class => link_class, :style => show_fieldset_initially ? 'display: none;' : '' %>
 <fieldset id="<%= fieldset_id %>"<%= fieldset_class %>  style="<%= show_fieldset_initially ? '' : 'display: none;' %>">
   <legend><%= link_to_function link_text, "Element.hide('#{fieldset_id}'); Element.show('#{link_id}')", :class => 'fieldset_toggle_link' %></legend>
-  <%= yield %>
+  <%= yield before_yield_identifier if before_yield_identifier %>
+  <div class="fieldset_content">
+    <%= yield %>
+  </div>
+  <%= yield after_yield_identifier if after_yield_identifier %>
 </fieldset>

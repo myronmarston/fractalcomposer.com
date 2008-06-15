@@ -10,6 +10,9 @@
     </span>       
     
     
+    <%= #render :partial => 'voice_settings', :locals => {:settings => @voice_section.getVoiceSettings, :input_prefix => @voice_section_input_name_prefix} %>
+
+<%= render :partial => 'section_settings', :locals => {:settings => @voice_section.getSectionSettings, :input_prefix => @voice_section_input_name_prefix} %>
     
 <!--New stuff
 <tr>
@@ -42,3 +45,46 @@
 	<td>partials/collapse_fieldset</td>
 	<td>fieldset_id=voices_1__voice_sections__1_fieldset</td>
 </tr>-->
+
+
+
+    
+prefix = "#{voice_section_prefix}__voice_sections__#{voice_section_index}"
+
+include_partial 'set_checkbox_value', 
+    :id => "#{prefix}_rest",
+    :value => rest,
+    :ajax => false,
+    :verify_value_changing => verify_values_changing
+
+include_partial 'set_checkbox_value', 
+    :id => "#{prefix}_override_voice_settings",
+    :value => override_voice_settings,
+    :ajax => override_voice_settings,
+    :verify_value_changing => verify_values_changing
+
+if override_voice_settings
+    include_partial 'set_voice_settings_values', 
+        :verify_values_changing => verify_values_changing,
+        :voice_settings_prefix => prefix,
+        :octave_adjustment => octave_adjustment,
+        :speed_scale_factor => speed_scale_factor,
+        :self_similarity_iterations => self_similarity_iterations,
+        :pitch => pitch,
+        :rhythm => rhythm,
+        :volume => volume
+end
+
+include_partial 'set_checkbox_value', 
+    :id => "#{prefix}_override_section_settings",
+    :value => override_section_settings,
+    :ajax => override_section_settings,
+    :verify_value_changing => verify_values_changing
+
+if override_section_settings
+    include_partial 'set_section_settings_values',
+        :section_settings_prefix => prefix,
+        :apply_inversion => apply_inversion,
+        :apply_retrograde => apply_retrograde,
+        :verify_values_changing => verify_values_changing
+end 

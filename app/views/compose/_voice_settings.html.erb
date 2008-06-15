@@ -16,17 +16,17 @@ Self-Similarity Iterations:
 <%= text_field_tag "#{input_name_prefix_sss}[self_similarity_iterations]", self_similarity_settings.getSelfSimilarityIterations, :size => 2, :id => "#{input_id_prefix_sss}_self_similarity_iterations" %>
 <fieldset style="margin-left: 0px; margin-right: 0px;"> <% #we have default fieldset settings based on id, that always override settings based on class, so we put these settings here instead... %>
     <legend>Apply Self-Similarity To</legend>
-    <p>
+    <div class="fieldset_content">
         <%= hidden_field_tag "#{input_name_prefix_sss}[ignore]", 'ensure have hash', :id => "#{input_id_prefix_sss}_ignore" %>
-        <span class="self_similarity_settings_field">
+        <div class="self_similarity_settings_field_1">
             Pitch <%= check_box_tag "#{input_name_prefix_sss}[pitch]", 1, self_similarity_settings.getApplyToPitch, :id => "#{input_id_prefix_sss}_pitch" %>                
-        </span>
-        <span class="self_similarity_settings_field">
+        </div>
+        <div class="self_similarity_settings_field_2">
             Rhythm <%= check_box_tag "#{input_name_prefix_sss}[rhythm]", 1, self_similarity_settings.getApplyToRhythm, :id => "#{input_id_prefix_sss}_rhythm" %>                
-        </span>
-        <span class="self_similarity_settings_field">
+        </div>
+        <div class="self_similarity_settings_field_3">
             Volume <%= check_box_tag "#{input_name_prefix_sss}[volume]", 1, self_similarity_settings.getApplyToVolume, :id => "#{input_id_prefix_sss}_volume" %>
-        </span>
-    </p>
+        </div>        
+    </div>
   </fieldset>
 </div>

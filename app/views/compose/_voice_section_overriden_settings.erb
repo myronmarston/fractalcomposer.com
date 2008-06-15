@@ -1,0 +1,11 @@
+<div class="no_margin_content">
+  <% render :layout => 'togglable_fieldset_wrapper', 
+          :locals => {:link_text => "#{settings_type.titleize} Settings", 
+                      :id_prefix => "#{@voice_section_input_id_prefix}_#{settings_type.downcase}_settings", 
+                      :show_fieldset_initially => true } do %> 
+
+      <%= render :partial => "#{settings_type.downcase}_settings",
+                 :locals => {:settings => settings, 
+                             :input_prefix => @voice_section_input_name_prefix} %> 
+  <% end -%>
+</div>                      

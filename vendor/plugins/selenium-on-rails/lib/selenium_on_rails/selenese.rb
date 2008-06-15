@@ -1,5 +1,6 @@
 class SeleniumOnRails::Selenese
 end
+#ActionView::Template.register_template_handler 'sel', SeleniumOnRails::Selenese
 ActionView::Base.register_template_handler 'sel', SeleniumOnRails::Selenese
 
 
