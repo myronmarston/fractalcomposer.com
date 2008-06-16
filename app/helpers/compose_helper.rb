@@ -165,4 +165,9 @@ module ComposeHelper
     "#{@voices_or_sections_label.singularize}_#{@voice_or_section.getUniqueIndex}"      
   end
   
+  def get_style_for_germ_midi_player_wrapper
+    return '' if @germ_midi_filename || @germ_image_filename || session[:germ_error_message]
+    "style=\"display: none;\""
+  end
+  
 end

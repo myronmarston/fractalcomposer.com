@@ -34,6 +34,7 @@ textarea#germ_string {
 #germ_midi_player_wrapper {    
     padding-left: 0px;
     padding-right: 20px;
+    margin-bottom: -20px;
 }
 
 object.midi_player {
@@ -51,6 +52,7 @@ div#start_over_button_wrap {
 
 #germ_string_error {
     color: #f00; 
+    line-height: 1.2em;
 }
 
 div.one_voice_or_section {
@@ -65,6 +67,10 @@ form#compose_form fieldset legend {
     margin-left: 20px;
     margin-bottom: 0px;
     display: block;       
+}
+
+form#compose_form {
+    line-height: 1.9em;
 }
 
 .fieldset_toggle_link {
@@ -94,16 +100,24 @@ form#compose_form fieldset {
     margin-bottom: 10px;
 }
 
-div.fieldset_content {
-    margin: 0px 25px 10px 20px;
-    padding: 0px 0px 10px 0px; /*10px 0px 0px 0px;*/
-    position: relative;
-    line-height: 1.9em;
+div.voice_sections_wrap {
+    margin-top: -10px; /* needed to reduce the extra big gab above the voice sections */   
+}
+
+div.fieldset_content, .piece_settings_wrap {
+    /* keep the left and right margins here in sync with the no_margin_content class */
+    margin: 0px 25px 10px 20px;    
+    position: relative;    
+}
+
+.piece_settings_wrap {
+    padding-top: 10px;
 }
 
 div.no_margin_content {
-    margin: 0px -25px -10px -20px;
-    padding: 0px 0px -10px 0px;
+    /* opposites of margins for fieldset_content class */
+    margin-right: -25px;
+    margin-left: -20px;    
 }
 
 fieldset.self_similarity_fieldset {
@@ -133,6 +147,11 @@ fieldset.self_similarity_fieldset {
 
 .self_similarity_settings_field_3 {
     right: 0px; 
+}
+
+form#compose_form fieldset.self_similarity_settings_fieldset {    
+    margin-left: 0px;
+    margin-right: 0px;
 }
 
 /*** Tabbed Panels ***/
