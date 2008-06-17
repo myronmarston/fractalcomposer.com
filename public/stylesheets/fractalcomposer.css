@@ -70,7 +70,7 @@ form#compose_form fieldset legend {
 }
 
 form#compose_form {
-    line-height: 1.9em;
+    line-height: 2em;
 }
 
 .fieldset_toggle_link {

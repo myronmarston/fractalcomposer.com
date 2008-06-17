@@ -7,14 +7,26 @@
 -%>
 <div class="voice_or_section_settings">
 Octave Adjustment:
-<%= text_field_tag "#{voice_settings_input_name_prefix}[octave_adjustment]", settings.getOctaveAdjustment, :size => 2, :id => "#{voice_settings_input_id_prefix}_octave_adjustment" %>
+<% octave_id = "#{voice_settings_input_id_prefix}_octave_adjustment" -%>
+<%= text_field_tag "#{voice_settings_input_name_prefix}[octave_adjustment]", settings.getOctaveAdjustment, :size => 2, :id => octave_id %>
+<%= get_live_validation_js_with_defaults(octave_id, settings.getOctaveAdjustment,
+    {:type => 'Validate.Presence'}, 
+    {:type => 'Validate.Numericality', :args => "{ onlyInteger: true, minimum: -4, maximum: 4, notANumberMessage: 'Must be an integer!' }"}) %>
 <br />
 Speed Scale Factor:
-<%= text_field_tag "#{voice_settings_input_name_prefix}[speed_scale_factor]", settings.getSpeedScaleFactor, :size => 2, :id => "#{voice_settings_input_id_prefix}_speed_scale_factor" %>
+<% speed_id = "#{voice_settings_input_id_prefix}_speed_scale_factor" %>
+<%= text_field_tag "#{voice_settings_input_name_prefix}[speed_scale_factor]", settings.getSpeedScaleFactor, :size => 2, :id => speed_id %>
+<%= get_live_validation_js_with_defaults(speed_id, settings.getSpeedScaleFactor,
+    {:type => 'Validate.Presence'}, 
+    {:type => 'Validate.Format', :args => "{ pattern: /#{com.myronmarston.util.Fraction::REGEX_STRING}/, failureMessage: 'Must be a positive integer or fraction.' }"}) %>
 <br />
 Self-Similarity Iterations:
-<%= text_field_tag "#{input_name_prefix_sss}[self_similarity_iterations]", self_similarity_settings.getSelfSimilarityIterations, :size => 2, :id => "#{input_id_prefix_sss}_self_similarity_iterations" %>
-<fieldset class="self_similarity_settings_fieldset"><% # <fieldset style="margin-left: 0px; margin-right: 0px;">  #we have default fieldset settings based on id, that always override settings based on class, so we put these settings here instead... %>
+<% iterations_id = "#{input_id_prefix_sss}_self_similarity_iterations" %>
+<%= text_field_tag "#{input_name_prefix_sss}[self_similarity_iterations]", self_similarity_settings.getSelfSimilarityIterations, :size => 2, :id => iterations_id %>
+<%= get_live_validation_js_with_defaults(iterations_id, self_similarity_settings.getSelfSimilarityIterations,
+    {:type => 'Validate.Presence'}, 
+    {:type => 'Validate.Numericality', :args => "{ onlyInteger: true, minimum: 1, maximum: 9, notANumberMessage: 'Must be an integer!' }"}) %>
+<fieldset class="self_similarity_settings_fieldset">
     <legend>Apply Self-Similarity To</legend>
     <div class="fieldset_content">
         <br /><!--This br is present to make sure this fieldset is tall enough-->

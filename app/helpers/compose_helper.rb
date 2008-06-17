@@ -170,4 +170,16 @@ module ComposeHelper
     "style=\"display: none;\""
   end
   
+  def get_live_validation_js(id, current_value, consructor_args, *validations)              
+    javascript_tag(render(:partial => 'live_validation', :locals => {:id => id, :current_value => current_value, :constructor_args => consructor_args, :validations => validations}))
+  end
+  
+  def get_live_validation_js_with_defaults(id, current_value, *validations)              
+    javascript_tag(render(:partial => 'live_validation', :locals => {:id => id, :current_value => current_value, :constructor_args => 'validMessage: null', :validations => validations}))    
+  end
+  
+  def get_live_validation_var_name(id)
+    "#{id}_validator"
+  end
+  
 end

@@ -1,0 +1,23 @@
+<%     
+    var_name = get_live_validation_var_name(id)
+    constructor_args ||= nil # make sure our variable is defined  current_value != null && current_value != '' &&       
+-%>
+var valid_so_far = true;
+var current_value = $('<%= id %>').value;
+var <%= var_name %> = new LiveValidation('<%= id %>'<%= ", { #{constructor_args} }" if constructor_args %>);    
+<% [*validations].each do |validation| 
+    validation_type = validation[:type] 
+    validation_args = validation[:args] 
+    validation_args = (validation_args && validation_args != '' ? ", #{validation_args}" : '') -%>    
+  <%= var_name %>.add( <%= validation_type + validation_args %> );    
+  // Figure out if the existing value is valid 
+  valid_so_far = <%= "Validate.now(#{validation_type}, current_value#{validation_args});" %>
+<% end -%>
+
+// If the existing value is invalid, then run the validation so the error message is displayed
+// We don't run this on valid fields because we don't neet to surround each valid field with a 
+// green border when the form first loads. 
+
+if (!valid_so_far) {              
+    <%= var_name %>.validate();
+}  
