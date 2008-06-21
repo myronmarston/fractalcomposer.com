@@ -1,0 +1,22 @@
+#tests.insert(0,
+#{
+#    :error_message => "Can't be empty!",
+#    :test_values => [{:bad => '', :good => nil}]
+#})
+
+var_name = "#{id}_initial_value"
+store_value id, var_name
+tests.each do |test_hash|    
+    test_hash[:test_values].each do |test_value|
+        # our tests assume the error message is not already present
+        verify_text_not_present test_hash[:error_message]
+
+        include_partial 'type_textbox_value', :id => id, :value => test_value[:bad]
+        pause 100
+        verify_text_present test_hash[:error_message]
+
+        include_partial 'type_textbox_value', :id => id, :value => (test_value[:good] || '$(initial_value)')
+        pause 100
+        verify_text_not_present test_hash[:error_message]
+    end
+end

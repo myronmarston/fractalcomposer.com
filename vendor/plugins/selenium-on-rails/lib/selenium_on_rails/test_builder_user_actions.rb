@@ -21,6 +21,10 @@ module SeleniumOnRails::TestBuilderUserActions
    command 'goto', label
  end
  
+ def refresh_and_wait
+   command 'refreshAndWait'
+ end
+ 
  private
    
  # Generates the corresponding +_and_wait+ for each action.

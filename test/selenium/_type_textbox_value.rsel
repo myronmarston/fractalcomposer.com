@@ -1,0 +1,2 @@
+type id, '' # clear the contents
+type_keys id, value

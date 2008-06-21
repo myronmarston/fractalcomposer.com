@@ -18,7 +18,7 @@ Speed Scale Factor:
 <%= text_field_tag "#{voice_settings_input_name_prefix}[speed_scale_factor]", settings.getSpeedScaleFactor, :size => 2, :id => speed_id %>
 <%= get_live_validation_js_with_defaults(speed_id, settings.getSpeedScaleFactor,
     {:type => 'Validate.Presence'}, 
-    {:type => 'Validate.Format', :args => "{ pattern: /#{com.myronmarston.util.Fraction::REGEX_STRING}/, failureMessage: 'Must be a positive integer or fraction.' }"}) %>
+    {:type => 'Validate.Format', :args => "{ pattern: /#{com.myronmarston.util.Fraction::POSITIVE_FRACTION_REGEX_STRING}/, failureMessage: 'Must be a positive integer or fraction.' }"}) %>
 <br />
 Self-Similarity Iterations:
 <% iterations_id = "#{input_id_prefix_sss}_self_similarity_iterations" %>
