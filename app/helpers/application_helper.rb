@@ -29,5 +29,9 @@ module ApplicationHelper
       
     ActionView::Base.computed_public_paths.delete cache_key
   end
+  
+  def developer_info    
+      #render :partial => 'common_partials/developer_info' if RAILS_ENV != "production"    
+  end    
 
 end

@@ -182,4 +182,8 @@ module ComposeHelper
     "#{id}_validator"
   end
   
+  def help(name, id=nil)
+    render :partial => 'help', :locals => {:name => name, :id => id}
+  end
+  
 end

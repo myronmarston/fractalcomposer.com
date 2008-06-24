@@ -12,6 +12,7 @@ Octave Adjustment:
 <%= get_live_validation_js_with_defaults(octave_id, settings.getOctaveAdjustment,
     {:type => 'Validate.Presence'}, 
     {:type => 'Validate.Numericality', :args => "{ onlyInteger: true, minimum: -4, maximum: 4, notANumberMessage: 'Must be an integer!' }"}) %>
+<%= help('octave_adjustment', octave_id) %>
 <br />
 Speed Scale Factor:
 <% speed_id = "#{voice_settings_input_id_prefix}_speed_scale_factor" %>
@@ -19,6 +20,7 @@ Speed Scale Factor:
 <%= get_live_validation_js_with_defaults(speed_id, settings.getSpeedScaleFactor,
     {:type => 'Validate.Presence'}, 
     {:type => 'Validate.Format', :args => "{ pattern: /#{com.myronmarston.util.Fraction::POSITIVE_FRACTION_REGEX_STRING}/, failureMessage: 'Must be a positive integer or fraction.' }"}) %>
+<%= help('speed_scale_factor', speed_id) %>
 <br />
 Self-Similarity Iterations:
 <% iterations_id = "#{input_id_prefix_sss}_self_similarity_iterations" %>
@@ -26,6 +28,7 @@ Self-Similarity Iterations:
 <%= get_live_validation_js_with_defaults(iterations_id, self_similarity_settings.getSelfSimilarityIterations,
     {:type => 'Validate.Presence'}, 
     {:type => 'Validate.Numericality', :args => "{ onlyInteger: true, minimum: 1, maximum: 9, notANumberMessage: 'Must be an integer!' }"}) %>
+<%= help('self_similarity_iterations', iterations_id) %>
 <fieldset class="self_similarity_settings_fieldset">
     <legend>Apply Self-Similarity To</legend>
     <div class="fieldset_content">

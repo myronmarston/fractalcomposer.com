@@ -1,8 +1,12 @@
-<% set_prefix_instance_variables #render :partial => 'set_prefix_instance_variables' %>
+<% 
+    set_prefix_instance_variables
+    instrument_id = "#{@voice_or_section_input_id_prefix}_instrument"
+%>
 <% render :layout => 'one_voice_or_section_wrapper' do %>    
       
       Instrument:
-      <%= select_tag "#{@voice_or_section_input_name_prefix}[instrument]", options_for_select(@instrument_names, @voice_or_section.getInstrumentName), :id => "#{@voice_or_section_input_id_prefix}_instrument" %>              
+      <%= select_tag "#{@voice_or_section_input_name_prefix}[instrument]", options_for_select(@instrument_names, @voice_or_section.getInstrumentName), :id => instrument_id %>              
+      <%= help('instrument', instrument_id) %>
       
       <%= render :partial => 'voice_settings', :locals => {:settings => @voice_or_section.getSettings, :input_prefix => @voice_or_section_input_name_prefix} %>
 <% end %>
