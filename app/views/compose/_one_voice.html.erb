@@ -6,7 +6,7 @@
       
       Instrument:
       <%= select_tag "#{@voice_or_section_input_name_prefix}[instrument]", options_for_select(@instrument_names, @voice_or_section.getInstrumentName), :id => instrument_id %>              
-      <%= help('instrument', instrument_id) %>
+      <%= info('instrument', instrument_id) %>
       
       <%= render :partial => 'voice_settings', :locals => {:settings => @voice_or_section.getSettings, :input_prefix => @voice_or_section_input_name_prefix} %>
 <% end %>

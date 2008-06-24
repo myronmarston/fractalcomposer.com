@@ -182,8 +182,8 @@ module ComposeHelper
     "#{id}_validator"
   end
   
-  def help(name, id=nil)
-    render :partial => 'help', :locals => {:name => name, :id => id}
+  def info(name, id=nil, content_after_info_icon=nil)
+    render :partial => 'field_info', :locals => {:name => name, :id => id, :content_after_info_icon => content_after_info_icon}
   end
   
 end

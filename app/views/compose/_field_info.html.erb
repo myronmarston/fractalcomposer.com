@@ -1,0 +1,38 @@
+<% 
+    # if we don't pass an id, just use the name.
+    # this allows us to only pass a name for fields which only occur once, like tempo,
+    # but also pass an id for fields which occur multiple times, like octave adjustment
+    id ||= name
+    info_html = PageHtmlPart.get_html_part("info_#{name.gsub(/-/, '_')}") 
+    show_id = "show_#{id}_info"
+    info_id = "#{id}_info"
+    content_after_info_icon ||= ""      
+    lowercase_title = name.humanize.downcase
+    title = lowercase_title.gsub(/\b\w/) {|c| c.upcase}
+    puts "title = #{title}"
+-%>
+<% if info_html == '' -%>
+    <%= content_after_info_icon %>
+<% else -%>
+    <span id="<%= show_id %>">
+      <a href="#" onclick="$('<%= info_id %>').show(); $('<%= show_id %>').hide(); return false;">
+        <%= image_tag('info.gif', 
+              :alt => "View info about #{lowercase_title}",
+              :title => "View info about #{lowercase_title}",
+              :class => 'field_info',
+              :id => "#{info_id}_view_info") %>
+      </a>
+      <%= content_after_info_icon %>
+   </span>
+    <div id="<%= info_id %>" class="info" style="display: none">
+      <a href="#" onclick="$('<%= info_id %>').hide();$('<%= show_id %>').show(); return false;">
+        <%= image_tag('cross.png', 
+              :alt => "Close #{lowercase_title} info",
+              :title => "Close #{lowercase_title} info",
+              :class => 'hide_info') %>
+      </a>
+      <span class="info_title"><%= title %></span>
+      <br />
+      <%= info_html %>      
+    </div>    
+<% end -%>

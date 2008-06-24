@@ -1,10 +1,13 @@
 <%
     section_settings_input_name_prefix = "#{input_prefix}[section_settings]"
     section_settings_input_id_prefix = sanatize_input_id(section_settings_input_name_prefix)  
+    inversion_id = "#{section_settings_input_id_prefix}_apply_inversion"
+    retrograde_id = "#{section_settings_input_id_prefix}_apply_retrograde"
 -%>
 <div class="voice_or_section_settings">
     <%= hidden_field_tag "#{section_settings_input_name_prefix}[ignore]", 'ensure have hash', :id => "#{section_settings_input_id_prefix}_ignore" %>
-    Apply Inversion <%= check_box_tag "#{section_settings_input_name_prefix}[apply_inversion]", 1, settings.getApplyInversion, :id => "#{section_settings_input_id_prefix}_apply_inversion" %>
-    <br />
-    Apply Retrograde <%= check_box_tag "#{section_settings_input_name_prefix}[apply_retrograde]", 1, settings.getApplyRetrograde, :id => "#{section_settings_input_id_prefix}_apply_retrograde" %>
+    Apply Inversion <%= check_box_tag "#{section_settings_input_name_prefix}[apply_inversion]", 1, settings.getApplyInversion, :id => inversion_id %>
+    <%= info('apply_inversion', inversion_id, '<br />') %>    
+    Apply Retrograde <%= check_box_tag "#{section_settings_input_name_prefix}[apply_retrograde]", 1, settings.getApplyRetrograde, :id => retrograde_id %>
+    <%= info('apply_retrograde', retrograde_id) %> 
 </div>

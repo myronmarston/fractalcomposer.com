@@ -1,7 +1,6 @@
   <div class="piece_settings_wrap">
     <%= render :partial => 'scale_selection', :locals => {:scale => @fractal_piece.getScale, :input_prefix => '', :id_to_serialize => nil, :generate_update_germ_js => true} %>    
-    <br />
-    
+        
     Time Signature:
     <%= text_field_tag :time_signature, @fractal_piece.getTimeSignature, :size => 4 %>
     <%= get_live_validation_js_with_defaults('time_signature', @fractal_piece.getTimeSignature,
@@ -14,19 +13,17 @@
         :complete  => observe_field_complete_js_for_field_that_effects_germ,
         :condition => "#{get_live_validation_var_name('time_signature')}.validate()") %>
     <%= observe_field :time_signature, :function => remote_time_sig_js %>    
-    <%= help('time_signature') %>
-    <br />
+    <%= info('time_signature', nil, '<br />') %>    
     
     Tempo:    
     <%= text_field_tag :tempo, @fractal_piece.getTempo, :size => 4 %>
     <%= get_live_validation_js_with_defaults('tempo', @fractal_piece.getTempo,
         {:type => 'Validate.Presence'}, 
         {:type => 'Validate.Numericality', :args => "{ onlyInteger: true, minimum: #{com.myronmarston.music.Tempo::MIN_TEMPO_BPM}, maximum: #{com.myronmarston.music.Tempo::MAX_TEMPO_BPM}, notANumberMessage: 'Must be an integer!' }"}) %>    
-    <%= help('tempo') %>
-    <br />
-    
+    <%= info('tempo', nil, '<br />') %>
+        
     Germ:  
-    <%= help('germ') %>
+    <%= info('germ') %>
     <%= text_area_tag :germ_string, h(session[:germ_string]), :cols => 60, :rows => 1 %>
     <%= observe_field :germ_string, 
         :url => { :action => :set_germ_xhr },         
@@ -40,9 +37,9 @@
     <br />
     Generate Layered Intro    
     <%= check_box_tag :generate_layered_intro, 1, @fractal_piece.getGenerateLayeredIntro %>
-    <br />
+    <%= info('generate_layered_intro', nil, '<br />') %>
     
     Generate Layered Outro    
     <%= check_box_tag :generate_layered_outro, 1, @fractal_piece.getGenerateLayeredOutro %>
-
+    <%= info('generate_layered_outro') %>
   </div>

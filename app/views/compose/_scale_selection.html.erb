@@ -4,6 +4,7 @@
   <%= select_tag @scale_name, options_for_select(@scale_names, scale.java_class), :id => @scale_id %>
   <%= get_scale_or_key_observe_field(@scale_id, @scale_id, @key_id, @scale_spinner_id, generate_update_germ_js, input_prefix, id_to_serialize) %>
   &nbsp;    
-  <%= render :partial => 'key_name_selection', :locals => {:scale => scale, :input_prefix => input_prefix, :generate_update_germ_js => generate_update_germ_js} %>    
+  <%= render :partial => 'key_name_selection', :locals => {:scale => scale, :input_prefix => input_prefix, :generate_update_germ_js => generate_update_germ_js} %>      
   <%= render :partial => 'spinner', :locals => {:div_id => @scale_spinner_id, :display => 'none', :bottom_px => -2} %>    
+  <%= info('scale_type_and_key', @scale_id, '<br />') %>
 <% end -%>

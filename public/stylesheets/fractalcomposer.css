@@ -3,11 +3,17 @@
    PURPOSE: contains CSS to override the coolwater style sheet.
  *************************************************************/
 
-img.spinner, img.delete_voice_or_section_image, img.hide_help {
+img.spinner, img.delete_voice_or_section_image, img.hide_info, img.field_info {
     background: transparent;
     border: transparent;
     margin: 0px;
     padding: 0px;    
+}
+
+img.field_info {
+    position: relative;
+    top: 2px;
+    z-index: 999; /* must be on top to allow clicking */
 }
 
 img.delete_voice_or_section_image {
@@ -123,7 +129,7 @@ fieldset.self_similarity_fieldset {
 
 .self_similarity_settings_field_1, .self_similarity_settings_field_2, .self_similarity_settings_field_3 {    
     position: absolute;
-    top: 0px;
+    bottom: 0px;
     text-align: center;
 }
 
@@ -150,7 +156,7 @@ form#compose_form fieldset.self_similarity_settings_fieldset {
     margin-right: 0px;
 }
 
-div.help {    
+div.info {    
     line-height: 1.2em;
     position: relative;
     margin: 2px;
@@ -158,13 +164,17 @@ div.help {
     padding: 10px 26px 10px 20px;    
 }
 
-div#main div.tab_panel_body div.help p {
-    /* cancel the normal p style */
-    padding: 0px; 
-    margin: 0px;
+span.info_title {
+    font-weight: bold;    
 }
 
-.hide_help {
+div#main div.tab_panel_body div.info p {
+    /* cancel the normal p style */
+    padding: 0px; 
+    margin: 10px 0px 0px 0px;
+}
+
+.hide_info {
     position: absolute;
     top: 2px;
     right: 2px;
@@ -228,23 +238,23 @@ div.tab_panel_body {
     background-color: #E5EFF9;
 }
 
-div.tab_panel_body fieldset, div.tab_panel_body div.help {
+div.tab_panel_body fieldset, div.tab_panel_body div.info {
     background-color: #D9E8F9;    
 }
 
-div.tab_panel_body fieldset fieldset, div.tab_panel_body fieldset div.help {
+div.tab_panel_body fieldset fieldset, div.tab_panel_body fieldset div.info {
     background-color: #CFE3F9;
 }
 
-div.tab_panel_body fieldset fieldset fieldset, div.tab_panel_body fieldset fieldset div.help {
+div.tab_panel_body fieldset fieldset fieldset, div.tab_panel_body fieldset fieldset div.info {
     background-color: #C5DEF9;
 }
 
-div.tab_panel_body fieldset fieldset fieldset fieldset, div.tab_panel_body fieldset fieldset fieldset div.help {
+div.tab_panel_body fieldset fieldset fieldset fieldset, div.tab_panel_body fieldset fieldset fieldset div.info {
     background-color: #BBD9F9;
 }
 
-div.tab_panel_body fieldset fieldset fieldset fieldset fieldset, div.tab_panel_body fieldset fieldset fieldset fieldset div.help {
+div.tab_panel_body fieldset fieldset fieldset fieldset fieldset, div.tab_panel_body fieldset fieldset fieldset fieldset div.info {
     background-color: #B2D4F9;
 }
 
