@@ -8,13 +8,14 @@
     info_id = "#{id}_info"
     content_after_info_icon ||= ""      
     lowercase_title = name.humanize.downcase
-    title = lowercase_title.gsub(/\b\w/) {|c| c.upcase}
-    puts "title = #{title}"
+    title = lowercase_title.gsub(/\b\w/) {|c| c.upcase}    
+    icon_style = (icon_style.nil? || icon_style == '' ? '' : " style=\"#{icon_style}\"") 
+    info_wrap_div_class = (info_wrap_div_class.nil? || info_wrap_div_class == '' ? '' : " class=\"#{info_wrap_div_class}\"")
 -%>
 <% if info_html == '' -%>
     <%= content_after_info_icon %>
 <% else -%>
-    <span id="<%= show_id %>">
+    <span id="<%= show_id %>"<%= icon_style %>>
       <a href="#" onclick="$('<%= info_id %>').show(); $('<%= show_id %>').hide(); return false;">
         <%= image_tag('info.gif', 
               :alt => "View info about #{lowercase_title}",
@@ -24,15 +25,17 @@
       </a>
       <%= content_after_info_icon %>
    </span>
-    <div id="<%= info_id %>" class="info" style="display: none">
-      <a href="#" onclick="$('<%= info_id %>').hide();$('<%= show_id %>').show(); return false;">
-        <%= image_tag('cross.png', 
-              :alt => "Close #{lowercase_title} info",
-              :title => "Close #{lowercase_title} info",
-              :class => 'hide_info') %>
-      </a>
-      <span class="info_title"><%= title %></span>
-      <br />
-      <%= info_html %>      
-    </div>    
+    <div<%= info_wrap_div_class%>>
+      <div id="<%= info_id %>" class="info" style="display: none">
+        <a href="#" onclick="$('<%= info_id %>').hide();$('<%= show_id %>').show(); return false;">
+          <%= image_tag('cross.png', 
+                :alt => "Close #{lowercase_title} info",
+                :title => "Close #{lowercase_title} info",
+                :class => 'hide_info') %>
+        </a>
+        <span class="info_title"><%= title %></span>
+        <br />
+        <%= info_html %>      
+      </div>    
+    </div>
 <% end -%>

@@ -108,7 +108,7 @@ div.voice_sections_wrap {
 
 div.fieldset_content, .piece_settings_wrap {
     /* keep the left and right margins here in sync with the no_margin_content class */
-    margin: 0px 25px 10px 20px;    
+    margin: 0px 20px 10px 20px;    
     position: relative;    
 }
 
@@ -118,7 +118,7 @@ div.fieldset_content, .piece_settings_wrap {
 
 div.no_margin_content {
     /* opposites of margins for fieldset_content class */
-    margin-right: -25px;
+    margin-right: -20px;
     margin-left: -20px;    
 }
 
@@ -159,9 +159,13 @@ form#compose_form fieldset.self_similarity_settings_fieldset {
 div.info {    
     line-height: 1.2em;
     position: relative;
-    margin: 2px;
+    margin: 2px;    
     /* right padding is 26 to allow for the X image, which is 16 pixels */
     padding: 10px 26px 10px 20px;    
+}
+
+.info_wrap_spacer {
+    padding: 10px 20px 0px 20px;
 }
 
 span.info_title {
@@ -178,6 +182,15 @@ div#main div.tab_panel_body div.info p {
     position: absolute;
     top: 2px;
     right: 2px;
+}
+
+#main div.info ul {
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+.voice_sections_fieldset {
+    position: relative; /* to allow inner elements to use absolute positioning */
 }
 
 /*** Tabbed Panels ***/
@@ -236,6 +249,7 @@ div.tab_panel_body {
     border-bottom: 1px solid #CCCCCC;
     border-right: 1px solid #CCCCCC;  
     background-color: #E5EFF9;
+    position: relative; /* so we can use absolute positioning on inner elements */
 }
 
 div.tab_panel_body fieldset, div.tab_panel_body div.info {
@@ -256,6 +270,10 @@ div.tab_panel_body fieldset fieldset fieldset fieldset, div.tab_panel_body field
 
 div.tab_panel_body fieldset fieldset fieldset fieldset fieldset, div.tab_panel_body fieldset fieldset fieldset fieldset div.info {
     background-color: #B2D4F9;
+}
+
+div.tab_panel_body fieldset fieldset fieldset fieldset fieldset fieldset, div.tab_panel_body fieldset fieldset fieldset fieldset fieldset div.info {
+    background-color: #A8CFF9;
 }
 
 div.tab_panel_body, #main ul.tablist {
