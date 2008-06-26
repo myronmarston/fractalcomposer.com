@@ -34,5 +34,22 @@ class Test::Unit::TestCase
   # -- they do not yet inherit this setting
   fixtures :all
 
-  # Add more helper methods to be used by all tests here...
+  # Add more helper methods to be used by all tests here...  
+  def create_dummy_file(filename)
+    full_filename = File.dirname(__FILE__) + "/fixtures/temp_folder/#{filename}"    
+    assert !File.exist?(full_filename)    
+    
+    File.open(full_filename, 'w') {|file| file.write('some_text')}         
+    assert File.exist?(full_filename)
+    
+    #now pass the file back to a block...
+    File.open(full_filename, 'r') {|file| yield file}
+  end
+  
+  def delete_file_if_exists(filename)
+    full_filename = File.dirname(__FILE__) + "/fixtures/temp_folder/#{filename}"    
+        
+    File.delete(full_filename) if File.exist?(full_filename)
+    assert !File.exist?(full_filename)
+  end  
 end

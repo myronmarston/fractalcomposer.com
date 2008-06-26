@@ -116,7 +116,7 @@ class ComposeController < ApplicationController
     
   def generate_piece_xhr    
     update_fractal_piece
-    save_piece_files
+    save_piece_files        
     respond_to { |format| format.js }
   end
   
@@ -276,6 +276,12 @@ class ComposeController < ApplicationController
       output_manager = @fractal_piece.createPieceResultOutputManager    
       output_manager.saveMidiFile(get_local_filename(@piece_midi_filename))
       output_manager.saveGifImage(get_local_filename(@piece_image_filename))
+      
+      piece = GeneratedPiece.new
+      piece.user_ip_address = request.remote_ip
+      piece.fractal_piece = @fractal_piece.getXmlRepresentation
+      piece.generated_midi_file = @piece_midi_filename
+      piece.save!
     rescue GermIsEmptyException => ex
       logger.info "The piece could not be saved because the germ is empty."
       @piece_midi_filename = nil    

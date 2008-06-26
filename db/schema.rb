@@ -9,7 +9,15 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define() do
+ActiveRecord::Schema.define(:version => 3) do
+
+  create_table "generated_pieces", :force => true do |t|
+    t.string   "user_ip_address",     :default => "", :null => false
+    t.text     "fractal_piece",       :default => "", :null => false
+    t.string   "generated_midi_file", :default => "", :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "page_html_parts", :force => true do |t|
     t.string   "name",         :default => "", :null => false
