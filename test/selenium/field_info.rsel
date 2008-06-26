@@ -1,0 +1,19 @@
+include_partial 'load_extracted_fixture_data'
+include_partial 'clear_session'
+
+include_partial 'test_field_info', :id_prefix => 'piece_settings'
+include_partial 'test_field_info', :id_prefix => 'scale'
+include_partial 'test_field_info', :id_prefix => 'time_signature'
+include_partial 'test_field_info', :id_prefix => 'tempo'
+include_partial 'test_field_info', :id_prefix => 'germ'
+include_partial 'test_field_info', :id_prefix => 'generate_layered_intro'
+include_partial 'test_field_info', :id_prefix => 'generate_layered_outro'
+
+include_partial 'click_tab', :from_tab => 'piece_settings', :to_tab => 'voices'
+include_partial 'test_field_info', :id_prefix => 'voices'
+include_partial 'test_voice_field_info', :voice_index => 1
+
+include_partial 'click_tab', :from_tab => 'voices', :to_tab => 'sections'
+include_partial 'test_field_info', :id_prefix => 'sections'
+include_partial 'test_section_field_info', :section_index => 1
+

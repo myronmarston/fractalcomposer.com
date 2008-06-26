@@ -1,0 +1,1 @@
+open '/selenium/setup?fixtures=extracted_from_db/all'

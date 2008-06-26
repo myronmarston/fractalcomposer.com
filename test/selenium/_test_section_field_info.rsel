@@ -1,0 +1,13 @@
+# this assumes that we are already on the sections tab
+
+prefix = "sections_#{section_index}"
+section_settings_prefix = "#{prefix}__section_settings"
+
+include_partial 'test_field_info', :id_prefix => "#{prefix}_override_scale"
+include_partial 'set_checkbox_value', :id => "#{prefix}_override_scale", :value => true, :ajax => true
+include_partial 'test_field_info', :id_prefix => "#{prefix}__scale"
+include_partial 'test_field_info', :id_prefix => "#{section_settings_prefix}_apply_inversion"
+include_partial 'test_field_info', :id_prefix => "#{section_settings_prefix}_apply_retrograde"
+
+include_partial 'test_voice_section_field_info', :voices_or_sections => 'sections', :index_1 => section_index, :index_2 => 1
+

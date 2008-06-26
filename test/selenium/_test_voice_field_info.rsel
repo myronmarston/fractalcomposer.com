@@ -1,0 +1,12 @@
+# this assumes that we are already on the voices tab
+
+prefix = "voices_#{voice_index}"
+voice_settings_prefix = "#{prefix}__voice_settings"
+
+include_partial 'test_field_info', :id_prefix => "#{prefix}_instrument"
+include_partial 'test_field_info', :id_prefix => "#{voice_settings_prefix}_octave_adjustment"
+include_partial 'test_field_info', :id_prefix => "#{voice_settings_prefix}_speed_scale_factor"
+include_partial 'test_field_info', :id_prefix => "#{voice_settings_prefix}__self_similarity_settings_self_similarity_iterations"
+include_partial 'test_field_info', :id_prefix => "#{voice_settings_prefix}__self_similarity_settings"
+
+include_partial 'test_voice_section_field_info', :voices_or_sections => 'voices', :index_1 => voice_index, :index_2 => 1

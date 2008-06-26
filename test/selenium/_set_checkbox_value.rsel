@@ -1,3 +1,4 @@
+verify_value_changing = (verify_value_changing.nil? ? false : verify_value_changing)
 value_text = (value ? 'on' : 'off')
 verify_not_value(id, value_text) if verify_value_changing
 

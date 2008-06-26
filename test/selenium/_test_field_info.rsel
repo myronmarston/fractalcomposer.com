@@ -1,0 +1,19 @@
+show_image_id = "#{id_prefix}_show_info_image"
+hide_image_id = "#{id_prefix}_hide_info_image"
+info_id = "#{id_prefix}_info"
+
+verify_visible show_image_id
+verify_not_visible hide_image_id
+verify_not_visible info_id
+
+click show_image_id
+
+verify_not_visible show_image_id
+verify_visible hide_image_id
+verify_visible info_id
+
+click hide_image_id
+
+verify_visible show_image_id
+verify_not_visible hide_image_id
+verify_not_visible info_id
