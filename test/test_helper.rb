@@ -1,6 +1,10 @@
 ENV["RAILS_ENV"] = "test"
 require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
 require 'test_help'
+require 'FractalComposer.jar'
+require 'simple-xml-1.7.2.jar'
+import com.myronmarston.music.settings.FractalPiece
+import com.myronmarston.util.FileHelper
 
 class Test::Unit::TestCase
   # Transactional fixtures accelerate your tests by wrapping each test method
@@ -34,22 +38,19 @@ class Test::Unit::TestCase
   # -- they do not yet inherit this setting
   fixtures :all
 
-  # Add more helper methods to be used by all tests here...  
-  def create_dummy_file(filename)
-    full_filename = File.dirname(__FILE__) + "/fixtures/temp_folder/#{filename}"    
-    assert !File.exist?(full_filename)    
-    
-    File.open(full_filename, 'w') {|file| file.write('some_text')}         
-    assert File.exist?(full_filename)
-    
-    #now pass the file back to a block...
-    File.open(full_filename, 'r') {|file| yield file}
-  end
-  
-  def delete_file_if_exists(filename)
-    full_filename = File.dirname(__FILE__) + "/fixtures/temp_folder/#{filename}"    
+  def fillin_generated_piece_values(piece = nil)
+    piece ||= GeneratedPiece.new
+    FileHelper.createAndUseTempFile 'test', 'mid', proc {|filename|      
+        fp = FractalPiece.new
+        fp.setGermString('G4 A4')
+        fp.createDefaultSettings       
+        fp.createPieceResultOutputManager.saveMidiFile(filename)
         
-    File.delete(full_filename) if File.exist?(full_filename)
-    assert !File.exist?(full_filename)
-  end  
+        piece.user_ip_address = '127.0.0.1'
+        piece.fractal_piece = fp.getXmlRepresentation
+        piece.generated_midi_file = filename
+        
+        yield piece
+    }
+  end
 end

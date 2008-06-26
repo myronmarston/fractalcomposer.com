@@ -1,0 +1,1 @@
+page.replace_html 'submit_to_library_result_wrap', :partial => 'submit_to_library_result'

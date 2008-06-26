@@ -1,0 +1,9 @@
+<div id="submit_to_library_result">
+<% if @user_submission_saved -%>  
+   <p>&#8220;<%= @user_submission.title %>&#8221; has been successfully submitted.</p>
+<% else -%>   
+   <h3>There was a problem with your submission.</h3>
+   <p>Please review the following errors:</p>
+   <%= error_messages_for(:user_submission) %>   
+<% end -%>
+</div>

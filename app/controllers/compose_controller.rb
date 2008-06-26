@@ -23,11 +23,7 @@ class ComposeController < ApplicationController
   before_filter :load_fractal_piece_from_session
   after_filter :store_fractal_piece_in_session
   
-  # update the fractal piece based on the request's params
-  # this filter must come after load_fractal_piece_from_session
-  #before_filter :update_fractal_piece
-  
-  # this filter sets our instrument_names variable; all actions that need it should be included.
+  # these filters set some variables used by particular actions...  
   before_filter :set_instrument_names, :only => [ :index, :add_voice_or_section_xhr, :clear_session_xhr ]
   before_filter :set_scale_names, :only => [ :index, :get_section_overriden_scale_xhr, :clear_session_xhr ]
   
@@ -131,6 +127,13 @@ class ComposeController < ApplicationController
     @fractal_piece = get_new_fractal_piece     
     clear_germ_files
     respond_to { |format| format.js } 
+  end
+  
+  def submit_to_library_xhr    
+    @user_submission = UserSubmission.new(params[:user_submission])
+    @user_submission.generated_piece_id = session[:last_generated_piece_id]    
+    @user_submission_saved = @user_submission.save
+    respond_to { |format| format.js }
   end
   
   protected
@@ -281,7 +284,9 @@ class ComposeController < ApplicationController
       piece.user_ip_address = request.remote_ip
       piece.fractal_piece = @fractal_piece.getXmlRepresentation
       piece.generated_midi_file = @piece_midi_filename
-      piece.save!
+      piece.save! 
+      # store the id so that we can retrieve it if the user submits the piece
+      session[:last_generated_piece_id] = piece.id 
     rescue GermIsEmptyException => ex
       logger.info "The piece could not be saved because the germ is empty."
       @piece_midi_filename = nil    

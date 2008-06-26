@@ -52,6 +52,10 @@ form#compose_form input.button {
     margin: 10px 20px;
 }
 
+form#compose_form .textbox {
+    border: 1px solid #9CC8F4;
+}
+
 div#start_over_button_wrap {
     float: right;
 }
@@ -193,6 +197,24 @@ div#main div.tab_panel_body div.info p {
     position: relative; /* to allow inner elements to use absolute positioning */
 }
 
+#submit_to_library_panel {
+    line-height: 0.5em; 
+}
+
+#submit_to_library_panel p {
+    margin-bottom: 0px;
+}
+
+#submit_to_library_result {
+    border: 2px solid #A8CFF9;
+    margin: 0px 20px 10px 20px;
+    padding-bottom: 10px;
+}
+
+#submit_to_library_result div#errorExplanation h2, #submit_to_library_result div#errorExplanation p {
+    display: none;
+}
+
 /*** Tabbed Panels ***/
 /*
 Adapted from Kalsey CSS tabs:
@@ -252,7 +274,7 @@ div.tab_panel_body {
     position: relative; /* so we can use absolute positioning on inner elements */
 }
 
-div.tab_panel_body fieldset, div.tab_panel_body div.info {
+div.tab_panel_body fieldset, div.tab_panel_body div.info, #submit_to_library_result {
     background-color: #D9E8F9;    
 }
 

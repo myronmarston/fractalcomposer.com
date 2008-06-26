@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 3) do
+ActiveRecord::Schema.define(:version => 4) do
 
   create_table "generated_pieces", :force => true do |t|
     t.string   "user_ip_address",     :default => "", :null => false
@@ -27,12 +27,6 @@ ActiveRecord::Schema.define(:version => 3) do
     t.datetime "updated_at"
   end
 
-  create_table "schema_migrations", :id => false, :force => true do |t|
-    t.string "version", :default => "", :null => false
-  end
-
-  add_index "schema_migrations", ["version"], :name => "unique_schema_migrations", :unique => true
-
   create_table "sessions", :force => true do |t|
     t.string   "session_id", :default => "", :null => false
     t.text     "data"
@@ -42,5 +36,16 @@ ActiveRecord::Schema.define(:version => 3) do
 
   add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
   add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
+
+  create_table "user_submissions", :force => true do |t|
+    t.string   "name",               :default => "", :null => false
+    t.string   "email",              :default => "", :null => false
+    t.string   "website"
+    t.string   "title",              :default => "", :null => false
+    t.string   "description"
+    t.integer  "generated_piece_id",                 :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
 end
