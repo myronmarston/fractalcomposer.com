@@ -12,3 +12,19 @@ function fireEvent(element,event){
     return !element.dispatchEvent(evt);
   }
 }
+
+function disableButton(element_id) {
+    var element = $(element_id);
+    element.disable();
+    if (!element.hasClassName('disabled_button')) {
+        element.addClassName('disabled_button');    
+    }    
+}
+
+function enableButton(element_id) {
+    var element = $(element_id);
+    element.enable();
+    if (element.hasClassName('disabled_button')) {
+        element.removeClassName('disabled_button');    
+    }    
+}

@@ -215,6 +215,11 @@ div#main div.tab_panel_body div.info p {
     display: none;
 }
 
+input.disabled_button { 	
+    background: #686868 url(/images/button-disabled-bg.jpg) repeat-x 0 0; 	
+    border: 1px solid #686868;        
+}
+
 /*** Tabbed Panels ***/
 /*
 Adapted from Kalsey CSS tabs:

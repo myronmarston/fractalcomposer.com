@@ -4,6 +4,7 @@
       <strong>Piece Title:</strong> (required)         
     </label>
     <%= text_field 'user_submission', 'title', :size => 35, :maxlength => 50, :class => 'textbox' %>    
+    <%= get_live_validation_js_with_defaults('user_submission_title', false, {:type => 'Validate.Presence'}) %>
   </p>
   
   <p> 
@@ -11,6 +12,7 @@
       <strong>Name:</strong> (required)         
     </label>
     <%= text_field 'user_submission', 'name', :size => 35, :maxlength => 50, :class => 'textbox' %>    
+    <%= get_live_validation_js_with_defaults('user_submission_name', false, {:type => 'Validate.Presence'}) %>
   </p>
 
   <p> 
@@ -18,6 +20,9 @@
       <strong>Email:</strong> (required, but will not be displayed)         
     </label>
     <%= text_field 'user_submission', 'email', :size => 35, :class => 'textbox' %>    
+    <%= get_live_validation_js_with_defaults('user_submission_email', false, 
+        {:type => 'Validate.Presence'},
+        {:type => 'Validate.Email'}) %>
   </p>
 
   <p> 

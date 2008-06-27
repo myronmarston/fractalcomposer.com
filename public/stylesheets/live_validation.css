@@ -10,6 +10,11 @@
 .LV_invalid {
     color:#FF0000;    
 }
+
+#submit_to_library_panel .LV_invalid {
+    line-height: 1.1em;
+}
+
 /* Commented this out because most fields are already filled in, and they don't start with a green
    border.  For the sake of consistency, we will just not show a border at all for valid fields.
 .LV_valid_field,

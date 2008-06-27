@@ -2,6 +2,24 @@ require File.dirname(__FILE__) + '/../test_helper'
 
 class UserSubmissionTest < ActiveSupport::TestCase
   
+   def test_empty_strings
+     fillin_generated_piece_values do |piece|
+      piece.save!
+      submission = UserSubmission.new
+      submission.email = 'test@mailinator.com'     
+      submission.generated_piece = piece
+      submission.title = '   '      
+      submission.name = '    '      
+      assert !submission.valid?, 'Strings with spaces were improperly allowed.'
+      [:name, :title].each do |field|
+        assert submission.errors.invalid?(field), "Field #{field} should be invalid and is not."
+      end       
+      
+      submission.title = 'Test title'
+      submission.title = 'Test name'
+    end             
+   end
+  
    def test_required_fields
     submission = UserSubmission.new
     assert !submission.valid?
