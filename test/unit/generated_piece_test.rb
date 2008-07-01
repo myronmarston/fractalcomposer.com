@@ -6,11 +6,11 @@ class GeneratedPieceTest < ActiveSupport::TestCase
     piece = GeneratedPiece.new
     assert !piece.valid?
     
-    [:user_ip_address, :fractal_piece, :generated_midi_file].each do |field|
+    [:user_ip_address, :fractal_piece, :generated_midi_file, :generated_guido_file].each do |field|
       assert piece.errors.invalid?(field), "Field #{field} was not required as expected"
     end    
     
-    fillin_generated_piece_values(piece) {|piece| assert piece.valid?}    
+    fillin_generated_piece_values(piece, false) {|piece| assert piece.valid?}    
   end
    
 end

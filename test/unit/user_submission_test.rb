@@ -1,10 +1,11 @@
 require File.dirname(__FILE__) + '/../test_helper'
+require 'path_helper'
 
 class UserSubmissionTest < ActiveSupport::TestCase
+  extend PathHelper
   
    def test_empty_strings
      fillin_generated_piece_values do |piece|
-      piece.save!
       submission = UserSubmission.new
       submission.email = 'test@mailinator.com'     
       submission.generated_piece = piece
@@ -33,8 +34,7 @@ class UserSubmissionTest < ActiveSupport::TestCase
     submission.email = 'test@mailinator.com'
     submission.title = 'Fractoid #6'
     
-    fillin_generated_piece_values do |piece|
-      piece.save!
+    fillin_generated_piece_values do |piece|      
       submission.generated_piece = piece
       assert submission.valid?, "Unexpected error(s): #{submission.errors.inspect}"
     end    
@@ -43,8 +43,6 @@ class UserSubmissionTest < ActiveSupport::TestCase
   def test_validates_email_address        
     # now provide values for all these fields...     
     fillin_generated_piece_values do |piece|
-      piece.save!
-      
       submission = UserSubmission.new
       submission.generated_piece = piece
       submission.name = 'Myron'      
@@ -60,10 +58,7 @@ class UserSubmissionTest < ActiveSupport::TestCase
   end
   
   def test_validates_website
-     # now provide values for all these fields...     
-    fillin_generated_piece_values do |piece|
-      piece.save!
-      
+    fillin_generated_piece_values do |piece|            
       submission = UserSubmission.new
       submission.generated_piece = piece
       submission.name = 'Myron'      
@@ -85,6 +80,31 @@ class UserSubmissionTest < ActiveSupport::TestCase
       submission.website = 'www.google.com'
       assert submission.valid?, "Unexpected error(s): #{submission.errors.inspect}"      
     end        
+  end
+  
+  def test_processing
+    fillin_generated_piece_values do |piece|
+      submission = UserSubmission.new
+      submission.generated_piece = piece
+      submission.name = 'Myron'      
+      submission.title = 'Fractoid #6'
+      submission.email = 'test@mailinator.com'            
+      
+      assert submission.save, 'The submission could not be saved as expected.'
+      id = submission.id
+      
+      time1 = Time.now      
+      while (time1 > 3.minutes.ago) # wait a max of 3 minutes
+        test_submission = UserSubmission.find(id)
+        break if test_submission.processing_completed
+      end
+      
+      saved_submission = UserSubmission.find(id)
+      assert !saved_submission.processing_began.nil?, 'The processing_began field should have a value.'
+      assert !saved_submission.processing_completed.nil?, 'The processing_completed field should have a value.'
+      assert !saved_submission.mp3_file.nil?, 'The mp3_file field should have a value.'
+      assert File.exist?(UserSubmissionTest.get_local_filename(saved_submission.mp3_file)), 'The mp3 file does not exist as expected.'
+    end
   end
     
 end

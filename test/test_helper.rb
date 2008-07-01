@@ -38,17 +38,16 @@ class Test::Unit::TestCase
   # -- they do not yet inherit this setting
   fixtures :all
 
-  def fillin_generated_piece_values(piece = nil)
+  def fillin_generated_piece_values(piece = nil, save = true)
     piece ||= GeneratedPiece.new
     FileHelper.createAndUseTempFile 'test', 'mid', proc {|filename|      
+        piece.user_ip_address = '127.0.0.1'
+      
         fp = FractalPiece.new
         fp.setGermString('G4 A4')
         fp.createDefaultSettings       
-        fp.createPieceResultOutputManager.saveMidiFile(filename)
         
-        piece.user_ip_address = '127.0.0.1'
-        piece.fractal_piece = fp.getXmlRepresentation
-        piece.generated_midi_file = filename
+        piece.generate_piece(fp, save)
         
         yield piece
     }

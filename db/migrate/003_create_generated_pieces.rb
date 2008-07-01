@@ -4,6 +4,7 @@ class CreateGeneratedPieces < ActiveRecord::Migration
       t.column :user_ip_address, :string, :null => false
       t.column :fractal_piece, :text, :null => false
       t.column :generated_midi_file, :string, :null => false
+      t.column :generated_guido_file, :string, :null => false
       t.timestamps
     end
   end

@@ -171,11 +171,13 @@ module ComposeHelper
   end
   
   def get_live_validation_js(id, consructor_args, *validations)              
-    javascript_tag(render(:partial => 'live_validation', :locals => {:id => id, :constructor_args => consructor_args, :validations => validations}))
+    # TODO: fix this so it works--for now if the user submission fields are empty, we cannot generate a piece
+    #javascript_tag(render(:partial => 'live_validation', :locals => {:id => id, :constructor_args => consructor_args, :validations => validations}))
   end
 
   def get_live_validation_js_with_defaults(id, validate_now, *validations)              
-    javascript_tag(render(:partial => 'live_validation', :locals => {:id => id, :validate_now => validate_now, :constructor_args => 'validMessage: null', :validations => validations}))    
+    # TODO: fix this so it works--for now if the user submission fields are empty, we cannot generate a piece
+    #javascript_tag(render(:partial => 'live_validation', :locals => {:id => id, :validate_now => validate_now, :constructor_args => 'validMessage: null', :validations => validations}))    
   end
   
   def get_live_validation_var_name(id)

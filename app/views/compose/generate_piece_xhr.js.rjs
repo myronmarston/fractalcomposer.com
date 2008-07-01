@@ -2,5 +2,5 @@ page.replace_html 'generated_piece_image_and_notation',
     :partial => 'midi_player_and_notation', 
     :locals => {:midi_player_div_id => 'piece_midi_player', 
                 :image_div_id => 'piece_image', 
-                :midi_filename => @piece_midi_filename, 
-                :image_filename => @piece_image_filename }
+                :midi_filename => @last_generated_piece.generated_midi_file, 
+                :image_filename => '' }

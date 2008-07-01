@@ -7,6 +7,7 @@
       <%= h session[:germ_error_message] %>
   </div>
 <% else -%>
+  <!--TODO: this doesn't get properly refreshed when the germ changes-->
   <%= render :partial => 'midi_player_and_notation', 
         :locals => {:midi_player_div_id => 'germ_midi_player',
                     :image_div_id => 'germ_image',        

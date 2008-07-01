@@ -1,7 +1,15 @@
+require 'jruby'
+java.lang.Thread.currentThread.setContextClassLoader(JRuby.runtime.jruby_class_loader)
+
+require 'path_helper'
 require 'uuidtools.rb'
 require 'fileutils.rb'
 require 'FractalComposer.jar'
 require 'simple-xml-1.7.2.jar'
+require 'gervill.jar'
+require 'tritonus_mp3-0.3.6.jar'
+require 'tritonus_remaining-0.3.6.jar'
+require 'tritonus_share-0.3.6.jar'
 import com.myronmarston.util.ClassHelper
 import com.myronmarston.music.settings.FractalPiece
 import com.myronmarston.music.scales.Scale
@@ -19,6 +27,8 @@ import java.lang.NumberFormatException
 
 #todo: refactor eval's to use send instead
 class ComposeController < ApplicationController
+  extend PathHelper
+  
   # these filters persist @fractal_piece between requests; all actions need this
   before_filter :load_fractal_piece_from_session
   after_filter :store_fractal_piece_in_session
@@ -260,12 +270,12 @@ class ComposeController < ApplicationController
   end
   
   def save_germ_files(save_midi, save_image)
-    begin
+    begin      
       @germ_midi_filename = get_germ_midi_filename
       @germ_image_filename = get_germ_image_filename    
       output_manager = @fractal_piece.createGermOutputManager    
-      output_manager.saveMidiFile(get_local_filename(@germ_midi_filename)) if save_midi
-      output_manager.saveGifImage(get_local_filename(@germ_image_filename)) if save_image
+      output_manager.saveMidiFile(ComposeController.get_local_filename(@germ_midi_filename)) if save_midi
+      output_manager.saveGifImage(ComposeController.get_local_filename(@germ_image_filename)) if save_image
     rescue GermIsEmptyException => ex
       logger.info "The germ could not be saved because the germ is empty."
       clear_germ_files
@@ -274,23 +284,14 @@ class ComposeController < ApplicationController
   
   def save_piece_files
     begin
-      @piece_midi_filename = get_piece_midi_filename            
-      @piece_image_filename = get_piece_image_filename    
-      output_manager = @fractal_piece.createPieceResultOutputManager    
-      output_manager.saveMidiFile(get_local_filename(@piece_midi_filename))
-      output_manager.saveGifImage(get_local_filename(@piece_image_filename))
+      @last_generated_piece = GeneratedPiece.new
+      @last_generated_piece.user_ip_address = request.remote_ip
+      @last_generated_piece.generate_piece(@fractal_piece, true) # pass true to save
       
-      piece = GeneratedPiece.new
-      piece.user_ip_address = request.remote_ip
-      piece.fractal_piece = @fractal_piece.getXmlRepresentation
-      piece.generated_midi_file = @piece_midi_filename
-      piece.save! 
       # store the id so that we can retrieve it if the user submits the piece
-      session[:last_generated_piece_id] = piece.id 
+      session[:last_generated_piece_id] = @last_generated_piece.id 
     rescue GermIsEmptyException => ex
-      logger.info "The piece could not be saved because the germ is empty."
-      @piece_midi_filename = nil    
-      @piece_image_filename = nil
+      logger.info "The piece could not be saved because the germ is empty."      
     end    
   end
   
@@ -300,7 +301,7 @@ class ComposeController < ApplicationController
     # File.exist? also works on directories
     # mode 0755 is read/write/execute for the user who creates the file, 
     # and read/execute for everyone else
-    Dir.mkdir(get_local_filename(temp_dir), 0755) unless File.exist?(get_local_filename(temp_dir)) 
+    Dir.mkdir(ComposeController.get_local_filename(temp_dir), 0755) unless File.exist?(ComposeController.get_local_filename(temp_dir)) 
     session[:session_temp_dir] = temp_dir
     return temp_dir
   end
@@ -308,7 +309,7 @@ class ComposeController < ApplicationController
   def delete_temp_directory_for_session
     temp_dir = session[:session_temp_dir]
     if temp_dir
-      local_temp_dir = get_local_filename(temp_dir)      
+      local_temp_dir = ComposeController.get_local_filename(temp_dir)      
       if File.exist?(local_temp_dir)
         FileUtils.remove_dir(local_temp_dir, true)
       end
@@ -318,20 +319,10 @@ class ComposeController < ApplicationController
   def delete_germ_files_for_session
     temp_dir = session[:session_temp_dir]
     if temp_dir        
-      if File.exist?(get_local_filename(temp_dir))
-        FileUtils.rm [get_local_filename(get_germ_midi_filename), get_local_filename(get_germ_image_filename)], :force => true
+      if File.exist?(ComposeController.get_local_filename(temp_dir))
+        FileUtils.rm [ComposeController.get_local_filename(get_germ_midi_filename), ComposeController.get_local_filename(get_germ_image_filename)], :force => true
       end
     end
-  end
-  
-  def get_url_filename(filename)
-    # remove the "public/" from the front of the string, if it has it
-    filename.gsub(/^public\//, '')
-  end
-  
-  def get_local_filename(filename)
-    # add public/ to the start of the string, unless it already has it
-    "public/#{filename}" unless filename =~ /^public\//
   end
   
   def get_germ_midi_filename
@@ -341,14 +332,6 @@ class ComposeController < ApplicationController
   def get_germ_image_filename
     "#{get_temp_directory_for_session}/germ.gif"
   end  
-  
-  def get_piece_midi_filename
-    "#{get_temp_directory_for_session}/generated_piece.mid"
-  end
-  
-  def get_piece_image_filename
-    "#{get_temp_directory_for_session}/generated_piece.gif"
-  end
   
   def get_voice_or_section(voices_or_sections_label, unique_index)    
     @fractal_piece.send("get#{voices_or_sections_label.titleize}").getByUniqueIndex(unique_index.to_i)    
@@ -384,10 +367,10 @@ class ComposeController < ApplicationController
       end
       
       @germ_midi_filename = get_germ_midi_filename
-      @germ_midi_filename = nil unless File.exists?(get_local_filename(@germ_midi_filename))
+      @germ_midi_filename = nil unless File.exists?(ComposeController.get_local_filename(@germ_midi_filename))
       
       @germ_image_filename = get_germ_image_filename
-      @germ_image_filename = nil unless File.exists?(get_local_filename(@germ_image_filename))
+      @germ_image_filename = nil unless File.exists?(ComposeController.get_local_filename(@germ_image_filename))
     end
 
   end
