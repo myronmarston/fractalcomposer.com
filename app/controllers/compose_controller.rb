@@ -266,16 +266,16 @@ class ComposeController < ApplicationController
   def clear_germ_files
     delete_germ_files_for_session
     @germ_midi_filename = nil
-    @germ_image_filename = nil    
+    @germ_guido_filename = nil    
   end
   
   def save_germ_files(save_midi, save_image)
     begin      
       @germ_midi_filename = get_germ_midi_filename
-      @germ_image_filename = get_germ_image_filename    
+      @germ_guido_filename = get_germ_guido_filename    
       output_manager = @fractal_piece.createGermOutputManager    
       output_manager.saveMidiFile(ComposeController.get_local_filename(@germ_midi_filename)) if save_midi
-      output_manager.saveGifImage(ComposeController.get_local_filename(@germ_image_filename)) if save_image
+      output_manager.saveGuidoFile(ComposeController.get_local_filename(@germ_guido_filename)) if save_image
     rescue GermIsEmptyException => ex
       logger.info "The germ could not be saved because the germ is empty."
       clear_germ_files
@@ -320,7 +320,8 @@ class ComposeController < ApplicationController
     temp_dir = session[:session_temp_dir]
     if temp_dir        
       if File.exist?(ComposeController.get_local_filename(temp_dir))
-        FileUtils.rm [ComposeController.get_local_filename(get_germ_midi_filename), ComposeController.get_local_filename(get_germ_image_filename)], :force => true
+        FileUtils.rm [ComposeController.get_local_filename(get_germ_midi_filename), 
+                      ComposeController.get_local_filename(get_germ_guido_filename)], :force => true
       end
     end
   end
@@ -329,8 +330,8 @@ class ComposeController < ApplicationController
     "#{get_temp_directory_for_session}/germ.mid"
   end
   
-  def get_germ_image_filename
-    "#{get_temp_directory_for_session}/germ.gif"
+  def get_germ_guido_filename
+    "#{get_temp_directory_for_session}/germ.gmn"
   end  
   
   def get_voice_or_section(voices_or_sections_label, unique_index)    
@@ -369,15 +370,14 @@ class ComposeController < ApplicationController
       @germ_midi_filename = get_germ_midi_filename
       @germ_midi_filename = nil unless File.exists?(ComposeController.get_local_filename(@germ_midi_filename))
       
-      @germ_image_filename = get_germ_image_filename
-      @germ_image_filename = nil unless File.exists?(ComposeController.get_local_filename(@germ_image_filename))
+      @germ_guido_filename = get_germ_guido_filename
+      @germ_guido_filename = nil unless File.exists?(ComposeController.get_local_filename(@germ_guido_filenames))
     end
 
   end
 
   def store_fractal_piece_in_session           
-    session[:fractal_piece] = @fractal_piece.getXmlRepresentation if @fractal_piece     
-    session[:germ_filename] = @germ_filename if @germ_filename
+    session[:fractal_piece] = @fractal_piece.getXmlRepresentation if @fractal_piece         
   end
   
   def get_new_fractal_piece

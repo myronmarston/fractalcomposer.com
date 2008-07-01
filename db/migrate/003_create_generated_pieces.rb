@@ -7,6 +7,8 @@ class CreateGeneratedPieces < ActiveRecord::Migration
       t.column :generated_guido_file, :string, :null => false
       t.timestamps
     end
+    
+    execute "ALTER TABLE generated_pieces CHANGE COLUMN fractal_piece fractal_piece MEDIUMTEXT"
   end
 
   def self.down

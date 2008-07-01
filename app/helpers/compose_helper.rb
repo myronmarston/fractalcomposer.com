@@ -1,4 +1,5 @@
 module ComposeHelper
+  extend PathHelper
   
   def get_additional_tab_javascript(tab_name)       
     # notify the controller that the user has finished editing this tab,
@@ -166,7 +167,7 @@ module ComposeHelper
   end
   
   def get_style_for_germ_midi_player_wrapper
-    return '' if @germ_midi_filename || @germ_image_filename || session[:germ_error_message]
+    return '' if @germ_midi_filename || @germ_guido_filename || session[:germ_error_message]
     "style=\"display: none;\""
   end
   
@@ -191,6 +192,42 @@ module ComposeHelper
                        :content_after_info_icon => content_after_info_icon, 
                        :icon_style => icon_style, 
                        :info_wrap_div_class => info_wrap_div_class}
+  end
+  
+  def get_guido_image(guido_filename, id)
+    image_url =  'http://clef.cs.ubc.ca/scripts/salieri/gifserv.pl?'
+    image_url << 'defpw=350pt;'    
+    image_url << 'zoom=1.1;'    
+    image_url << 'crop=yes;'
+    image_url << 'mode=gif;'
+    
+    # unused parameters:
+    # defph (height) is unused because it seems to auto-height correctly if we
+    # don't give it a value.
+    #image_url << 'defph=1000pt;'
+    #image_url << 'markvoice=;'
+    #image_url << 'rtp=;'
+    
+    image_url << 'gmnurl=;'
+    
+    if (request.host =~ /localhost/)
+      # We're running on my development machine and the Guido note server can't
+      # access a gmn file here, so put the whole guido string in the image URL.
+      # Sometimes the URL will be too long and we'll get an empty image, but since this
+      # is just running locally, it's ok.
+      
+      guido_string = ''
+      File.open(ComposeHelper.get_local_filename(guido_filename), 'r') { |f| guido_string = f.read }
+      image_url << 'gmndata=' + CGI::escape(guido_string) + ';'      
+    else
+      # We're live on the internet, so the Guido note server can access our 
+      # gmn file.  This is the preferred way since the URL won't be too long.
+      
+      # TODO: test this!
+      image_url << 'gmnurl=' + url_for(ComposeHelper.get_url_filename(guido_filename)) + ';'
+    end
+    
+    image_tag(image_url, :alt => 'Music Notation', :id => id)
   end
 
 end

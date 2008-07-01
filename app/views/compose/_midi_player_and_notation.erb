@@ -6,7 +6,6 @@
            :locals => {:midi_filename => midi_filename, 
                        :div_id => midi_player_div_id} %>
 <br />
-<% if image_filename %>
-    <% clear_computed_public_path_for_image(image_filename) %>
-    <%= image_tag(image_filename, :alt => 'Music Notation', :id => image_div_id) %>
+<% if guido_filename %>
+    <%= get_guido_image(guido_filename, image_div_id) %>    
 <% end -%>
