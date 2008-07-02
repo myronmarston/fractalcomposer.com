@@ -1,0 +1,14 @@
+<%
+    show_midi = (show_midi.nil? ? true : show_midi)
+    show_image = (show_image.nil? ? true : show_image)        
+%>
+
+<% if show_midi -%>
+  <%= render :partial => 'midi_player', 
+             :locals => {:midi_filename => get_url_filename(@output_manager.getLastMidiFileName), 
+                         :div_id => "#{@div_id_prefix}_midi_player"} %>
+  <br />
+<% end -%>
+<% if show_image %>
+    <%= get_guido_image(@output_manager.getLastGuidoFileName, "#{@div_id_prefix}_image_player") %>    
+<% end -%>

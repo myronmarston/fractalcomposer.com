@@ -7,10 +7,23 @@
     section_loading_div_id = "#{@voice_section_input_id_prefix}_section_settings_loading_wrap"
     section_content_div_id = "#{@voice_section_input_id_prefix}_section_settings_content_wrap"
     rest_id = "#{@voice_section_input_id_prefix}_rest"
+    description = "Voice Section for #{@other_type_label} #{@other_type_unique_index}"
+    listen_button_identifier = UUID.random_create.to_s.gsub(/-/, '_')
 -%>
   
-<% render :layout => 'togglable_fieldset_wrapper', :locals => {:link_text => "Voice Section for #{@other_type_label} #{@other_type_unique_index}", :id_prefix => @voice_section_input_id_prefix, :show_fieldset_initially => false } do %>   
-  
+<% render :layout => 'togglable_fieldset_wrapper', 
+          :locals => {:link_text => description, 
+                      :fieldset_class => 'relative_positioned',
+                      :id_prefix => @voice_section_input_id_prefix,
+                      :before_yield_identifier => listen_button_identifier,
+                      :show_fieldset_initially => false } do %>   
+
+    <% content_for(listen_button_identifier) do -%>
+        <div class="ne_corner_wrap">
+            <%= listen_to_part_link(description, {:part_type => 'voice_section', :voice_index => @voice_section.getVoice.getUniqueIndex, :section_index => @voice_section.getSection.getUniqueIndex}) %>
+        </div>
+    <% end -%>
+    
     <%= hidden_field_tag "#{@voice_section_input_name_prefix}[ignore]", 'ensure have hash', :id => "#{@voice_section_input_id_prefix}_ignore" %>
     Rest <%= check_box_tag "#{@voice_section_input_name_prefix}[rest]", 1, @voice_section.getRest, :id => rest_id %>
     <%= info('rest', rest_id, '<br />') %>

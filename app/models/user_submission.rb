@@ -53,12 +53,12 @@ class UserSubmission < ActiveRecord::Base
       # todo: does the thread terminate when it is done or do I need to kill it?
       scheduler = Rufus::Scheduler.start_new
       scheduler.schedule_in('1s') do # begin immediately...
-          UserSubmission.generate_mp3_and_pdf_files(self.id)
+          UserSubmission.process(self.id)
       end
     end    
   end  
   
-  def self.generate_mp3_and_pdf_files(user_submission_id)            
+  def self.process(user_submission_id)            
     user_submission = UserSubmission.find(user_submission_id)
     user_submission.update_attribute(:processing_began, Time.now)    
     generated_piece = user_submission.generated_piece    

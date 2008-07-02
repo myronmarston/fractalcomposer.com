@@ -10,15 +10,17 @@ img.spinner, img.delete_voice_or_section_image, img.hide_info, img.field_info {
     padding: 0px;    
 }
 
+img.icon {
+    background-color:#f00;
+    background-image: url(/images/bg_rounded.gif);
+    background-repeat: no-repeat;
+    padding: 0px;
+}
+
 img.field_info {
     position: relative;
     top: 2px;
     z-index: 999; /* must be on top to allow clicking */
-}
-
-img.delete_voice_or_section_image {
-    float: right;
-    margin-top: -8px;
 }
 
 span.spinner_wrap {
@@ -66,7 +68,7 @@ div#start_over_button_wrap {
 }
 
 div.one_voice_or_section {
-  padding: 10px 0px 0px 0px;  
+  padding: 10px 0px 0px 0px; 
 }
 
 form#compose_form fieldset legend {
@@ -118,6 +120,10 @@ div.fieldset_content, .piece_settings_wrap {
 
 .piece_settings_wrap {
     padding-top: 10px;
+}
+
+.relative_positioned {
+    position: relative;
 }
 
 div.no_margin_content {
@@ -218,6 +224,12 @@ div#main div.tab_panel_body div.info p {
 input.disabled_button { 	
     background: #686868 url(/images/button-disabled-bg.jpg) repeat-x 0 0; 	
     border: 1px solid #686868;        
+}
+
+div.ne_corner_wrap {
+    position: absolute;
+    top: -10px;
+    right: 0px;
 }
 
 /*** Tabbed Panels ***/

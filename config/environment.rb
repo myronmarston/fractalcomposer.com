@@ -51,7 +51,9 @@ Rails::Initializer.run do |config|
   # Use the database for sessions instead of the cookie-based default,
   # which shouldn't be used to store highly confidential information
   # (create the session table with 'rake db:sessions:create')
+  # right now, I get an error from the active_record_store, see http://jira.codehaus.org/browse/JRUBY-2507
   config.action_controller.session_store = :active_record_store
+  #config.action_controller.session_store = CGI::Session::PStore
 
   # Use SQL instead of Active Record's schema dumper when creating the test database.
   # This is necessary if your schema can't be completely dumped by the schema dumper,
@@ -67,6 +69,7 @@ Rails::Initializer.run do |config|
   config.action_controller.allow_forgery_protection = false
   
   # required gems...
+  #config.gem "RedCloth"
   #config.gem "activerecord-jdbc-adapter" 
 end
 
@@ -83,3 +86,6 @@ ActionMailer::Base.smtp_settings = {
 ExceptionNotifier.exception_recipients = %w(myron.marston@gmail.com)
 ExceptionNotifier.sender_address = %("FractalComposer.com Exception Notifier" <exception.notifier@ghostsandspirits.net>)
 ExceptionNotifier.email_prefix = "[fractalcomposer.com Error] "
+
+require 'dr_nic_magic_models'
+require 'string_extensions'

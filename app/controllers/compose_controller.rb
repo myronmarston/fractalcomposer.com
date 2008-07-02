@@ -25,7 +25,8 @@ import com.myronmarston.music.settings.TimeSignature
 import com.myronmarston.music.settings.InvalidTimeSignatureException
 import java.lang.NumberFormatException
 
-#todo: refactor eval's to use send instead
+#todo: validate all params before inserting it into code via eval or send to prevent injection attacks
+#todo: use safe_to_i string method
 class ComposeController < ApplicationController
   extend PathHelper
   
@@ -36,12 +37,36 @@ class ComposeController < ApplicationController
   # these filters set some variables used by particular actions...  
   before_filter :set_instrument_names, :only => [ :index, :add_voice_or_section_xhr, :clear_session_xhr ]
   before_filter :set_scale_names, :only => [ :index, :get_section_overriden_scale_xhr, :clear_session_xhr ]
-  
-  # this is the only action that supports a regular get rather than an XHR...
+    
   def index   
     # todo: if the user refreshes without tabbing off of the germ string, the text box contains
     # additional characters not found in the germ    
   end
+  
+  def listen_to_part
+    part_type = params[:part_type]
+    case part_type
+      when 'voice', 'section'
+        index = params[:index].safe_to_i
+        part = get_voice_or_section(part_type.pluralize, index)
+        @div_id_prefix = "#{part_type}_#{index}"
+      when 'voice_section'
+        voice_index = params[:voice_index].safe_to_i
+        section_index = params[:section_index].safe_to_i
+        part = @fractal_piece.getVoices.getByUniqueIndex(voice_index).getVoiceSections.getByOtherTypeUniqueIndex(section_index)
+        @div_id_prefix = "voice_section_voice_#{voice_index}_section_#{section_index}"
+      else
+        raise "The part type (#{part_type}) is invalid."
+    end
+    
+    @output_manager = part.createOutputManager
+    local_dir = ComposeController.get_local_filename("#{get_temp_directory_for_session}")
+    @output_manager.saveMidiFile("#{local_dir}/#{@div_id_prefix}.mid")
+    @output_manager.saveGuidoFile("#{local_dir}/#{@div_id_prefix}.gmn")    
+    
+    render :layout => false
+  end
+  
   
   def scale_selected_xhr
     @input_prefix = params[:input_prefix]
@@ -145,7 +170,7 @@ class ComposeController < ApplicationController
     @user_submission_saved = @user_submission.save
     respond_to { |format| format.js }
   end
-  
+    
   protected
   
   def update_germ(save_files, germ_string) 
@@ -335,7 +360,7 @@ class ComposeController < ApplicationController
   end  
   
   def get_voice_or_section(voices_or_sections_label, unique_index)    
-    @fractal_piece.send("get#{voices_or_sections_label.titleize}").getByUniqueIndex(unique_index.to_i)    
+    @fractal_piece.send("get#{voices_or_sections_label.titleize}").getByUniqueIndex(unique_index.safe_to_i)    
   end
   
   def get_scale(existing_scale, scale_class_name, key_name)     
@@ -361,17 +386,17 @@ class ComposeController < ApplicationController
     
     @fractal_piece = get_new_fractal_piece if @fractal_piece.nil?      
     
-    if @fractal_piece.getGerm.size > 0
+    if @fractal_piece.getGerm.size > 0      
       # we have a valid germ; set our instance variables if the files exist
       if (session[:germ_string].nil?)
         update_germ(false, params[:germ_string] || @fractal_piece.getGermString)
       end
       
-      @germ_midi_filename = get_germ_midi_filename
-      @germ_midi_filename = nil unless File.exists?(ComposeController.get_local_filename(@germ_midi_filename))
+      @germ_midi_filename = get_germ_midi_filename      
+      @germ_midi_filename = nil unless File.exists?(ComposeController.get_local_filename(@germ_midi_filename))      
       
-      @germ_guido_filename = get_germ_guido_filename
-      @germ_guido_filename = nil unless File.exists?(ComposeController.get_local_filename(@germ_guido_filenames))
+      @germ_guido_filename = get_germ_guido_filename      
+      @germ_guido_filename = nil unless File.exists?(ComposeController.get_local_filename(@germ_guido_filename))      
     end
 
   end

@@ -1,3 +1,5 @@
+require 'uuidtools.rb'
+
 module ComposeHelper
   extend PathHelper
   
@@ -173,12 +175,12 @@ module ComposeHelper
   
   def get_live_validation_js(id, consructor_args, *validations)              
     # TODO: fix this so it works--for now if the user submission fields are empty, we cannot generate a piece
-    #javascript_tag(render(:partial => 'live_validation', :locals => {:id => id, :constructor_args => consructor_args, :validations => validations}))
+    javascript_tag(render(:partial => 'live_validation', :locals => {:id => id, :constructor_args => consructor_args, :validations => validations}))
   end
 
   def get_live_validation_js_with_defaults(id, validate_now, *validations)              
     # TODO: fix this so it works--for now if the user submission fields are empty, we cannot generate a piece
-    #javascript_tag(render(:partial => 'live_validation', :locals => {:id => id, :validate_now => validate_now, :constructor_args => 'validMessage: null', :validations => validations}))    
+    javascript_tag(render(:partial => 'live_validation', :locals => {:id => id, :validate_now => validate_now, :constructor_args => 'validMessage: null', :validations => validations}))    
   end
   
   def get_live_validation_var_name(id)
@@ -196,7 +198,8 @@ module ComposeHelper
   
   def get_guido_image(guido_filename, id)
     image_url =  'http://clef.cs.ubc.ca/scripts/salieri/gifserv.pl?'
-    image_url << 'defpw=350pt;'    
+    #image_url << 'defpw=350pt;'    
+    image_url << 'defpw=650pt;'    
     image_url << 'zoom=1.1;'    
     image_url << 'crop=yes;'
     image_url << 'mode=gif;'
@@ -230,4 +233,15 @@ module ComposeHelper
     image_tag(image_url, :alt => 'Music Notation', :id => id)
   end
 
+  def listen_to_part_link(part_description, params)    
+    lightwindow_link_to(
+        image_tag('music_icon.gif', 
+          :class => 'icon', 
+          :alt => "Listen to #{part_description}",
+          :title => "Listen to #{part_description}"),
+        {:action => 'listen_to_part'}.merge(params),
+        :title => part_description,                
+        :type => 'page')
+  end
+  
 end

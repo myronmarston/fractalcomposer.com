@@ -57,7 +57,7 @@ Warbler::Config.new do |config|
 
   # Name of the war file (without the .war) -- defaults to the basename
   # of RAILS_ROOT
-  # config.war_name = "mywar"
+  #config.war_name = "ROOT"
 
   # Value of RAILS_ENV for the webapp
   config.webxml.rails.env = 'production'
@@ -73,4 +73,6 @@ Warbler::Config.new do |config|
 
   # JNDI data source name
   # config.webxml.jndi = 'jdbc/rails'
+  config.webxml.jruby.session_store = 'db'
+  config.webxml.path = ""
 end

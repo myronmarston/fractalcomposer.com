@@ -1,10 +1,12 @@
 <% 
     set_prefix_instance_variables
+    index = @voice_or_section.getUniqueIndex
     singular_voices_or_sections_label = @voices_or_sections_label.singularize
+    part_description = "#{singular_voices_or_sections_label.titleize} #{index}"
     div_id = get_one_voice_or_section_id
     loading_div_id = "#{@voice_or_section_input_id_prefix}_voice_sections_loading"    
     load_voice_sections_js = remote_function(:url => {:action => 'get_voice_sections_xhr'},
-            :with => "'voices_or_sections=#{@voices_or_sections_label}&amp;unique_index=#{@voice_or_section.getUniqueIndex}&amp;fieldset_div_id=#{@voice_or_section_input_id_prefix}_voice_sections_fieldset&amp;loading_div_id=#{loading_div_id}&amp;voice_or_section_div_id=#{div_id}'" )            
+            :with => "'voices_or_sections=#{@voices_or_sections_label}&amp;unique_index=#{index}&amp;fieldset_div_id=#{@voice_or_section_input_id_prefix}_voice_sections_fieldset&amp;loading_div_id=#{loading_div_id}&amp;voice_or_section_div_id=#{div_id}'" )            
           
     # wrap our javascript with a conditional--only execute it if the "Loading..." div is visible
     load_voice_sections_js = "if ($('#{loading_div_id}').visible()) {#{load_voice_sections_js};}"        
@@ -15,8 +17,9 @@
 
 <div id="<%= div_id %>" class="one_voice_or_section">  
   <% render :layout => 'togglable_fieldset_wrapper', 
-        :locals => {:link_text => "#{singular_voices_or_sections_label.titleize} #{@voice_or_section.getUniqueIndex}", 
+        :locals => {:link_text => "#{singular_voices_or_sections_label.titleize} #{index}", 
                     :id_prefix => @voice_or_section_input_id_prefix, 
+                    :fieldset_class => 'relative_positioned',
                     :show_fieldset_initially => true,
                     :before_yield_identifier => delete_button_identifier,
                     :after_yield_identifier => voice_sections_yield_identifier } do %> 
@@ -24,13 +27,16 @@
     <%= yield %>
 
     <% content_for(delete_button_identifier) do %>
-      <%= link_to_function( 
-              image_tag('cross.png', 
-                  :alt => "Delete this #{singular_voices_or_sections_label}",
-                  :title => "Delete this #{singular_voices_or_sections_label}",
-                  :class => 'delete_voice_or_section_image',
-                  :id => "#{@voice_or_section_input_id_prefix}_delete_img"),              
-              get_delete_voice_or_section_js(@voices_or_sections_label, @voice_or_section, div_id)) %>
+        <div class="ne_corner_wrap">
+          <%= listen_to_part_link(part_description, {:part_type => singular_voices_or_sections_label, :index => index}) %>
+          <%= link_to_function( 
+                image_tag('cross.png', 
+                    :alt => "Remove #{part_description}",
+                    :title => "Remove #{part_description}",
+                    :class => 'delete_voice_or_section_image',
+                    :id => "#{@voice_or_section_input_id_prefix}_delete_img"),              
+                get_delete_voice_or_section_js(@voices_or_sections_label, @voice_or_section, div_id)) %> 
+        </div>      
     <% end -%>
 
     <% #content_for(voice_sections_yield_identifier) do %>
