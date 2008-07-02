@@ -28,7 +28,7 @@
 
     <% content_for(delete_button_identifier) do %>
         <div class="ne_corner_wrap">
-          <%= listen_to_part_link(part_description, {:part_type => singular_voices_or_sections_label, :index => index}) %>
+          <%= listen_to_part_link(part_description, div_id, singular_voices_or_sections_label, "&amp;index=#{index}") %>
           <%= link_to_function( 
                 image_tag('cross.png', 
                     :alt => "Remove #{part_description}",

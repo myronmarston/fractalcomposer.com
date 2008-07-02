@@ -43,7 +43,8 @@ class ComposeController < ApplicationController
     # additional characters not found in the germ    
   end
   
-  def listen_to_part
+  def listen_to_part_xhr
+    update_fractal_piece
     part_type = params[:part_type]
     case part_type
       when 'voice', 'section'
@@ -227,8 +228,8 @@ class ComposeController < ApplicationController
   def update_voice(unique_voice_index, voice_hash)
     voice = @fractal_piece.getVoices.getByUniqueIndex(unique_voice_index.to_i)  
     
-    voice.setInstrumentName(voice_hash[:instrument])    
-    update_voice_settings(voice.getSettings, voice_hash[:voice_settings])
+    voice.setInstrumentName(voice_hash[:instrument]) if voice_hash.has_key?(:instrument)   
+    update_voice_settings(voice.getSettings, voice_hash[:voice_settings]) if voice_hash.has_key?(:voice_settings)
     
     update_voice_sections(voice.getVoiceSections, voice_hash[:voice_sections]) if voice_hash.has_key?(:voice_sections)
   end
@@ -254,10 +255,9 @@ class ComposeController < ApplicationController
     section.setOverridePieceScale(override_scale)            
     if override_scale
       update_scale(section, section_hash)
-      #section.setScale(get_scale(section.getScale, section_hash[:scale], section_hash[:key])) if section_hash.has_key?(:scale) && section_hash.has_key?(:key)
     end    
     
-    update_section_settings(section.getSettings, section_hash[:section_settings])        
+    update_section_settings(section.getSettings, section_hash[:section_settings]) if section_hash.has_key?(:section_settings)       
     update_voice_sections(section.getVoiceSections, section_hash[:voice_sections]) if section_hash.has_key?(:voice_sections)
   end       
   

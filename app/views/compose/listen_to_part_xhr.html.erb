@@ -10,5 +10,7 @@
   <br />
 <% end -%>
 <% if show_image %>
-    <%= get_guido_image(@output_manager.getLastGuidoFileName, "#{@div_id_prefix}_image_player") %>    
+    <div style="width: 756px; height: 480px">
+        <%= get_guido_image(@output_manager.getLastGuidoFileName, "#{@div_id_prefix}_image_player") %>    
+    </div>
 <% end -%>

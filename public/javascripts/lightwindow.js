@@ -25,7 +25,7 @@ var lightwindow = Class.create();
 lightwindow.prototype = {
 	//
 	//	Setup Variables
-	//
+	//        
 	element : null,
 	contentToFetch : null,
 	windowActive : false,
@@ -77,7 +77,7 @@ lightwindow.prototype = {
 	//	Initialize the lightwindow.
 	//
 	initialize : function(options) {
-		this.options = Object.extend({
+		this.options = Object.extend({                        
 			resizeSpeed : 8,
 			contentOffset : {
 				height : 20,
@@ -328,7 +328,9 @@ lightwindow.prototype = {
 			width : null,
 			loadingAnimation : null,
 			iframeEmbed : null,
-			form : null
+			form : null,
+                        page_ajax_parameters : null,
+                        page_ajax_method : null
 		}, options || {});
 		
 		// Set the window type
@@ -1330,8 +1332,8 @@ lightwindow.prototype = {
 			
 			var newAJAX = new Ajax.Request(
 				this.contentToFetch, {
-					method: 'get', 
-					parameters: '', 
+					method: this.element.page_ajax_method || 'get', 
+					parameters: this.element.page_ajax_parameters || '', 
 					onComplete: function(response) {
 						$('lightwindow_contents').innerHTML += response.responseText;
 						this.resizeTo.height = $('lightwindow_contents').scrollHeight+(this.options.contentOffset.height);

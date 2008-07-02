@@ -199,7 +199,7 @@ module ComposeHelper
   def get_guido_image(guido_filename, id)
     image_url =  'http://clef.cs.ubc.ca/scripts/salieri/gifserv.pl?'
     #image_url << 'defpw=350pt;'    
-    image_url << 'defpw=650pt;'    
+    image_url << 'defpw=620pt;'    
     image_url << 'zoom=1.1;'    
     image_url << 'crop=yes;'
     image_url << 'mode=gif;'
@@ -229,19 +229,27 @@ module ComposeHelper
       # TODO: test this!
       image_url << 'gmnurl=' + url_for(ComposeHelper.get_url_filename(guido_filename)) + ';'
     end
-    
+       
     image_tag(image_url, :alt => 'Music Notation', :id => id)
   end
 
-  def listen_to_part_link(part_description, params)    
-    lightwindow_link_to(
+  def listen_to_part_link(part_description, serialize_id, part_type, other_params)        
+    lightwindow_js = <<-EOS
+      myLightWindow.activateWindow({
+        href: '#{url_for(:action => 'listen_to_part_xhr')}',
+        title: '#{part_description}',
+        type: 'page',
+        page_ajax_method: 'post',
+        page_ajax_parameters: Form.serialize($('#{serialize_id}')) + '&amp;part_type=#{part_type}#{other_params}'
+      });
+    EOS
+            
+    link_to_function(
         image_tag('music_icon.gif', 
           :class => 'icon', 
           :alt => "Listen to #{part_description}",
           :title => "Listen to #{part_description}"),
-        {:action => 'listen_to_part'}.merge(params),
-        :title => part_description,                
-        :type => 'page')
+        :onclick => lightwindow_js)                       
   end
   
 end
