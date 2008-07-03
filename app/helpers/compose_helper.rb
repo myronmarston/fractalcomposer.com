@@ -198,16 +198,13 @@ module ComposeHelper
   
   def get_guido_image(guido_filename, id)
     image_url =  'http://clef.cs.ubc.ca/scripts/salieri/gifserv.pl?'
-    #image_url << 'defpw=350pt;'    
+    image_url << 'defph=1350pt;'    
     image_url << 'defpw=620pt;'    
     image_url << 'zoom=1.1;'    
     image_url << 'crop=yes;'
     image_url << 'mode=gif;'
     
     # unused parameters:
-    # defph (height) is unused because it seems to auto-height correctly if we
-    # don't give it a value.
-    #image_url << 'defph=1000pt;'
     #image_url << 'markvoice=;'
     #image_url << 'rtp=;'
     
@@ -233,28 +230,39 @@ module ComposeHelper
     image_tag(image_url, :alt => 'Music Notation', :id => id)
   end
 
-  def get_lightwindow_js(part_description, action, serialize_id, other_params = "''")
-    #todo: return this in an ajax call rather in the original html
+  def get_listening_lightwindow_js(part_description)
     <<-EOS
       myLightWindow.activateWindow({
-        href: '#{url_for(:action => action)}',
+        href: '#hidden_content_for_lightwindow',
         title: '#{part_description}',
-        type: 'page',
-        page_ajax_method: 'post',
-        page_ajax_parameters: Form.serialize($('#{serialize_id}')) + #{other_params}
+        type: 'inline',
+        height: 500,
+        width: 770
       });
     EOS
   end
   
-  def listen_to_part_link(part_description, serialize_id, part_type, other_params)        
-    lightwindow_js = get_lightwindow_js(part_description, 'listen_to_part_xhr', serialize_id, "'&amp;part_type=#{part_type}#{other_params}'")
-            
-    link_to_function(
+  def get_listen_ajax_js(action, serialize_id, spinner_id, title, other_params = '')
+    remote_function(        
+      :url => {:action => action}, 
+      :with => "Form.serialize($('#{serialize_id}'))" + other_params,
+      :before => "$('#{spinner_id}').show()",
+      :complete => "$('#{spinner_id}').hide();" + get_listening_lightwindow_js(title))            
+  end
+
+  def listen_to_part_link(part_description, serialize_id, id_prefix, part_type, other_params)                
+    spinner_id = "#{id_prefix}_listen_spinner"
+    html = render(:partial => 'spinner', :locals => {:display => 'none', :div_id => spinner_id, :bottom_px => 1}) 
+    
+    html << link_to_function(
         image_tag('music_icon.gif', 
           :class => 'icon', 
           :alt => "Listen to #{part_description}",
           :title => "Listen to #{part_description}"),
-        :onclick => lightwindow_js)                       
+        :id => "#{id_prefix}_listen_link",
+        :onclick => get_listen_ajax_js('listen_to_part_xhr', serialize_id, spinner_id, part_description, "+ '&amp;part_type=#{part_type}#{other_params}'"))                       
+      
+    return html
   end
   
 end

@@ -19,14 +19,8 @@
     </div>
     
     <div>
-      <input type="button" class="button" id="generate_piece_button" value="Generate Piece" onclick="<%= 
-            "$('#{piece_spinner_id}').show();" +  
-            get_lightwindow_js('Your Generated Piece', 'generate_piece_xhr', 'compose_form') +
-            "$('#{piece_spinner_id}').hide();"
-      %>" />        
-      <%= render :partial => 'spinner', :locals => {:display => 'none', :div_id => piece_spinner_id, :bottom_px => 8} %>      
-      <span id="generated_piece_image_and_notation">  
-          
-      </span>   
+      <input type="button" class="button" id="generate_piece_button" value="Generate Piece" onclick="<%= get_listen_ajax_js('generate_piece_xhr', 'compose_form', piece_spinner_id, 'Your Generated Piece') %>" />        
+      <%= render :partial => 'spinner', :locals => {:display => 'none', :div_id => piece_spinner_id, :bottom_px => 8} %>       
     </div>
 <% end %>
+<div id="hidden_content_for_lightwindow"></div>

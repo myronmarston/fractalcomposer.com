@@ -1,3 +1,4 @@
+verify_value_changing = (verify_value_changing.nil? ? false : verify_value_changing)
 verify_not_value(id, value) if verify_value_changing
 if ajax
     include_partial 'ajax_action', :cmd => 'type', :target => id, :value => value    

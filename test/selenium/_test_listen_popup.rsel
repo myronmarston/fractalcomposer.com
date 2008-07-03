@@ -1,0 +1,12 @@
+lightwindow_test_id = 'lightwindow'
+
+verify_not_visible lightwindow_test_id
+include_partial 'ajax_action', :cmd => 'click', :target => button_id
+verify_visible lightwindow_test_id
+
+# note: I tried to verify the visibility, but that fails for some reason
+verify_element_present "#{div_id_prefix}_notation_image"
+verify_element_present "#{div_id_prefix}_midi_player"
+
+click 'lightwindow_title_bar_close_link'
+verify_not_visible lightwindow_test_id

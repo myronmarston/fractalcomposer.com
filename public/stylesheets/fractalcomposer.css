@@ -1,7 +1,12 @@
 /*************************************************************
    AUTHOR: Myron Marston
-   PURPOSE: contains CSS to override the coolwater style sheet.
+   PURPOSE: contains CSS for fractal composer.com
+   TODO: change the mouse icon over buttons to indicate they can be pressed
  *************************************************************/
+
+#hidden_content_for_lightwindow {
+    display: none;
+}
 
 img.spinner, img.delete_voice_or_section_image, img.hide_info, img.field_info {
     background: transparent;

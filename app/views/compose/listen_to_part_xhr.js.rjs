@@ -1,4 +1,3 @@
 page.replace_html 'hidden_content_for_lightwindow', 
     :partial => 'listen_to_part',
-    :locals => {:div_id_prefix => 'generated_piece'}
-  
+    :locals => {:div_id_prefix => @div_id_prefix}

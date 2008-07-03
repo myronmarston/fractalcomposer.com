@@ -16,11 +16,11 @@
 <% if show_midi -%>
   <%= render :partial => 'midi_player', 
              :locals => {:midi_filename => get_url_filename(midi_filename), 
-                         :div_id => "#{@div_id_prefix}_midi_player"} %>
+                         :div_id => "#{div_id_prefix}_midi_player"} %>
   <br />
 <% end -%>
 <% if show_image %>
-    <div style="width: 756px; height: 480px">
-        <%= get_guido_image(guido_filename, "#{@div_id_prefix}_notation_image") %>    
+    <div>
+        <%= get_guido_image(guido_filename, "#{div_id_prefix}_notation_image") %>    
     </div>
 <% end -%>

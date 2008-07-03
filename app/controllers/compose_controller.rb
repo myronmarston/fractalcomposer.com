@@ -65,7 +65,7 @@ class ComposeController < ApplicationController
     @output_manager.saveMidiFile("#{local_dir}/#{@div_id_prefix}.mid")
     @output_manager.saveGuidoFile("#{local_dir}/#{@div_id_prefix}.gmn")    
     
-    render :partial => 'listen_to_part', :layout => false
+    respond_to { |format| format.js } 
   end
   
   
@@ -148,11 +148,12 @@ class ComposeController < ApplicationController
     
   def generate_piece_xhr    
     update_fractal_piece
-    save_piece_files        
-    render :partial => 'listen_to_part', :layout => false
+    save_piece_files       
+    respond_to { |format| format.js }     
   end
   
-  def finished_editing_tab_xhr     
+  def finished_editing_tab_xhr
+    #todo: this has errors after deleting a voice or section
     update_fractal_piece
     render :nothing => true    
   end
