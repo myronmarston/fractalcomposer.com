@@ -5,9 +5,11 @@
 play_immediately = (play_immediately.nil? ? false : play_immediately)
 autoplay = (play_immediately ? 'true' : 'false')
 autostart = (play_immediately ? '1' : '0')
-puts "midi_filename = #{midi_filename}"
-puts "local_filename = #{get_local_filename(midi_filename)}"
-midi_filename = "#{midi_filename}?#{File.mtime("/" + get_local_filename(midi_filename)).to_i.to_s}"
+
+if midi_filename && midi_filename != ''
+    midi_filename = "#{midi_filename}?#{File.mtime(get_local_filename(midi_filename)).to_i.to_s}"
+end
+
 -%>
 <% if midi_filename -%>   
   &nbsp;     

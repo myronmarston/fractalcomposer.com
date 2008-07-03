@@ -6,12 +6,14 @@ module PathHelper
     filename.gsub(/^public\//, '')
   end
   
-  def get_local_filename(filename)
+  def get_local_filename(filename, include_leading_slash = false)
     return '' if filename.nil?
     
-    # add /public/ to the start of the string, unless it already has it
-    filename_without_leading_slash = filename.gsub(/^\//, '')
-    filename_without_leading_slash.gsub(/^(?!public)/, '/public/')
+    # add public/ to the start of the string, unless it already has it
+    filename_without_leading_slash = filename.gsub(/^\//, '')    
+    with_public = filename_without_leading_slash.gsub(/^(?!public)/, 'public/')
+    
+    (include_leading_slash ? '/' + with_public : with_public)    
   end    
   
   def sanitize_filename(filename)

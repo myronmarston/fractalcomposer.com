@@ -234,6 +234,7 @@ module ComposeHelper
   end
 
   def get_lightwindow_js(part_description, action, serialize_id, other_params = "''")
+    #todo: return this in an ajax call rather in the original html
     <<-EOS
       myLightWindow.activateWindow({
         href: '#{url_for(:action => action)}',
