@@ -19,8 +19,8 @@
                       :show_fieldset_initially => false } do %>   
 
     <% content_for(listen_button_identifier) do -%>
-        <div class="ne_corner_wrap">
-            <%= listen_to_part_link(description, "#{@voice_section_input_id_prefix}_fieldset", 'voice_section', "&amp;voice_index=#{@voice_section.getVoice.getUniqueIndex}&amp;section_index=#{@voice_section.getSection.getUniqueIndex}") %>
+        <div class="ne_corner_wrap">            
+            <%= listen_to_part_link(description, "#{@voice_or_section_input_id_prefix}_fieldset", 'voice_section', "&amp;voice_index=#{@voice_section.getVoice.getUniqueIndex}&amp;section_index=#{@voice_section.getSection.getUniqueIndex}") %>
         </div>
     <% end -%>
     

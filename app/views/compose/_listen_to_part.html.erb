@@ -1,0 +1,26 @@
+<%
+    show_midi = (show_midi.nil? ? true : show_midi)
+    show_image = (show_image.nil? ? true : show_image) 
+    
+    if @last_generated_piece
+        midi_filename = @last_generated_piece.generated_midi_file
+        guido_filename = @last_generated_piece.generated_guido_file
+    elsif @output_manager
+        midi_filename = @output_manager.getLastMidiFileName
+        guido_filename = @output_manager.getLastGuidoFileName
+    else
+      raise 'Either @last_generated_piece or @output_manager must have a value.'
+    end
+%>
+
+<% if show_midi -%>
+  <%= render :partial => 'midi_player', 
+             :locals => {:midi_filename => get_url_filename(midi_filename), 
+                         :div_id => "#{@div_id_prefix}_midi_player"} %>
+  <br />
+<% end -%>
+<% if show_image %>
+    <div style="width: 756px; height: 480px">
+        <%= get_guido_image(guido_filename, "#{@div_id_prefix}_notation_image") %>    
+    </div>
+<% end -%>

@@ -233,16 +233,20 @@ module ComposeHelper
     image_tag(image_url, :alt => 'Music Notation', :id => id)
   end
 
-  def listen_to_part_link(part_description, serialize_id, part_type, other_params)        
-    lightwindow_js = <<-EOS
+  def get_lightwindow_js(part_description, action, serialize_id, other_params = "''")
+    <<-EOS
       myLightWindow.activateWindow({
-        href: '#{url_for(:action => 'listen_to_part_xhr')}',
+        href: '#{url_for(:action => action)}',
         title: '#{part_description}',
         type: 'page',
         page_ajax_method: 'post',
-        page_ajax_parameters: Form.serialize($('#{serialize_id}')) + '&amp;part_type=#{part_type}#{other_params}'
+        page_ajax_parameters: Form.serialize($('#{serialize_id}')) + #{other_params}
       });
     EOS
+  end
+  
+  def listen_to_part_link(part_description, serialize_id, part_type, other_params)        
+    lightwindow_js = get_lightwindow_js(part_description, 'listen_to_part_xhr', serialize_id, "'&amp;part_type=#{part_type}#{other_params}'")
             
     link_to_function(
         image_tag('music_icon.gif', 

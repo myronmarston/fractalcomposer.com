@@ -19,14 +19,14 @@
     </div>
     
     <div>
-      <%= submit_tag 'Generate Piece', :id => 'generate_piece_button', :class => 'button' %>            
+      <input type="button" class="button" id="generate_piece_button" value="Generate Piece" onclick="<%= 
+            "$('#{piece_spinner_id}').show();" +  
+            get_lightwindow_js('Your Generated Piece', 'generate_piece_xhr', 'compose_form') +
+            "$('#{piece_spinner_id}').hide();"
+      %>" />        
       <%= render :partial => 'spinner', :locals => {:display => 'none', :div_id => piece_spinner_id, :bottom_px => 8} %>      
       <span id="generated_piece_image_and_notation">  
-          <%= render :partial => 'midi_player_and_notation', 
-              :locals => {:midi_player_div_id => 'piece_midi_player', 
-                          :image_div_id => 'piece_image',
-                          :midi_filename => @image_midi_filename, 
-                          :image_filename => @image_image_filename } %>
+          
       </span>   
     </div>
 <% end %>

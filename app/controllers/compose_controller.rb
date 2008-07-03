@@ -65,7 +65,7 @@ class ComposeController < ApplicationController
     @output_manager.saveMidiFile("#{local_dir}/#{@div_id_prefix}.mid")
     @output_manager.saveGuidoFile("#{local_dir}/#{@div_id_prefix}.gmn")    
     
-    render :layout => false
+    render :partial => 'listen_to_part', :layout => false
   end
   
   
@@ -149,7 +149,7 @@ class ComposeController < ApplicationController
   def generate_piece_xhr    
     update_fractal_piece
     save_piece_files        
-    respond_to { |format| format.js }
+    render :partial => 'listen_to_part', :layout => false
   end
   
   def finished_editing_tab_xhr     

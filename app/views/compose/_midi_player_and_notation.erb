@@ -1,10 +1,11 @@
 <%
     # The midi_player partial only includes the midi player if the filename is not null.
-    # For the image tag, we need to check that here.
+    # For the image tag, we need to check that here.    
 -%>
 <%= render :partial => 'midi_player', 
            :locals => {:midi_filename => midi_filename, 
-                       :div_id => midi_player_div_id} %>
+                       :div_id => midi_player_div_id,
+                       :play_immediately => play_immediately} %>
 <br />
 <% if guido_filename %>
     <%= get_guido_image(guido_filename, image_div_id) %>    
