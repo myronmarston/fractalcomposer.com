@@ -204,18 +204,9 @@ class ComposeController < ApplicationController
     
     update_germ(false, params[:germ_string]) if params.has_key?(:germ_string)
 
-    begin
-      @fractal_piece.setTimeSignature(TimeSignature.new(params[:time_signature])) if params.has_key?(:time_signature)
-    rescue InvalidTimeSignatureException => ex
-      logger.error("An error occurred while parsing the time signature string: #{ex.message}")
-    end
-    
-    begin
-      @fractal_piece.setTempo(java.lang.Integer.parseInt(params[:tempo])) if params.has_key?(:tempo)
-    rescue NumberFormatException => ex
-      logger.error("An error occurred while parsing the tempo string: #{ex.message}")
-    end
-            
+    set_string_value(params, :time_signature) {|val| @fractal_piece.setTimeSignature(TimeSignature.new(val))}
+    set_int_value(params, :tempo) {|val| @fractal_piece.setTempo(val)}
+                
     {:voices => :update_voice, :sections => :update_section}.each_pair do |voices_or_sections_label, method_name|
       if params.has_key?(voices_or_sections_label)
         params[voices_or_sections_label].each_pair do |unique_voice_or_section_index, voice_or_section_hash|              
@@ -233,26 +224,29 @@ class ComposeController < ApplicationController
   def update_voice(unique_voice_index, voice_hash)
     voice = @fractal_piece.getVoices.getByUniqueIndex(unique_voice_index.to_i)  
     
-    voice.setInstrumentName(voice_hash[:instrument]) if voice_hash.has_key?(:instrument)   
+    set_string_value(voice_hash, :instrument) {|val| voice.setInstrumentName(val)}
+    
     update_voice_settings(voice.getSettings, voice_hash[:voice_settings]) if voice_hash.has_key?(:voice_settings)
     
     update_voice_sections(voice.getVoiceSections, voice_hash[:voice_sections]) if voice_hash.has_key?(:voice_sections)
   end
   
   def update_voice_settings(voice_settings, voice_settings_hash)       
-    # todo: validate the values before setting them...
-    voice_settings.setOctaveAdjustment(voice_settings_hash[:octave_adjustment].to_i)
-    voice_settings.setSpeedScaleFactor(Fraction.new(voice_settings_hash[:speed_scale_factor]))  
+    set_int_value(voice_settings_hash, :octave_adjustment) {|val| voice_settings.setOctaveAdjustment(val)}
+    set_string_value(voice_settings_hash, :speed_scale_factor) {|val| voice_settings.setSpeedScaleFactor(Fraction.new(val))}    
     
     update_voice_or_section_common_settings(voice_settings, voice_settings_hash)
     
     # self similarity settings are in another hash...
-    self_similarity_settings_hash = voice_settings_hash[:self_similarity_settings]
-    self_similarity_settings = voice_settings.getSelfSimilaritySettings
-    self_similarity_settings.setSelfSimilarityIterations(self_similarity_settings_hash[:self_similarity_iterations].to_i)
-    self_similarity_settings.setApplyToPitch(self_similarity_settings_hash.has_key?(:pitch))
-    self_similarity_settings.setApplyToRhythm(self_similarity_settings_hash.has_key?(:rhythm))
-    self_similarity_settings.setApplyToVolume(self_similarity_settings_hash.has_key?(:volume))
+    if voice_settings_hash.has_key?(:self_similarity_settings)
+      self_similarity_settings_hash = voice_settings_hash[:self_similarity_settings]
+      self_similarity_settings = voice_settings.getSelfSimilaritySettings
+      
+      set_int_value(self_similarity_settings_hash, :self_similarity_iterations) {|val| self_similarity_settings.setSelfSimilarityIterations(val)}      
+      self_similarity_settings.setApplyToPitch(self_similarity_settings_hash.has_key?(:pitch))
+      self_similarity_settings.setApplyToRhythm(self_similarity_settings_hash.has_key?(:rhythm))
+      self_similarity_settings.setApplyToVolume(self_similarity_settings_hash.has_key?(:volume))
+    end    
   end
   
   def update_section(unique_section_index, section_hash)
@@ -445,6 +439,14 @@ class ComposeController < ApplicationController
     rescue NotAnIntError => ex
       #TODO: this should resuce all errors.  What is the root error class?
       logger.error("An error occurred while setting the #{hash_key.to_s.titleize}: #{ex.message}")
+    end
+  end
+  
+  def set_string_value(hash, hash_key)
+    begin
+      yield hash[hash_key].to_s if hash.has_key?(hash_key)
+    rescue      
+      logger.error("An error occurred while setting the #{hash_key.to_s.titleize}.")
     end
   end
    

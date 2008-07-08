@@ -19,6 +19,7 @@ tests.each do |test_hash|
         verify_text_present test_hash[:error_message]
 
         include_partial 'type_textbox_value', :id => id, :value => (test_value[:good] || '$(initial_value)')
+        pause ComposeHelper::LIVE_VALIDATION_DELAY
         pause 100
         verify_text_not_present test_hash[:error_message]
     end
