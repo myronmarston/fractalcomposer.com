@@ -8,12 +8,16 @@ var_hash_1 = {
     :override_section_settings => true,
     :octave_adjustment => '-3',
     :speed_scale_factor => '5/3',
+    :voice_volume_adjustment => '0.23',
+    :voice_scale_step_offset => '3',
     :self_similarity_iterations => '3',
     :pitch => false,
     :rhythm => false,
     :volume => true,
     :apply_inversion => true,
-    :apply_retrograde => true
+    :apply_retrograde => true,
+    :section_volume_adjustment => '0.13',
+    :section_scale_step_offset => '2'
 }
 
 # set values on all the voice sections...
@@ -46,12 +50,16 @@ var_hash_2 = {
     :override_section_settings => true,
     :octave_adjustment => '2',
     :speed_scale_factor => '1/9',
+    :voice_volume_adjustment => '-0.18',
+    :voice_scale_step_offset => '-3',
     :self_similarity_iterations => '2',
     :pitch => true,
     :rhythm => true,
     :volume => false,
     :apply_inversion => false,
-    :apply_retrograde => false
+    :apply_retrograde => false,
+    :section_volume_adjustment => '0.63',
+    :section_scale_step_offset => '-4'
 }
 
 # set values on all the voice sections...

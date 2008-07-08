@@ -1,0 +1,2 @@
+verify_value "#{settings_prefix}_volume_adjustment", volume_adjustment
+verify_value "#{settings_prefix}_scale_step_offset", scale_step_offset

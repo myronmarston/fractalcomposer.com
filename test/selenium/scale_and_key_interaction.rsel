@@ -8,7 +8,9 @@ include_partial 'click_tab', :from_tab => 'piece_settings', :to_tab => 'sections
     include_partial 'set_section_values', 
         :section_index => section_index,
         :apply_inversion => false, 
-        :apply_retrograde => false, 
+        :apply_retrograde => false,
+        :volume_adjustment => '0.0',
+        :scale_step_offset => '0',
         :override_scale => true
 
     include_partial 'test_scale_key_interaction', :input_prefix => "sections_#{section_index}__"    

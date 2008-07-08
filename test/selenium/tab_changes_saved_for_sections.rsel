@@ -11,7 +11,9 @@ include_partial 'set_section_values',
     :scale => 'Harmonic Minor Scale',
     :key => 'Bb',
     :apply_inversion => true, 
-    :apply_retrograde => true
+    :apply_retrograde => true,
+    :volume_adjustment => '0.23',
+    :scale_step_offset => '1'
 include_partial 'set_section_values', 
     :section_index => 2,
     :verify_values_changing => true,
@@ -19,7 +21,9 @@ include_partial 'set_section_values',
     :scale => 'Minor Pentatonic Scale',
     :key => 'G',
     :apply_inversion => false, 
-    :apply_retrograde => true
+    :apply_retrograde => true,
+    :volume_adjustment => '0.17',
+    :scale_step_offset => '3'
 include_partial 'set_section_values', 
     :section_index => 3,
     :verify_values_changing => true,
@@ -27,7 +31,9 @@ include_partial 'set_section_values',
     :scale => 'Major Pentatonic Scale',
     :key => 'Eb',
     :apply_inversion => false, 
-    :apply_retrograde => false
+    :apply_retrograde => false,
+    :volume_adjustment => '-0.27',
+    :scale_step_offset => '-2'
 include_partial 'set_section_values', 
     :section_index => 4,
     :verify_values_changing => true,
@@ -35,7 +41,9 @@ include_partial 'set_section_values',
     :scale => 'Major Scale',
     :key => 'F#',
     :apply_inversion => true, 
-    :apply_retrograde => false
+    :apply_retrograde => false,
+    :volume_adjustment => '-0.41',
+    :scale_step_offset => '-4'
 
 # Go to a different tab, so that the changes are sent to the server
 include_partial 'click_tab', :from_tab => 'sections', :to_tab => 'voices'
@@ -50,26 +58,34 @@ include_partial 'verify_section_values',
     :scale => 'Harmonic Minor Scale',
     :key => 'Bb',
     :apply_inversion => true, 
-    :apply_retrograde => true
+    :apply_retrograde => true,
+    :volume_adjustment => '0.23',
+    :scale_step_offset => '1'
 include_partial 'verify_section_values', 
     :section_index => 2,    
     :override_scale => true,
     :scale => 'Minor Pentatonic Scale',
     :key => 'G',
     :apply_inversion => false, 
-    :apply_retrograde => true
+    :apply_retrograde => true,
+    :volume_adjustment => '0.17',
+    :scale_step_offset => '3'
 include_partial 'verify_section_values', 
     :section_index => 3,    
     :override_scale => true,
     :scale => 'Major Pentatonic Scale',
     :key => 'Eb',
     :apply_inversion => false, 
-    :apply_retrograde => false
+    :apply_retrograde => false,
+    :volume_adjustment => '-0.27',
+    :scale_step_offset => '-2'
 include_partial 'verify_section_values', 
     :section_index => 4,    
     :override_scale => true,
     :scale => 'Major Scale',
     :key => 'F#',
     :apply_inversion => true, 
-    :apply_retrograde => false
+    :apply_retrograde => false,
+    :volume_adjustment => '-0.41',
+    :scale_step_offset => '-4'
 

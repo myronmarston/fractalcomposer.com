@@ -8,6 +8,8 @@ include_partial 'set_checkbox_value', :id => "#{prefix}_override_scale", :value 
 include_partial 'test_field_info', :id_prefix => "#{prefix}__scale"
 include_partial 'test_field_info', :id_prefix => "#{section_settings_prefix}_apply_inversion"
 include_partial 'test_field_info', :id_prefix => "#{section_settings_prefix}_apply_retrograde"
+include_partial 'test_field_info', :id_prefix => "#{section_settings_prefix}_volume_adjustment"
+include_partial 'test_field_info', :id_prefix => "#{section_settings_prefix}_scale_step_offset"
 
 include_partial 'test_voice_section_field_info', :voices_or_sections => 'sections', :index_1 => section_index, :index_2 => 1
 

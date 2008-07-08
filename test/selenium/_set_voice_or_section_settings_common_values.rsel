@@ -1,0 +1,11 @@
+include_partial 'set_textbox_value', 
+    :id => "#{settings_prefix}_volume_adjustment", 
+    :value => volume_adjustment, 
+    :ajax => false, 
+    :verify_value_changing => verify_values_changing
+
+include_partial 'set_textbox_value', 
+    :id => "#{settings_prefix}_scale_step_offset", 
+    :value => scale_step_offset, 
+    :ajax => false, 
+    :verify_value_changing => verify_values_changing

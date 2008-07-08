@@ -3,6 +3,8 @@ require 'uuidtools.rb'
 module ComposeHelper
   extend PathHelper
   
+  LIVE_VALIDATION_DELAY = 600 unless defined? LIVE_VALIDATON_DELAY
+  
   def get_additional_tab_javascript(tab_name)       
     # notify the controller that the user has finished editing this tab,
     # so that it can update the voice sections to keep everything in sync
@@ -173,14 +175,12 @@ module ComposeHelper
     "style=\"display: none;\""
   end
   
-  def get_live_validation_js(id, consructor_args, *validations)              
-    # TODO: fix this so it works--for now if the user submission fields are empty, we cannot generate a piece
+  def get_live_validation_js(id, consructor_args, *validations)                  
     javascript_tag(render(:partial => 'live_validation', :locals => {:id => id, :constructor_args => consructor_args, :validations => validations}))
   end
 
-  def get_live_validation_js_with_defaults(id, validate_now, *validations)              
-    # TODO: fix this so it works--for now if the user submission fields are empty, we cannot generate a piece
-    javascript_tag(render(:partial => 'live_validation', :locals => {:id => id, :validate_now => validate_now, :constructor_args => 'validMessage: null', :validations => validations}))    
+  def get_live_validation_js_with_defaults(id, validate_now, *validations)                  
+    javascript_tag(render(:partial => 'live_validation', :locals => {:id => id, :validate_now => validate_now, :constructor_args => "validMessage: null, wait: #{LIVE_VALIDATION_DELAY}", :validations => validations}))    
   end
   
   def get_live_validation_var_name(id)

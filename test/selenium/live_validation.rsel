@@ -81,6 +81,42 @@ include_partial 'click_tab', :from_tab => 'piece_settings', :to_tab => 'voices'
         ]
 
     include_partial 'test_live_validation_field', 
+        :id => "voices_#{voice_index}__voice_settings_volume_adjustment",
+        :tests => [
+            {
+                :error_message => 'Must be a value greater than -1.0 and less than 1.0.',
+                :test_values => [
+                    {:bad => 'er', :good => '0.0'},     # nonsense value
+                    {:bad => '-1.0', :good => '-0.9'},  # outside range
+                    {:bad => '1.0', :good => '0.9'},    # outside range
+                    {:bad => '2.5', :good => '.5'},  
+                    {:bad => '-2.5', :good => '-.5'},  
+                    {:bad => '-3', :good => '0'}
+                ]
+            }
+        ]
+
+    include_partial 'test_live_validation_field', 
+        :id => "voices_#{voice_index}__voice_settings_scale_step_offset",
+        :tests => [
+            {
+                :error_message => 'Must be an integer!',
+                :test_values => [
+                    {:bad => 'er', :good => '2'},        
+                    {:bad => '180/2', :good => '3'}
+                ]
+            },
+            {
+                :error_message => 'Must not be more than 11!',
+                :test_values => [{:bad => '12', :good => '11'}]
+            },
+            {
+                :error_message => 'Must not be less than -11!',
+                :test_values => [{:bad => '-12', :good => '-11'}]
+            }
+        ] 
+
+    include_partial 'test_live_validation_field', 
         :id => "voices_#{voice_index}__voice_settings__self_similarity_settings_self_similarity_iterations",
         :tests => [
             {

@@ -26,4 +26,28 @@ class StringExtensions < Test::Unit::TestCase
       # this is what we expect..
     end
   end
+  
+  def test_floats
+    %w( 2342.34  00002342.34  0.34  .34  2.34  23.  23 
+       +2342.34 +00002342.34 +0.34 +.34 +2.34 +23. +23 
+       -2342.34 -00002342.34 -0.34 -.34 -2.34 -23. -23 ).each do |str| 
+        assert str.is_float?, "'#{str}' did not return the proper value for is_float?"
+        assert str.safe_to_f != "0".to_f, "'#{str}' did not return the proper value for safe_to_f"
+    end
+    
+    %w( 0 0. .0 -0 -0. -.0 +0 +0. +.0 ).each do |str|
+      assert str.is_float?, "'#{str}' did not return the proper value for is_float?"
+      assert str.safe_to_f == 0.to_f, "'#{str}' did not return the proper value for safe_to_f"
+    end
+    
+    %w( asdfads 23423.adsf adfa.23 . + - +. -. ).each do |str| 
+      assert !str.is_float?, "'#{str}' did not return the proper value for is_float?"
+      begin
+        str.safe_to_f
+        fail "safe_to_f did not raise the expected error for '#{str}'"
+      rescue NotAFloatError
+        # this is what we exepct...
+      end
+    end
+  end
 end

@@ -6,6 +6,8 @@ voice_settings_prefix = "#{prefix}__voice_settings"
 include_partial 'test_field_info', :id_prefix => "#{prefix}_instrument"
 include_partial 'test_field_info', :id_prefix => "#{voice_settings_prefix}_octave_adjustment"
 include_partial 'test_field_info', :id_prefix => "#{voice_settings_prefix}_speed_scale_factor"
+include_partial 'test_field_info', :id_prefix => "#{voice_settings_prefix}_volume_adjustment"
+include_partial 'test_field_info', :id_prefix => "#{voice_settings_prefix}_scale_step_offset"
 include_partial 'test_field_info', :id_prefix => "#{voice_settings_prefix}__self_similarity_settings_self_similarity_iterations"
 include_partial 'test_field_info', :id_prefix => "#{voice_settings_prefix}__self_similarity_settings"
 

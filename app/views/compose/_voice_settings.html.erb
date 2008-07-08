@@ -22,6 +22,10 @@ Rhythm Scale Factor:
     {:type => 'Validate.Format', :args => "{ pattern: /#{com.myronmarston.util.Fraction::POSITIVE_FRACTION_REGEX_STRING}/, failureMessage: 'Must be a positive integer or fraction.' }"}) %>
 <%= info('rhythm_scale_factor', speed_id, '<br />') %>
 
+<%= render :partial => 'voice_or_section_common_settings', 
+           :locals => {:settings_input_name_prefix => voice_settings_input_name_prefix,
+                       :settings => settings} %>
+
 Self-Similarity Iterations:
 <% iterations_id = "#{input_id_prefix_sss}_self_similarity_iterations" %>
 <%= text_field_tag "#{input_name_prefix_sss}[self_similarity_iterations]", self_similarity_settings.getSelfSimilarityIterations, :size => 2, :id => iterations_id, :class => 'textbox' %>

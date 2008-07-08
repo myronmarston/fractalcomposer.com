@@ -4,6 +4,8 @@
 #    :test_values => [{:bad => '', :good => nil}]
 #})
 
+require 'compose_helper'
+
 var_name = "#{id}_initial_value"
 store_value id, var_name
 tests.each do |test_hash|    
@@ -12,6 +14,7 @@ tests.each do |test_hash|
         verify_text_not_present test_hash[:error_message]
 
         include_partial 'type_textbox_value', :id => id, :value => test_value[:bad]
+        pause ComposeHelper::LIVE_VALIDATION_DELAY
         pause 100
         verify_text_present test_hash[:error_message]
 

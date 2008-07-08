@@ -30,6 +30,8 @@ if override_voice_settings && set_voice_settings_values
         :voice_settings_prefix => prefix,
         :octave_adjustment => octave_adjustment,
         :speed_scale_factor => speed_scale_factor,
+        :volume_adjustment => voice_volume_adjustment,
+        :scale_step_offset => voice_scale_step_offset,
         :self_similarity_iterations => self_similarity_iterations,
         :pitch => pitch,
         :rhythm => rhythm,
@@ -52,5 +54,7 @@ if override_section_settings && set_section_settings_values
         :section_settings_prefix => prefix,
         :apply_inversion => apply_inversion,
         :apply_retrograde => apply_retrograde,
+        :volume_adjustment => section_volume_adjustment,
+        :scale_step_offset => section_scale_step_offset,
         :verify_values_changing => verify_values_changing
 end 

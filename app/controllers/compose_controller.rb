@@ -67,8 +67,7 @@ class ComposeController < ApplicationController
     
     respond_to { |format| format.js } 
   end
-  
-  
+    
   def scale_selected_xhr
     @input_prefix = params[:input_prefix]
     @generate_update_germ_js = (params[:generate_update_germ_js] == 'true')
@@ -172,7 +171,7 @@ class ComposeController < ApplicationController
     @user_submission_saved = @user_submission.save
     respond_to { |format| format.js }
   end
-    
+        
   protected
   
   def update_germ(save_files, germ_string) 
@@ -226,6 +225,11 @@ class ComposeController < ApplicationController
     end
   end
   
+  def update_voice_or_section_common_settings(settings, settings_hash)    
+    set_float_value(settings_hash, :volume_adjustment) {|f| settings.setVolumeAdjustment(f)}
+    set_int_value(settings_hash, :scale_step_offset) {|i| settings.setScaleStepOffset(i)}
+  end
+  
   def update_voice(unique_voice_index, voice_hash)
     voice = @fractal_piece.getVoices.getByUniqueIndex(unique_voice_index.to_i)  
     
@@ -239,6 +243,8 @@ class ComposeController < ApplicationController
     # todo: validate the values before setting them...
     voice_settings.setOctaveAdjustment(voice_settings_hash[:octave_adjustment].to_i)
     voice_settings.setSpeedScaleFactor(Fraction.new(voice_settings_hash[:speed_scale_factor]))  
+    
+    update_voice_or_section_common_settings(voice_settings, voice_settings_hash)
     
     # self similarity settings are in another hash...
     self_similarity_settings_hash = voice_settings_hash[:self_similarity_settings]
@@ -265,6 +271,7 @@ class ComposeController < ApplicationController
   def update_section_settings(section_settings, section_settings_hash)
     section_settings.setApplyInversion(section_settings_hash.has_key?(:apply_inversion))
     section_settings.setApplyRetrograde(section_settings_hash.has_key?(:apply_retrograde))
+    update_voice_or_section_common_settings(section_settings, section_settings_hash)
   end
   
   def update_voice_sections(voice_sections, voice_sections_hash)
@@ -422,5 +429,23 @@ class ComposeController < ApplicationController
       @scale_names[type.getSimpleName.titleize] = type
     end  
   end
+    
+  def set_float_value(hash, hash_key)
+    begin
+      yield hash[hash_key].safe_to_f if hash.has_key?(hash_key)
+    rescue NotAFloatError => ex
+      #TODO: this should rescue all errors.  What is the root error class?
+      logger.error("An error occurred while setting the #{hash_key.to_s.titleize}: #{ex.message}")
+    end
+  end
   
+  def set_int_value(hash, hash_key)
+    begin
+      yield hash[hash_key].safe_to_i if hash.has_key?(hash_key)
+    rescue NotAnIntError => ex
+      #TODO: this should resuce all errors.  What is the root error class?
+      logger.error("An error occurred while setting the #{hash_key.to_s.titleize}: #{ex.message}")
+    end
+  end
+   
 end

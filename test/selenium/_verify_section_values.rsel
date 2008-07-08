@@ -19,4 +19,6 @@ end
 include_partial 'verify_section_settings_values', 
     :section_settings_prefix => prefix,
     :apply_inversion => apply_inversion,
-    :apply_retrograde => apply_retrograde
+    :apply_retrograde => apply_retrograde,
+    :volume_adjustment => volume_adjustment,
+    :scale_step_offset => scale_step_offset
