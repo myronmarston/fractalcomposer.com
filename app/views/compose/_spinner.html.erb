@@ -1,8 +1,15 @@
 <%    
     options_hash = {:style => "display: #{display};", :class => 'spinner'} 
     options_hash[:id] = div_id unless div_id.nil?    
+    left_px ||= nil
+    right_px ||= nil
     bottom_px ||= nil # make sure bottom_px is defined    
-    style = (bottom_px ? " style=\"bottom: #{bottom_px}px\"" : "")    
+    
+    style_str =  (bottom_px ? "bottom: #{bottom_px}px;" : "")    
+    style_str << (left_px ? "left: #{left_px}px;" : "")    
+    style_str << (right_px ? "right: #{right_px}px;" : "")    
+    
+    style = (style_str != '' ? " style=\"#{style_str}\"" : "")    
 %>
 <span class="spinner_wrap"<%= style %>>
     <%= image_tag 'indicator.gif', options_hash %>

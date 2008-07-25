@@ -1,8 +1,7 @@
 <%
     piece_spinner_id = 'piece_spinner'
-    start_over_spinner_id = 'start_over_spinner'
+    start_over_submit_spinner_id = 'start_over_submit_spinner'
 %>
-
 <% form_remote_tag  :url => {:action => 'generate_piece_xhr'},
                     :html => {:id => 'compose_form'},                    
                     :before => "$('#{piece_spinner_id}').show()",
@@ -10,17 +9,28 @@
 
     <%= render :partial => 'compose_form' %>
 
-    <div id="start_over_button_wrap">      
-      <%= render :partial => 'spinner', :locals => {:display => 'none', :div_id => start_over_spinner_id, :bottom_px => 8} %>                
-      <input type="button" class="button" id="start_over_button" value="Start Over" onclick="<%= remote_function(        
-              :url => {:action => 'clear_session_xhr'}, 
-              :before => "$('#{start_over_spinner_id}').show()",
-              :complete => "$('#{start_over_spinner_id}').hide()") %>" />  
-    </div>
-    
-    <div>
-      <input type="button" class="button" id="generate_piece_button" value="Generate Piece" onclick="<%= get_listen_ajax_js('generate_piece_xhr', 'compose_form', piece_spinner_id, 'Your Generated Piece') %>" />        
-      <%= render :partial => 'spinner', :locals => {:display => 'none', :div_id => piece_spinner_id, :bottom_px => 8} %>       
+    <div id="footer_buttons">
+      <div id ="generate_piece_button_wrap">
+        <input type="button" class="button" id="generate_piece_button" value="Generate Piece" onclick="<%= get_listen_ajax_js('generate_piece_xhr', 'compose_form', piece_spinner_id, 'Your Generated Piece') %>" />        
+        <%= render :partial => 'spinner', :locals => {:display => 'none', :div_id => piece_spinner_id, :bottom_px => 6, :left_px => -8} %>       
+      </div>
+      
+      <div id="open_submit_to_library_form_button_wrap">
+        <input type="button" class="button" id="open_submit_to_library_form_button" value="Submit to Library" onclick="<%= get_lightwindow_js('submit_to_library', 'Submit your piece to the library', '400', '770') %>" />        
+      </div>
+      
+      <div id="start_over_button_wrap">      
+        <%= render :partial => 'spinner', :locals => {:display => 'none', :div_id => start_over_submit_spinner_id, :bottom_px => 6, :right_px => -8} %>                
+        <input type="button" class="button" id="start_over_button" value="Start Over" onclick="<%= remote_function(        
+                :url => {:action => 'clear_session_xhr'}, 
+                :before => "$('#{start_over_submit_spinner_id}').show()",
+                :complete => "$('#{start_over_submit_spinner_id}').hide()") %>" />  
+      </div>        
+     
     </div>
 <% end %>
 <div id="hidden_content_for_lightwindow"></div>
+<div id="submit_to_library">
+  <%= render :partial => 'submit_to_library' %>
+</div>
+<%= get_doc_load_js %>

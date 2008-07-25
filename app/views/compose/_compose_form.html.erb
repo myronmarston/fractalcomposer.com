@@ -1,6 +1,6 @@
 <%
-  div_ids = ['piece_settings', 'voices', 'sections', 'submit_to_library']
-  div_names = ['Piece Settings', 'Voices', 'Sections', 'Submit to Library']
+  div_ids = ['piece_settings', 'voices', 'sections']
+  div_names = ['Piece Settings', 'Voices', 'Sections']
   partials = {
     'piece_settings' => 'piece_settings',
     'voices' => 'voices_or_sections',
@@ -9,6 +9,10 @@
   }
 -%>
 <div id="compose_form_wrap">
+  <div id="advanced_options_toggle_wrap">
+    Show Advanced Options
+    <%= check_box_tag "advanced_options_toggle", 1, false, :onclick => 'performAdvancedOptionsToggle()' %>    
+  </div>  
   <%= render :partial => 'layouts/tabpanel_js', :locals => {:div_ids => div_ids} -%>
   <% div_ids.each do |@voices_or_sections_label| -%>
       <div id="<%= @voices_or_sections_label %>" style="display:<%= if @voices_or_sections_label == 'piece_settings' then 'block' else 'none' end %>;">

@@ -28,3 +28,62 @@ function enableButton(element_id) {
         element.removeClassName('disabled_button');    
     }    
 }
+
+function performAdvancedOptionsToggle() {    
+    if ($('advanced_options_toggle').getValue() == null) {      
+      if (!$('piece_settings').visible()) {
+        switchid('piece_settings');        
+      }
+      
+      $('piece_settings_voices_tab_link').hide();
+      $('piece_settings_sections_tab_link').hide();
+    } else {
+      $('piece_settings_voices_tab_link').show();
+      $('piece_settings_sections_tab_link').show();
+    }       
+}
+
+var ComposeFieldMonitor = Class.create({
+  initialize: function() {
+    composeForm = $('compose_form')
+    descdendant_elements = composeForm.descendants();
+    
+    this.descdendant_elements.each(function(field) {
+      if (!field.hasClassName('submit_to_library_field')) {
+        // we only want to monitor the fields used to generate the piece        
+      }
+    });
+    
+    this.element = $(element);
+    this.fields = this.element.getElements();
+    this.initFieldChecker();
+  } // initialize
+});
+
+var FieldMonitor = Class.create({
+  initialize: function(element) {
+    this.element = $(element);
+    this.fields = this.element.getElements();
+    this.initFieldChecker();
+  }, // initialize
+  initFieldChecker: function() {
+    // get the original values and populate the hash
+    originalValues = new Hash();
+    this.fields.each(function(field) {
+      originalValues.set(field.id, $F(field));
+    });
+    // set up the observers on each field of the form
+    this.fields.each( function(field) {
+      new Form.Element.EventObserver(field, function(f, value) {
+        var originalValue = originalValues.get(f.id);
+        // if the value is the same as original, remove the class tag
+        if ( originalValue === value) {
+          f.removeClassName('changed_field')
+        } else {
+          // else the value is different from the original, add the class tag
+          f.addClassName('changed_field')
+        };
+      })
+    })
+  } // initFieldChecker
+});

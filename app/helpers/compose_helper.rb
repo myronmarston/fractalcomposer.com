@@ -229,17 +229,21 @@ module ComposeHelper
        
     image_tag(image_url, :alt => 'Music Notation', :id => id)
   end
-
-  def get_listening_lightwindow_js(part_description)
+  
+  def get_lightwindow_js(href, title, height, width)
     <<-EOS
       myLightWindow.activateWindow({
-        href: '#hidden_content_for_lightwindow',
-        title: '#{part_description}',
+        href: '#{href}',
+        title: '#{title}',
         type: 'inline',
-        height: 500,
-        width: 770
+        height: #{height},
+        width: #{width}
       });
     EOS
+  end
+
+  def get_listening_lightwindow_js(part_description)
+    get_lightwindow_js('#hidden_content_for_lightwindow', part_description, 500, 770)    
   end
   
   def get_listen_ajax_js(action, serialize_id, spinner_id, title, other_params = '')
@@ -265,4 +269,13 @@ module ComposeHelper
     return html
   end
   
+  def get_doc_load_js     
+    js = <<-EOS
+      document.observe('dom:loaded', function() {
+        performAdvancedOptionsToggle();
+      });
+    EOS
+    javascript_tag(js)
+  end
+ 
 end

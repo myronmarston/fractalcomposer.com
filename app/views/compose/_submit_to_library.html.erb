@@ -3,7 +3,7 @@
     <label for="user_submission_title">
       <strong>Piece Title:</strong> (required)         
     </label>
-    <%= text_field 'user_submission', 'title', :size => 35, :maxlength => 50, :class => 'textbox' %>    
+    <%= text_field 'user_submission', 'title', :size => 35, :maxlength => 50, :class => 'textbox submit_to_library_field' %>    
     <%= get_live_validation_js_with_defaults('user_submission_title', false, {:type => 'Validate.Presence'}) %>
   </p>
   
@@ -11,7 +11,7 @@
     <label for="user_submission_name">
       <strong>Name:</strong> (required)         
     </label>
-    <%= text_field 'user_submission', 'name', :size => 35, :maxlength => 50, :class => 'textbox' %>    
+    <%= text_field 'user_submission', 'name', :size => 35, :maxlength => 50, :class => 'textbox submit_to_library_field' %>    
     <%= get_live_validation_js_with_defaults('user_submission_name', false, {:type => 'Validate.Presence'}) %>
   </p>
 
@@ -19,7 +19,7 @@
     <label for="user_submission_email">
       <strong>Email:</strong> (required, but will not be displayed)         
     </label>
-    <%= text_field 'user_submission', 'email', :size => 35, :class => 'textbox' %>    
+    <%= text_field 'user_submission', 'email', :size => 35, :class => 'textbox submit_to_library_field' %>    
     <%= get_live_validation_js_with_defaults('user_submission_email', false, 
         {:type => 'Validate.Presence'},
         {:type => 'Validate.Email'}) %>
@@ -29,7 +29,7 @@
     <label for="user_submission_website">
       <strong>Website:</strong>        
     </label>
-    <%= text_field 'user_submission', 'website', :size => 35, :class => 'textbox' %>    
+    <%= text_field 'user_submission', 'website', :size => 35, :class => 'textbox submit_to_library_field' %>    
   </p>
   
   <p>

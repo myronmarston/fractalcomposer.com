@@ -4,7 +4,7 @@
    TODO: change the mouse icon over buttons to indicate they can be pressed
  *************************************************************/
 
-#hidden_content_for_lightwindow {
+#hidden_content_for_lightwindow, #submit_to_library {
     display: none;
 }
 
@@ -63,8 +63,32 @@ form#compose_form .textbox {
     border: 1px solid #9CC8F4;
 }
 
-div#start_over_button_wrap {
-    float: right;
+div#footer_buttons {
+    position: relative; /* to allow absolute positioning of inner elements */
+    height: 50px;
+}
+
+div#footer_buttons div {
+    position: absolute;    
+}
+
+div#footer_buttons div input {
+    width: 110px;
+}
+
+div#generate_piece_button_wrap {    
+    left: 20px;
+}
+
+div#open_submit_to_library_form_button_wrap {    
+    text-align: center;
+    width: 34%;
+    left: 33%;
+    right: 33%;
+}
+
+div#start_over_button_wrap {    
+    right: 20px;
 }
 
 #germ_string_error {
@@ -127,7 +151,7 @@ div.fieldset_content, .piece_settings_wrap {
     padding-top: 10px;
 }
 
-.relative_positioned {
+.relative_positioned, #compose_form_wrap {
     position: relative;
 }
 
@@ -238,6 +262,12 @@ div.ne_corner_wrap {
     right: 0px;
 }
 
+#advanced_options_toggle_wrap {
+    position: absolute;
+    top: 20px;
+    right: 40px
+}
+
 /*** Tabbed Panels ***/
 /*
 Adapted from Kalsey CSS tabs:
@@ -263,7 +293,7 @@ padding: 0;
 .tablist a:link, .tablist a:visited
 {
 border: 1px solid #BBB;
-background: transparent; /*#DDD;*/
+background: #DDD; /*transparent*/
 float: left;
 font-size: small;
 font-weight: normal;
