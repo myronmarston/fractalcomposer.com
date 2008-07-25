@@ -217,6 +217,7 @@ div#main div.tab_panel_body div.info p {
 }
 
 #submit_to_library_result {
+    line-height: 1.2em;
     border: 2px solid #A8CFF9;
     margin: 0px 20px 10px 20px;
     padding-bottom: 10px;

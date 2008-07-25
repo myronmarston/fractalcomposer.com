@@ -36,6 +36,16 @@ module ApplicationHelper
   
   def developer_info    
       #render :partial => 'common_partials/developer_info' if RAILS_ENV != "production"    
-  end    
+  end   
+
+  def get_menu_items
+    [
+      {:name => 'Home', :options => {:controller => 'static_page', :name => 'home'}},
+      {:name => 'About', :options => {:controller => 'static_page', :name => 'about'}},
+      {:name => 'Compose', :options => {:controller => 'compose'}},
+      {:name => 'Examples', :options => {:controller => 'static_page', :name => 'examples'}},
+      {:name => 'Library', :options => {:controller => 'library'}}
+    ]
+  end
 
 end

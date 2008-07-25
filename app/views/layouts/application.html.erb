@@ -34,13 +34,12 @@
 		
 	<!-- navigation -->	
 	<div  id="menu">
-		<ul>
-			<li id="current"><a href="index.html">Home</a></li>
-			<li><a href="index.html">Archives</a></li>
-			<li><a href="index.html">Downloads</a></li>
-			<li><a href="index.html">Services</a></li>
-			<li><a href="index.html">Support</a></li>
-			<li><a href="index.html">About</a></li>		
+		<ul>    
+                        <% get_menu_items.each do |menu_item| -%>                            
+                            <li<%= " id=\"current\"" if current_page? menu_item[:options] %>>
+                              <%= link_to(menu_item[:name], menu_item[:options]) %>
+                            </li>
+                        <% end -%>			
 		</ul>
 	</div>					
 			

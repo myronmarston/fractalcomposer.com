@@ -106,5 +106,11 @@ class UserSubmissionTest < ActiveSupport::TestCase
       assert File.exist?(UserSubmissionTest.get_local_filename(saved_submission.mp3_file)), 'The mp3 file does not exist as expected.'
     end
   end
+  
+  def test_get_pdf_filename
+    us = UserSubmission.new
+    us.lilypond_results_file = 'Piece_Title'
+    assert 'Piece_Title.pdf', us.get_lilypond_pdf
+  end
     
 end

@@ -9,6 +9,114 @@ page_html_parts_020:
   name: info_generate_layered_outro
   id: !str 20
   created_at: 2008-06-25 19:32:44.0
+page_html_parts_021: 
+  updated_at: 2008-06-25 19:33:04.0
+  content: |-
+    Specifies the scale type and key to use. Generally speaking, you should make sure that all of the notes of your germ are part of the selected scale and key. Notes that are not part of the scale will create excessively dissonant sections.
+
+    If you are trying to minimize dissonance, consider using one of the pentatonic scales. This will eliminate the most dissonant intervals (minor seconds, major sevenths and tritones), as long as all the notes in your germ are part of the selected pentatonic scale.
+  content_html: "<p>Specifies the scale type and key to use. Generally speaking, you \
+    should make sure that all of the notes of your germ are part of the selected scale \
+    and key. Notes that are not part of the scale will create excessively dissonant \
+    sections.</p>\n\n\n\t<p>If you are trying to minimize dissonance, consider using \
+    one of the pentatonic scales. This will eliminate the most dissonant intervals \
+    (minor seconds, major sevenths and tritones), as long as all the notes in your \
+    germ are part of the selected pentatonic scale.</p>"
+  name: info_scale_type_and_key
+  id: !str 21
+  created_at: 2008-06-25 19:33:04.0
+page_html_parts_009: 
+  updated_at: 2008-06-25 19:26:40.0
+  content: If checked, "retrograde":http://en.wikipedia.org/wiki/Counterpoint#Contrapuntal_derivations
+    will be applied to the germ. The germ will be played backwards.
+  content_html: <p>If checked, <a href="http://en.wikipedia.org/wiki/Counterpoint#Contrapuntal_derivations">retrograde</a>
+    will be applied to the germ. The germ will be played backwards.</p>
+  name: info_apply_retrograde
+  id: !str 9
+  created_at: 2008-06-25 19:26:40.0
+page_html_parts_025: 
+  updated_at: 2008-07-24 22:36:17.0
+  content: About fractals...
+  content_html: <p>About fractals&#8230;</p>
+  name: about
+  id: !str 25
+  created_at: 2008-07-24 22:36:17.0
+page_html_parts_022: 
+  updated_at: 2008-07-08 12:08:52.0
+  content: |-
+    Indicates how much to increase or decrease the volume.  Values between 0.0 and 1.0 increase the volume; values between 0.0 and -1.0 decrease it.  
+
+    For example, a value of 0.5 means that the volume should be increased to halfway between the current volume and the maximum volume.  A value of -0.5 means the volume should be decreased to halfway between the existing volume and the minimum volume.
+
+    Be careful about setting this to values close to -1.0; the result will be virtually inaudible.
+  content_html: "<p>Indicates how much to increase or decrease the volume.  Values \
+    between 0.0 and 1.0 increase the volume; values between 0.0 and -1.0 decrease \
+    it.</p>\n\n\n\t<p>For example, a value of 0.5 means that the volume should be \
+    increased to halfway between the current volume and the maximum volume.  A value \
+    of -0.5 means the volume should be decreased to halfway between the existing volume \
+    and the minimum volume.</p>\n\n\n\t<p>Be careful about setting this to values \
+    close to -1.0; the result will be virtually inaudible.</p>"
+  name: info_volume_adjustment
+  id: !str 22
+  created_at: 2008-07-08 12:08:52.0
+page_html_parts_019: 
+  updated_at: 2008-06-25 19:32:25.0
+  content: If checked, the generated piece will include an intro section that layers
+    the germ in the different voices to provide a nice build into the first section.
+  content_html: <p>If checked, the generated piece will include an intro section that
+    layers the germ in the different voices to provide a nice build into the first
+    section.</p>
+  name: info_generate_layered_intro
+  id: !str 19
+  created_at: 2008-06-25 19:32:25.0
+page_html_parts_024: 
+  updated_at: 2008-07-24 22:33:49.0
+  content: |-
+    h2. Welcome to fractalcomposer.com!
+
+    h3. "fractalcomposer.com":http://fractalcomposer.com lets you compose interesting music using the self-similar nature of fractals to generate an entire piece of music.  You simply need to give it a short melody that defines the fractal shape.  
+
+    h3. Not sure what any of that means?  Visit the "about":/about page to learn more or go to the "examples":/examples page to see some of the results.  
+
+    h3. Or head straight to the "compose":/compose page to create your own piece of fractal music!
+  content_html: "<h2>Welcome to fractalcomposer.com!</h2>\n\n\n\t<h3><a href=\"http://fractalcomposer.com\"\
+    >fractalcomposer.com</a> lets you compose interesting music using the self-similar \
+    nature of fractals to generate an entire piece of music.  You simply need to give \
+    it a short melody that defines the fractal shape.</h3>\n\n\n\t<h3>Not sure what \
+    any of that means?  Visit the <a href=\"/about\">about</a> page to learn more \
+    or go to the <a href=\"/examples\">examples</a> page to see some of the results.</h3>\n\
+    \n\n\t<h3>Or head straight to the <a href=\"/compose\">compose</a> page to create \
+    your own piece of fractal music!</h3>"
+  name: home
+  id: !str 24
+  created_at: 2008-07-24 12:22:51.0
+page_html_parts_018: 
+  updated_at: 2008-06-25 19:31:57.0
+  content: Specifies how many times self-similarity should be applied to the germ.
+  content_html: <p>Specifies how many times self-similarity should be applied to the
+    germ.</p>
+  name: info_self_similarity_iterations
+  id: !str 18
+  created_at: 2008-06-25 19:31:57.0
+page_html_parts_023: 
+  updated_at: 2008-07-08 12:15:52.0
+  content: |-
+    Specifies a number of scale steps to shift the entire voice or section.  Positive values will make the music higher, and negative values will make the music lower.
+
+    The results of this setting are dependent on the scale you have selected.  For example, if you are using the chromatic scale, each scale step is exactly one half step, while diatonic scales are a mixture of whole steps and half steps.  Pentatonic scales include scale steps that are as large a as a minor third.
+
+    This setting can be used, for example, to create parallel 3rds or 6ths.
+  content_html: "<p>Specifies a number of scale steps to shift the entire voice or \
+    section.  Positive values will make the music higher, and negative values will \
+    make the music lower.</p>\n\n\n\t<p>The results of this setting are dependent \
+    on the scale you have selected.  For example, if you are using the chromatic scale, \
+    each scale step is exactly one half step, while diatonic scales are a mixture \
+    of whole steps and half steps.  Pentatonic scales include scale steps that are \
+    as large a as a minor third.</p>\n\n\n\t<p>This setting can be used, for example, \
+    to create parallel 3rds or 6ths.</p>"
+  name: info_scale_step_offset
+  id: !str 23
+  created_at: 2008-07-08 12:15:52.0
 page_html_parts_005: 
   updated_at: 2008-06-25 19:25:10.0
   content: |-
@@ -35,6 +143,15 @@ page_html_parts_005:
   name: info_self_similarity
   id: !str 5
   created_at: 2008-06-25 19:25:10.0
+page_html_parts_006: 
+  updated_at: 2008-06-25 19:25:34.0
+  content: If checked, this voice section will have its own section settings rather
+    than just using the settings set on the section.
+  content_html: <p>If checked, this voice section will have its own section settings
+    rather than just using the settings set on the section.</p>
+  name: info_override_section_settings
+  id: !str 6
+  created_at: 2008-06-25 19:25:34.0
 page_html_parts_016: 
   updated_at: 2008-06-25 19:31:15.0
   content: Specifies the number of octaves to transpose the germ. Positive numbers
@@ -46,15 +163,6 @@ page_html_parts_016:
   name: info_octave_adjustment
   id: !str 16
   created_at: 2008-06-25 19:31:15.0
-page_html_parts_006: 
-  updated_at: 2008-06-25 19:25:34.0
-  content: If checked, this voice section will have its own section settings rather
-    than just using the settings set on the section.
-  content_html: <p>If checked, this voice section will have its own section settings
-    rather than just using the settings set on the section.</p>
-  name: info_override_section_settings
-  id: !str 6
-  created_at: 2008-06-25 19:25:34.0
 page_html_parts_017: 
   updated_at: 2008-06-25 19:31:37.0
   content: |-
@@ -71,22 +179,6 @@ page_html_parts_017:
   name: info_rhythm_scale_factor
   id: !str 17
   created_at: 2008-06-25 19:31:37.0
-page_html_parts_021: 
-  updated_at: 2008-06-25 19:33:04.0
-  content: |-
-    Specifies the scale type and key to use. Generally speaking, you should make sure that all of the notes of your germ are part of the selected scale and key. Notes that are not part of the scale will create excessively dissonant sections.
-
-    If you are trying to minimize dissonance, consider using one of the pentatonic scales. This will eliminate the most dissonant intervals (minor seconds, major sevenths and tritones), as long as all the notes in your germ are part of the selected pentatonic scale.
-  content_html: "<p>Specifies the scale type and key to use. Generally speaking, you \
-    should make sure that all of the notes of your germ are part of the selected scale \
-    and key. Notes that are not part of the scale will create excessively dissonant \
-    sections.</p>\n\n\n\t<p>If you are trying to minimize dissonance, consider using \
-    one of the pentatonic scales. This will eliminate the most dissonant intervals \
-    (minor seconds, major sevenths and tritones), as long as all the notes in your \
-    germ are part of the selected pentatonic scale.</p>"
-  name: info_scale_type_and_key
-  id: !str 21
-  created_at: 2008-06-25 19:33:04.0
 page_html_parts_004: 
   updated_at: 2008-06-25 19:23:35.0
   content: On this tab, you can specify settings for each of the voices of your fractal
@@ -96,15 +188,6 @@ page_html_parts_004:
   name: info_voices
   id: !str 4
   created_at: 2008-06-25 19:23:35.0
-page_html_parts_009: 
-  updated_at: 2008-06-25 19:26:40.0
-  content: If checked, "retrograde":http://en.wikipedia.org/wiki/Counterpoint#Contrapuntal_derivations
-    will be applied to the germ. The germ will be played backwards.
-  content_html: <p>If checked, <a href="http://en.wikipedia.org/wiki/Counterpoint#Contrapuntal_derivations">retrograde</a>
-    will be applied to the germ. The germ will be played backwards.</p>
-  name: info_apply_retrograde
-  id: !str 9
-  created_at: 2008-06-25 19:26:40.0
 page_html_parts_013: 
   updated_at: 2008-06-25 19:29:57.0
   content: "Specifies the short melody from which the piece is generated. You can \
@@ -166,15 +249,6 @@ page_html_parts_014:
   name: info_time_signature
   id: !str 14
   created_at: 2008-06-25 19:30:25.0
-page_html_parts_015: 
-  updated_at: 2008-06-25 19:30:42.0
-  content: Specifies the instrument for this voice. The appropriate midi sound will
-    be used, based on your selection.
-  content_html: <p>Specifies the instrument for this voice. The appropriate midi sound
-    will be used, based on your selection.</p>
-  name: info_instrument
-  id: !str 15
-  created_at: 2008-06-25 19:30:42.0
 page_html_parts_007: 
   updated_at: 2008-06-25 19:25:49.0
   content: If checked, this voice section will have its own voice settings rather
@@ -184,6 +258,15 @@ page_html_parts_007:
   name: info_override_voice_settings
   id: !str 7
   created_at: 2008-06-25 19:25:49.0
+page_html_parts_015: 
+  updated_at: 2008-06-25 19:30:42.0
+  content: Specifies the instrument for this voice. The appropriate midi sound will
+    be used, based on your selection.
+  content_html: <p>Specifies the instrument for this voice. The appropriate midi sound
+    will be used, based on your selection.</p>
+  name: info_instrument
+  id: !str 15
+  created_at: 2008-06-25 19:30:42.0
 page_html_parts_010: 
   updated_at: 2008-06-25 19:27:27.0
   content: If checked, "inversion":http://en.wikipedia.org/wiki/Inversion_%28music%29#Inverted_melodies
@@ -211,24 +294,6 @@ page_html_parts_012:
   name: info_tempo
   id: !str 12
   created_at: 2008-06-25 19:28:45.0
-page_html_parts_022: 
-  updated_at: 2008-07-08 12:08:52.0
-  content: |-
-    Indicates how much to increase or decrease the volume.  Values between 0.0 and 1.0 increase the volume; values between 0.0 and -1.0 decrease it.  
-
-    For example, a value of 0.5 means that the volume should be increased to halfway between the current volume and the maximum volume.  A value of -0.5 means the volume should be decreased to halfway between the existing volume and the minimum volume.
-
-    Be careful about setting this to values close to -1.0; the result will be virtually inaudible.
-  content_html: "<p>Indicates how much to increase or decrease the volume.  Values \
-    between 0.0 and 1.0 increase the volume; values between 0.0 and -1.0 decrease \
-    it.</p>\n\n\n\t<p>For example, a value of 0.5 means that the volume should be \
-    increased to halfway between the current volume and the maximum volume.  A value \
-    of -0.5 means the volume should be decreased to halfway between the existing volume \
-    and the minimum volume.</p>\n\n\n\t<p>Be careful about setting this to values \
-    close to -1.0; the result will be virtually inaudible.</p>"
-  name: info_volume_adjustment
-  id: !str 22
-  created_at: 2008-07-08 12:08:52.0
 page_html_parts_003: 
   updated_at: 2008-06-25 19:23:03.0
   content: On this tab, you can specify settings for each of the "sections":http://en.wikipedia.org/wiki/Section_%28music%29
@@ -238,16 +303,6 @@ page_html_parts_003:
   name: info_sections
   id: !str 3
   created_at: 2008-06-25 19:23:03.0
-page_html_parts_019: 
-  updated_at: 2008-06-25 19:32:25.0
-  content: If checked, the generated piece will include an intro section that layers
-    the germ in the different voices to provide a nice build into the first section.
-  content_html: <p>If checked, the generated piece will include an intro section that
-    layers the germ in the different voices to provide a nice build into the first
-    section.</p>
-  name: info_generate_layered_intro
-  id: !str 19
-  created_at: 2008-06-25 19:32:25.0
 page_html_parts_001: 
   updated_at: 2008-06-25 19:22:19.0
   content: "You can think of a voice section as the cross-section of a voice and section. \
@@ -261,33 +316,6 @@ page_html_parts_001:
   name: info_voice_sections
   id: !str 1
   created_at: 2008-06-25 19:22:19.0
-page_html_parts_023: 
-  updated_at: 2008-07-08 12:15:52.0
-  content: |-
-    Specifies a number of scale steps to shift the entire voice or section.  Positive values will make the music higher, and negative values will make the music lower.
-
-    The results of this setting are dependent on the scale you have selected.  For example, if you are using the chromatic scale, each scale step is exactly one half step, while diatonic scales are a mixture of whole steps and half steps.  Pentatonic scales include scale steps that are as large a as a minor third.
-
-    This setting can be used, for example, to create parallel 3rds or 6ths.
-  content_html: "<p>Specifies a number of scale steps to shift the entire voice or \
-    section.  Positive values will make the music higher, and negative values will \
-    make the music lower.</p>\n\n\n\t<p>The results of this setting are dependent \
-    on the scale you have selected.  For example, if you are using the chromatic scale, \
-    each scale step is exactly one half step, while diatonic scales are a mixture \
-    of whole steps and half steps.  Pentatonic scales include scale steps that are \
-    as large a as a minor third.</p>\n\n\n\t<p>This setting can be used, for example, \
-    to create parallel 3rds or 6ths.</p>"
-  name: info_scale_step_offset
-  id: !str 23
-  created_at: 2008-07-08 12:15:52.0
-page_html_parts_018: 
-  updated_at: 2008-06-25 19:31:57.0
-  content: Specifies how many times self-similarity should be applied to the germ.
-  content_html: <p>Specifies how many times self-similarity should be applied to the
-    germ.</p>
-  name: info_self_similarity_iterations
-  id: !str 18
-  created_at: 2008-06-25 19:31:57.0
 page_html_parts_002: 
   updated_at: 2008-06-25 19:22:31.0
   content: On this tab, you can specify settings that apply to your entire fractal

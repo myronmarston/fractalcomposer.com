@@ -194,18 +194,12 @@ page_html_parts_010:
   id: !str 10
   created_at: 2008-06-25 19:27:27.0
 page_html_parts_011: 
-  updated_at: 2008-06-25 19:28:19.0
-  content: |-
+  updated_at: 2008-07-08 12:19:48.0
+  content: |
     If checked, you can use a different scale and/or key for this section from the scale and key which is set for the entire piece. This can be used to put a section in a different key or tonality (i.e. major or minor). 
-
-    However, take care when selecting a scale with a different number of pitches, as the results are a bit unpredictable. For example, if the scale set for the piece is a major scale (with 7 different pitches) a pentatonic scale (with 5 pitches) should not be used here.
-  content_html: "<p>If checked, you can use a different scale and/or key for this \
-    section from the scale and key which is set for the entire piece. This can be \
-    used to put a section in a different key or tonality (i.e. major or minor).</p>\n\
-    \n\n\t<p>However, take care when selecting a scale with a different number of \
-    pitches, as the results are a bit unpredictable. For example, if the scale set \
-    for the piece is a major scale (with 7 different pitches) a pentatonic scale (with \
-    5 pitches) should not be used here.</p>"
+  content_html: <p>If checked, you can use a different scale and/or key for this section
+    from the scale and key which is set for the entire piece. This can be used to
+    put a section in a different key or tonality (i.e. major or minor).</p>
   name: info_override_scale
   id: !str 11
   created_at: 2008-06-25 19:28:19.0
@@ -217,6 +211,24 @@ page_html_parts_012:
   name: info_tempo
   id: !str 12
   created_at: 2008-06-25 19:28:45.0
+page_html_parts_022: 
+  updated_at: 2008-07-08 12:08:52.0
+  content: |-
+    Indicates how much to increase or decrease the volume.  Values between 0.0 and 1.0 increase the volume; values between 0.0 and -1.0 decrease it.  
+
+    For example, a value of 0.5 means that the volume should be increased to halfway between the current volume and the maximum volume.  A value of -0.5 means the volume should be decreased to halfway between the existing volume and the minimum volume.
+
+    Be careful about setting this to values close to -1.0; the result will be virtually inaudible.
+  content_html: "<p>Indicates how much to increase or decrease the volume.  Values \
+    between 0.0 and 1.0 increase the volume; values between 0.0 and -1.0 decrease \
+    it.</p>\n\n\n\t<p>For example, a value of 0.5 means that the volume should be \
+    increased to halfway between the current volume and the maximum volume.  A value \
+    of -0.5 means the volume should be decreased to halfway between the existing volume \
+    and the minimum volume.</p>\n\n\n\t<p>Be careful about setting this to values \
+    close to -1.0; the result will be virtually inaudible.</p>"
+  name: info_volume_adjustment
+  id: !str 22
+  created_at: 2008-07-08 12:08:52.0
 page_html_parts_003: 
   updated_at: 2008-06-25 19:23:03.0
   content: On this tab, you can specify settings for each of the "sections":http://en.wikipedia.org/wiki/Section_%28music%29
@@ -249,6 +261,25 @@ page_html_parts_001:
   name: info_voice_sections
   id: !str 1
   created_at: 2008-06-25 19:22:19.0
+page_html_parts_023: 
+  updated_at: 2008-07-08 12:15:52.0
+  content: |-
+    Specifies a number of scale steps to shift the entire voice or section.  Positive values will make the music higher, and negative values will make the music lower.
+
+    The results of this setting are dependent on the scale you have selected.  For example, if you are using the chromatic scale, each scale step is exactly one half step, while diatonic scales are a mixture of whole steps and half steps.  Pentatonic scales include scale steps that are as large a as a minor third.
+
+    This setting can be used, for example, to create parallel 3rds or 6ths.
+  content_html: "<p>Specifies a number of scale steps to shift the entire voice or \
+    section.  Positive values will make the music higher, and negative values will \
+    make the music lower.</p>\n\n\n\t<p>The results of this setting are dependent \
+    on the scale you have selected.  For example, if you are using the chromatic scale, \
+    each scale step is exactly one half step, while diatonic scales are a mixture \
+    of whole steps and half steps.  Pentatonic scales include scale steps that are \
+    as large a as a minor third.</p>\n\n\n\t<p>This setting can be used, for example, \
+    to create parallel 3rds or 6ths.</p>"
+  name: info_scale_step_offset
+  id: !str 23
+  created_at: 2008-07-08 12:15:52.0
 page_html_parts_018: 
   updated_at: 2008-06-25 19:31:57.0
   content: Specifies how many times self-similarity should be applied to the germ.

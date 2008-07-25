@@ -14,7 +14,7 @@ require 'tritonus_share-0.3.6.jar'
 require 'path_helper'
     
 class UserSubmission < ActiveRecord::Base
-  extend PathHelper
+  extend PathHelper    
   
   generate_validations
   validates_email_format_of :email
@@ -43,16 +43,16 @@ class UserSubmission < ActiveRecord::Base
     start_processing_if_needed
   end
   
-  def start_processing_if_needed
+  def start_processing_if_needed   
     return if self.processing_completed
         
-    if self.processing_began.nil? || self.processing_began < Time.now.minutes_ago(60)
+    if self.processing_began.nil? || self.processing_began < Time.now.ago(3600) #3600 seconds = 1 hour
       # if the processing began more than an hour ago, it must have failed for
       # some reason, such as the server being killed mid-process, so start it again
       
       # todo: does the thread terminate when it is done or do I need to kill it?
-      scheduler = Rufus::Scheduler.start_new
-      scheduler.schedule_in('1s') do # begin immediately...
+      @@scheduler ||= Rufus::Scheduler.start_new
+      @@scheduler.schedule_in('1s') do # begin immediately...
           UserSubmission.process(self.id)
       end
     end    
@@ -67,17 +67,19 @@ class UserSubmission < ActiveRecord::Base
     output_manager = fractal_piece.createPieceResultOutputManager    
     
     user_submission_dir = user_submission.get_user_submission_dir
-    mp3_filename = "#{user_submission_dir}/#{UserSubmission.sanitize_filename(user_submission.title)}.mp3"
+    filename_without_extension = "#{user_submission_dir}/#{UserSubmission.sanitize_filename(user_submission.title)}"
+    mp3_filename = "#{filename_without_extension}.mp3"
     
     output_manager.saveMp3File(UserSubmission.get_local_filename(mp3_filename))
     user_submission.update_attribute(:mp3_file, UserSubmission.get_url_filename(mp3_filename))
     
-    #TODO: generate pdf file    
+    output_manager.saveLilypondResults(UserSubmission.get_local_filename(filename_without_extension), user_submission.title, user_submission.name)
+    user_submission.update_attribute(:lilypond_results_file, UserSubmission.get_url_filename(filename_without_extension))
     
     user_submission.update_attribute(:processing_completed, Time.now)    
   end
   
-  def get_user_submission_dir()
+  def get_user_submission_dir
     user_submission_dir = "/user_submissions/#{self.id}"
     local_dir = UserSubmission.get_local_filename(user_submission_dir)
     
@@ -87,5 +89,9 @@ class UserSubmission < ActiveRecord::Base
     Dir.mkdir(local_dir, 0755) unless File.exist?(local_dir)     
     user_submission_dir
   end      
+  
+  def get_lilypond_pdf
+    "#{self.lilypond_results_file}.pdf"
+  end
   
 end

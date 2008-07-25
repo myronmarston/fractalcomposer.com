@@ -21,8 +21,8 @@ var_hash_1 = {
 }
 
 # set values on all the voice sections...
-(1..3).each do |voice_index|    
-    (1..4).each do |section_index|
+(1..2).each do |voice_index|    
+    (1..2).each do |section_index|
         include_partial 'set_voice_section_values',
             var_hash_1.merge({
                 :voice_section_prefix => "voices_#{voice_index}",
@@ -33,8 +33,8 @@ end
 
 # change to the other tab; it should have the same values for the voice sections...
 include_partial 'click_tab', :from_tab => 'voices', :to_tab => 'sections'
-(1..4).each do |section_index|    
-    (1..3).each do |voice_index|
+(1..2).each do |section_index|    
+    (1..2).each do |voice_index|
         include_partial 'verify_voice_section_values',
             var_hash_1.merge({
                 :voice_section_prefix => "sections_#{section_index}",
@@ -63,8 +63,8 @@ var_hash_2 = {
 }
 
 # set values on all the voice sections...
-(1..4).each do |section_index|
-    (1..3).each do |voice_index|
+(1..2).each do |section_index|
+    (1..2).each do |voice_index|
         include_partial 'set_voice_section_values',
             var_hash_2.merge({
                 :voice_section_prefix => "sections_#{section_index}",
@@ -79,8 +79,8 @@ include_partial 'click_tab', :from_tab => 'sections', :to_tab => 'voices'
 open '/compose'
 
 include_partial 'click_tab', :from_tab => 'piece_settings', :to_tab => 'sections'
-(1..4).each do |section_index|    
-    (1..3).each do |voice_index|
+(1..2).each do |section_index|    
+    (1..2).each do |voice_index|
         include_partial 'verify_voice_section_values',
             var_hash_2.merge({
                 :voice_section_prefix => "sections_#{section_index}",
@@ -90,8 +90,8 @@ include_partial 'click_tab', :from_tab => 'piece_settings', :to_tab => 'sections
 end
 
 include_partial 'click_tab', :from_tab => 'sections', :to_tab => 'voices'
-(1..3).each do |voice_index|    
-    (1..4).each do |section_index|
+(1..2).each do |voice_index|    
+    (1..2).each do |section_index|
         include_partial 'verify_voice_section_values',
             var_hash_2.merge({
                 :voice_section_prefix => "voices_#{voice_index}",

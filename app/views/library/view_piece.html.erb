@@ -1,0 +1,13 @@
+<h3>
+    <%= user_submission_title_by_name %>
+    <% if @user_submission.display_email? -%>
+        (<%= mail_to @user_submission.email, nil, :encode => :hex %>)
+    <% end -%>
+</h3>
+<p>
+  <b>Date</b>: <%= @user_submission.created_at.strftime("%A, %B %d, %Y at %I:%M %p") %><br />
+  <b>Download</b>: <%= link_to('MP3', @user_submission.mp3_file) %> | <%= link_to('PDF', @user_submission.get_lilypond_pdf) %>
+  <% if @user_submission.description && @user_submission.description != '' -%>
+    <br /><b>Description</b>:<%= auto_link(simple_format(sanitize(@user_submission.description))) %>  
+  <% end -%>     
+</p>

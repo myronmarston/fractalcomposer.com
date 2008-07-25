@@ -1,6 +1,9 @@
 <div id="submit_to_library_result">
 <% if @user_submission_saved -%>  
-   <p>&#8220;<%= @user_submission.title %>&#8221; has been successfully submitted.</p>
+   <p>
+     &#8220;<%= @user_submission.title %>&#8221; has been successfully submitted.  
+     You can visit the <%= link_to('page for your piece', url_for(:controller => 'library', :action => 'view_piece', :id => @user_submission)) %>, but it typically takes a few minutes to process.
+  </p>   
 <% else -%>   
    <h3>There was a problem with your submission.</h3>
    <p>Please review the following errors:</p>
