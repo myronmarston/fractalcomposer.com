@@ -119,6 +119,7 @@ class ComposeController < ApplicationController
   
   def get_voice_section_overriden_settings_xhr
     update_fractal_piece # update or voice or section settings, so we can clone them if need be... 
+    @override_checkbox_id = params[:override_checkbox_id]
     @settings_type = params[:settings_type]
     @settings_content_wrap_id = params[:settings_content_wrap_id]
     @voices_or_sections_label = params[:voices_or_sections]    

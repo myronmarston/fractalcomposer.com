@@ -30,60 +30,43 @@ function enableButton(element_id) {
 }
 
 function performAdvancedOptionsToggle() {    
+    var elements = [$('piece_settings_voices_tab_link'), $('piece_settings_sections_tab_link')];
     if ($('advanced_options_toggle').getValue() == null) {      
       if (!$('piece_settings').visible()) {
         switchid('piece_settings');        
       }
       
-      $('piece_settings_voices_tab_link').hide();
-      $('piece_settings_sections_tab_link').hide();
+      elements.invoke('hide');      
     } else {
-      $('piece_settings_voices_tab_link').show();
-      $('piece_settings_sections_tab_link').show();
+      elements.invoke('show');      
     }       
 }
 
-var ComposeFieldMonitor = Class.create({
-  initialize: function() {
-    composeForm = $('compose_form')
-    descdendant_elements = composeForm.descendants();
+function check_field_validity(select_function) {
+    fields = live_validation_fields.select(select_function);
+    var invalid_fields = fields.reject(function(field) {
+      return field.get('validate')();
+    });           
     
-    this.descdendant_elements.each(function(field) {
-      if (!field.hasClassName('submit_to_library_field')) {
-        // we only want to monitor the fields used to generate the piece        
-      }
-    });
-    
-    this.element = $(element);
-    this.fields = this.element.getElements();
-    this.initFieldChecker();
-  } // initialize
-});
+    if (invalid_fields.length == 0) return true;
+    invalid_fields = invalid_fields.invoke('get', 'description');               
+           
+    alert('Please fix the following fields before continuing: \n\n' + invalid_fields.join('\n'));
+    return false;
+}
 
-var FieldMonitor = Class.create({
-  initialize: function(element) {
-    this.element = $(element);
-    this.fields = this.element.getElements();
-    this.initFieldChecker();
-  }, // initialize
-  initFieldChecker: function() {
-    // get the original values and populate the hash
-    originalValues = new Hash();
-    this.fields.each(function(field) {
-      originalValues.set(field.id, $F(field));
+function remove_live_validation_fields(select_function) {
+    live_validation_fields = live_validation_fields.reject(select_function);    
+}
+
+function remove_live_validation_fields_for_checkbox(checkbox_id) {
+    remove_live_validation_fields(function(field) {
+        return field.get('override_checkbox_id') == checkbox_id;
     });
-    // set up the observers on each field of the form
-    this.fields.each( function(field) {
-      new Form.Element.EventObserver(field, function(f, value) {
-        var originalValue = originalValues.get(f.id);
-        // if the value is the same as original, remove the class tag
-        if ( originalValue === value) {
-          f.removeClassName('changed_field')
-        } else {
-          // else the value is different from the original, add the class tag
-          f.addClassName('changed_field')
-        };
-      })
-    })
-  } // initFieldChecker
-});
+}
+
+function remove_live_validation_fields_for_panel(panel_div_id) {
+    remove_live_validation_fields(function(field) {
+        return field.get('owning_panel_id') == panel_div_id && field.get('remove_on_panel_change');
+    });
+}

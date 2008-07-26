@@ -27,12 +27,12 @@
     <%= hidden_field_tag "#{@voice_section_input_name_prefix}[ignore]", 'ensure have hash', :id => "#{@voice_section_input_id_prefix}_ignore" %>
     Rest <%= check_box_tag "#{@voice_section_input_name_prefix}[rest]", 1, @voice_section.getRest, :id => rest_id %>
     <%= info('rest', rest_id, '<br />') %>
-
+    
     Override Voice Settings 
     <%= check_box_tag "#{@voice_section_input_name_prefix}[override_voice_settings]", 
         1, @voice_section.getOverrideVoiceSettings, 
-        :id => override_voice_cb_id, 
-        :onclick => get_voice_section_override_checkbox_onclick_javascript(override_voice_cb_id, voice_loading_div_id, voice_content_div_id, @voice_or_section_div_id, 'Voice', @this_type_unique_index, @other_type_unique_index) %> 
+        :id => override_voice_cb_id %> 
+    <%= get_voice_section_override_checkbox_onclick_javascript(override_voice_cb_id, voice_loading_div_id, voice_content_div_id, @voice_or_section_div_id, 'Voice', @this_type_unique_index, @other_type_unique_index) %>
     <%= info('override_voice_settings', override_voice_cb_id) %>
 
     <div id="<%= voice_loading_div_id %>" style="display: none">
@@ -43,15 +43,16 @@
         <% if @voice_section.getOverrideVoiceSettings -%>
             <%= render :partial => 'voice_section_overriden_settings', 
                        :locals => {:settings_type => 'Voice', 
-                                   :settings => @voice_section.getVoiceSettings} %>
+                                   :settings => @voice_section.getVoiceSettings,
+                                   :override_checkbox_id => override_voice_cb_id} %>
         <% end -%>
     </div>    
     
     Override Section Settings 
     <%= check_box_tag "#{@voice_section_input_name_prefix}[override_section_settings]", 
         1, @voice_section.getOverrideSectionSettings, 
-        :id => override_section_cb_id, 
-        :onclick => get_voice_section_override_checkbox_onclick_javascript(override_section_cb_id, section_loading_div_id, section_content_div_id, @voice_or_section_div_id, 'Section', @this_type_unique_index, @other_type_unique_index) %> 
+        :id => override_section_cb_id %> 
+    <%= get_voice_section_override_checkbox_onclick_javascript(override_section_cb_id, section_loading_div_id, section_content_div_id, @voice_or_section_div_id, 'Section', @this_type_unique_index, @other_type_unique_index) %>
     <%= info('override_section_settings', override_section_cb_id) %>
 
     <div id="<%= section_loading_div_id %>" style="display: none">
@@ -62,9 +63,9 @@
         <% if @voice_section.getOverrideSectionSettings -%>
             <%= render :partial => 'voice_section_overriden_settings', 
                        :locals => {:settings_type => 'Section', 
-                                   :settings => @voice_section.getSectionSettings} %>
+                                   :settings => @voice_section.getSectionSettings,
+                                   :override_checkbox_id => override_section_cb_id} %>
         <% end -%>
-    </div>
-    
+    </div>    
    
 <% end -%>

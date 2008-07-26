@@ -11,7 +11,8 @@
 
     <div id="footer_buttons">
       <div id ="generate_piece_button_wrap">
-        <input type="button" class="button" id="generate_piece_button" value="Generate Piece" onclick="<%= get_listen_ajax_js('generate_piece_xhr', 'compose_form', piece_spinner_id, 'Your Generated Piece') %>" />        
+        <input type="button" class="button" id="generate_piece_button" value="Generate Piece" />        
+        <%= get_generate_piece_button_js(piece_spinner_id) %>
         <%= render :partial => 'spinner', :locals => {:display => 'none', :div_id => piece_spinner_id, :bottom_px => 6, :left_px => -8} %>       
       </div>
       

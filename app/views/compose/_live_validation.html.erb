@@ -1,5 +1,7 @@
 <%     
+    #TODO: move as much of this to application.js as possible
     var_name = get_live_validation_var_name(id)
+    override_checkbox_id ||= nil
     constructor_args ||= nil 
     validate_now = (validate_now.nil? ? true : validate_now)
 -%>
@@ -23,3 +25,12 @@ var <%= var_name %> = new LiveValidation('<%= id %>'<%= ", { #{constructor_args}
 if (!valid_so_far && do_validation_now) {              
     <%= var_name %>.validate();
 }  
+
+var field_hash = $H({ validate : function() {return <%= var_name %>.validate();}, 
+                      description : '<%= description %>', 
+                      override_checkbox_id : <%= override_checkbox_id ? "'#{override_checkbox_id}'" : 'null' %>,
+                      owning_panel_id : <%= panel_div_id ? "'#{panel_div_id}'" : 'null' %>,
+                      validate_on_generate_piece : <%= !panel_div_id.nil? %>,
+                      validate_on_submit : <%= panel_div_id.nil? %>,
+                      remove_on_panel_change : <%= !override_checkbox_id.nil? %> });
+live_validation_fields.push(field_hash);

@@ -6,6 +6,8 @@
 
       <%= render :partial => "#{settings_type.downcase}_settings",
                  :locals => {:settings => settings, 
-                             :input_prefix => @voice_section_input_name_prefix} %> 
+                             :input_prefix => @voice_section_input_name_prefix,
+                             :override_checkbox_id => override_checkbox_id,
+                             :panel_div_id => @voices_or_sections_label} %> 
   <% end -%>
 </div>                      

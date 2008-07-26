@@ -29,5 +29,9 @@
                                      :generate_update_germ_js => false} %>            
           <% end -%>
       </div>    
-      <%= render :partial => 'section_settings', :locals => {:settings => @voice_or_section.getSettings, :input_prefix => @voice_or_section_input_name_prefix} %>   
+      <%= render :partial => 'section_settings', 
+                 :locals => {:settings => @voice_or_section.getSettings, 
+                             :input_prefix => @voice_or_section_input_name_prefix,
+                             :override_checkbox_id => nil,
+                             :panel_div_id => 'sections'} %>
 <% end -%>

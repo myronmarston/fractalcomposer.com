@@ -8,7 +8,8 @@ module ComposeHelper
   def get_additional_tab_javascript(tab_name)       
     # notify the controller that the user has finished editing this tab,
     # so that it can update the voice sections to keep everything in sync
-    additional_js = remote_function(:url => {
+    additional_js = "remove_live_validation_fields_for_panel('#{tab_name}'); "
+    additional_js += remote_function(:url => {
         :action => 'finished_editing_tab_xhr'}, 
         :with => "Form.serialize($('#{tab_name}'))") + "; "
       
@@ -122,6 +123,7 @@ module ComposeHelper
       if ($('#{checkbox_id}').checked) {
         #{remote_func_js}        
       } else {
+        remove_live_validation_fields_for_checkbox('#{checkbox_id}');
         Element.update('#{content_div_id}', '');
       }
     END_OF_STRING
@@ -129,30 +131,39 @@ module ComposeHelper
   end
   
   def get_voice_section_override_checkbox_onclick_javascript(checkbox_id, loading_div_id, content_div_id, parent_voice_or_section_id, settings_type, main_unique_index, other_unique_index)
-    get_override_checkbox_onclick_javascript(
+    js = get_override_checkbox_onclick_javascript(
       checkbox_id, loading_div_id, content_div_id,
       'get_voice_section_overriden_settings_xhr',
       "Form.serialize($('#{parent_voice_or_section_id}')) + " +
-      "'&amp;voices_or_sections=#{@voices_or_sections_label}" +
-      "&amp;settings_type=#{settings_type}" +
-      "&amp;main_unique_index=#{main_unique_index}" + 
-      "&amp;other_unique_index=#{other_unique_index}" + 
-      "&amp;settings_content_wrap_id=#{content_div_id}'"    
+      "'&voices_or_sections=#{@voices_or_sections_label}" +
+      "&settings_type=#{settings_type}" +
+      "&main_unique_index=#{main_unique_index}" + 
+      "&other_unique_index=#{other_unique_index}" + 
+      "&override_checkbox_id=#{checkbox_id}" +
+      "&settings_content_wrap_id=#{content_div_id}'"    
     )
+    
+    js_function = "function() {#{js};}"
+    
+    javascript_tag("Event.observe('#{checkbox_id}', 'click', #{js_function})")
   end
   
   def set_prefix_instance_variables
     # set prefix instance variables used by multiple partials
     if @voices_or_sections_label && @voice_or_section
-      @voice_or_section_input_name_prefix = "#{@voices_or_sections_label}[#{@voice_or_section.getUniqueIndex}]"
+      index = @voice_or_section.getUniqueIndex
+      @voice_or_section_input_name_prefix = "#{@voices_or_sections_label}[#{index}]"
       @voice_or_section_input_id_prefix = sanatize_input_id(@voice_or_section_input_name_prefix)             
-    
+      
+      @current_item_description = "#{@voices_or_sections_label.singularize.titleize} #{index}"
       if @voice_section
-        @this_type_unique_index = @voice_or_section.getUniqueIndex
+        @this_type_unique_index = index
         @other_type_unique_index = @voice_section.getOtherVoiceOrSection(@voice_or_section).getUniqueIndex    
         @other_type_label = @voice_section.getOtherVoiceOrSection(@voice_or_section).getClassName
         @voice_section_input_name_prefix = "#{@voices_or_sections_label}[#{@this_type_unique_index}][voice_sections][#{@other_type_unique_index}]"
         @voice_section_input_id_prefix = sanatize_input_id(@voice_section_input_name_prefix)  
+        
+        @current_item_description = "Voice Section for #{@current_item_description}, #{@other_type_label.singularize.titleize} #{@other_type_unique_index}"
       end    
     end            
   end
@@ -175,13 +186,9 @@ module ComposeHelper
     "style=\"display: none;\""
   end
   
-  def get_live_validation_js(id, consructor_args, *validations)                  
-    javascript_tag(render(:partial => 'live_validation', :locals => {:id => id, :constructor_args => consructor_args, :validations => validations}))
-  end
-
-  def get_live_validation_js_with_defaults(id, validate_now, *validations)                  
-    javascript_tag(render(:partial => 'live_validation', :locals => {:id => id, :validate_now => validate_now, :constructor_args => "validMessage: null, wait: #{LIVE_VALIDATION_DELAY}", :validations => validations}))    
-  end
+  def get_live_validation_js(id, validate_now, panel_div_id, description, override_checkbox_id, *validations)                  
+    javascript_tag(render(:partial => 'live_validation', :locals => {:id => id, :validate_now => validate_now, :constructor_args => "validMessage: null, wait: #{LIVE_VALIDATION_DELAY}", :panel_div_id => panel_div_id, :description => description, :override_checkbox_id => override_checkbox_id, :validations => validations}))    
+  end    
   
   def get_live_validation_var_name(id)
     "#{id}_validator"
@@ -246,6 +253,20 @@ module ComposeHelper
     get_lightwindow_js('#hidden_content_for_lightwindow', part_description, 500, 770)    
   end
   
+  def get_generate_piece_button_js(piece_spinner_id)
+    js = <<-EOS
+      function() {
+        if (check_field_validity(function(f) {
+          return f.get('validate_on_generate_piece');          
+        })) {
+          #{get_listen_ajax_js('generate_piece_xhr', 'compose_form', piece_spinner_id, 'Your Generated Piece')}      
+        }
+      }
+    EOS
+    
+    javascript_tag("Event.observe('generate_piece_button', 'click', #{js})")
+  end
+  
   def get_listen_ajax_js(action, serialize_id, spinner_id, title, other_params = '')
     remote_function(        
       :url => {:action => action}, 
@@ -276,6 +297,23 @@ module ComposeHelper
       });
     EOS
     javascript_tag(js)
+  end
+  
+  def get_tab_click_handler(from_panel_div_id, to_panel_div_id, tab_link_id)     
+    js = <<-EOS    
+    function() {
+      if (check_field_validity(function(f) { 
+            return f.get('owning_panel_id') == '#{from_panel_div_id}'; 
+      })) {
+          switchid('#{to_panel_div_id}');
+          #{get_additional_tab_javascript(from_panel_div_id)}
+      } 
+
+      return false;    
+    }
+    EOS
+    
+    javascript_tag("Event.observe('#{tab_link_id}', 'click', #{js})")
   end
  
 end

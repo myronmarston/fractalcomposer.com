@@ -9,7 +9,7 @@
 Octave Adjustment:
 <% octave_id = "#{voice_settings_input_id_prefix}_octave_adjustment" -%>
 <%= text_field_tag "#{voice_settings_input_name_prefix}[octave_adjustment]", settings.getOctaveAdjustment, :size => 2, :id => octave_id, :class => 'textbox' %>
-<%= get_live_validation_js_with_defaults(octave_id, true,
+<%= get_live_validation_js(octave_id, true, panel_div_id, "Octave Adjustment (#{@current_item_description})", override_checkbox_id,
     {:type => 'Validate.Presence'}, 
     {:type => 'Validate.Numericality', :args => "{ onlyInteger: true, minimum: -4, maximum: 4, notANumberMessage: 'Must be an integer!' }"}) %>
 <%= info('octave_adjustment', octave_id, '<br />') %>
@@ -17,19 +17,21 @@ Octave Adjustment:
 Rhythm Scale Factor:
 <% speed_id = "#{voice_settings_input_id_prefix}_speed_scale_factor" %>
 <%= text_field_tag "#{voice_settings_input_name_prefix}[speed_scale_factor]", settings.getSpeedScaleFactor, :size => 2, :id => speed_id, :class => 'textbox' %>
-<%= get_live_validation_js_with_defaults(speed_id, true,
+<%= get_live_validation_js(speed_id, true, panel_div_id, "Rhythm Scale Factor (#{@current_item_description})", override_checkbox_id,
     {:type => 'Validate.Presence'}, 
     {:type => 'Validate.Format', :args => "{ pattern: /#{com.myronmarston.util.Fraction::POSITIVE_FRACTION_REGEX_STRING}/, failureMessage: 'Must be a positive integer or fraction.' }"}) %>
 <%= info('rhythm_scale_factor', speed_id, '<br />') %>
 
 <%= render :partial => 'voice_or_section_common_settings', 
            :locals => {:settings_input_name_prefix => voice_settings_input_name_prefix,
-                       :settings => settings} %>
+                       :settings => settings,
+                       :override_checkbox_id => override_checkbox_id,
+                       :panel_div_id => panel_div_id} %>
 
 Self-Similarity Iterations:
 <% iterations_id = "#{input_id_prefix_sss}_self_similarity_iterations" %>
 <%= text_field_tag "#{input_name_prefix_sss}[self_similarity_iterations]", self_similarity_settings.getSelfSimilarityIterations, :size => 2, :id => iterations_id, :class => 'textbox' %>
-<%= get_live_validation_js_with_defaults(iterations_id, true,
+<%= get_live_validation_js(iterations_id, true, panel_div_id, "Self-Similarity Iterations (#{@current_item_description})", override_checkbox_id,
     {:type => 'Validate.Presence'}, 
     {:type => 'Validate.Numericality', :args => "{ onlyInteger: true, minimum: 1, maximum: 9, notANumberMessage: 'Must be an integer!' }"}) %>
 <%= info('self-similarity_iterations', iterations_id) %>

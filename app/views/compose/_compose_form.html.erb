@@ -9,6 +9,7 @@
   }
 -%>
 <div id="compose_form_wrap">
+  <%= javascript_tag("var live_validation_fields = new Array();") %>
   <div id="advanced_options_toggle_wrap">
     Show Advanced Options
     <%= check_box_tag "advanced_options_toggle", 1, session[:show_advanced_options], :onclick => remote_function(
@@ -16,15 +17,14 @@
         :with  => "'show_advanced_options=' + encodeURIComponent(this.checked)",
         :before  => 'performAdvancedOptionsToggle()') %>    
   </div>  
-  <%= render :partial => 'layouts/tabpanel_js', :locals => {:div_ids => div_ids} -%>
+  <%= render :partial => 'tabpanel_js', :locals => {:div_ids => div_ids} -%>
   <% div_ids.each do |@voices_or_sections_label| -%>
-      <div id="<%= @voices_or_sections_label %>" style="display:<%= if @voices_or_sections_label == 'piece_settings' then 'block' else 'none' end %>;">
-        <%= render :partial => 'layouts/tabpanel_list',
+      <div id="<%= @voices_or_sections_label %>" style="display:<%= if @voices_or_sections_label == 'piece_settings' then 'block' else 'none' end %>;">        
+        <%= render :partial => 'tabpanel_list',
                    :locals => {
                       :div_ids => div_ids,                      
                       :div_names => div_names,
-                      :div_current => @voices_or_sections_label,
-                      :additional_tab_js => get_additional_tab_javascript(@voices_or_sections_label) } %>
+                      :div_current => @voices_or_sections_label } %>
         <div class="tab_panel_body">
           <%= info(@voices_or_sections_label, nil, nil, 'position: absolute; top: -3px; right: 3px', 'info_wrap_spacer') %>
           <%= render :partial => partials[@voices_or_sections_label] %>
