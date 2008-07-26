@@ -41,9 +41,9 @@ module ApplicationHelper
   def get_menu_items
     [
       {:name => 'Home', :options => {:controller => 'static_page', :name => 'home'}},
-      {:name => 'About', :options => {:controller => 'static_page', :name => 'about'}},
-      {:name => 'Compose', :options => {:controller => 'compose'}},
+      {:name => 'About', :options => {:controller => 'static_page', :name => 'about'}},      
       {:name => 'Examples', :options => {:controller => 'static_page', :name => 'examples'}},
+      {:name => 'Compose', :options => {:controller => 'compose'}},
       {:name => 'Library', :options => {:controller => 'library'}}
     ]
   end

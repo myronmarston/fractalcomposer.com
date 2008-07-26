@@ -43,6 +43,11 @@ class ComposeController < ApplicationController
     # additional characters not found in the germ    
   end
   
+  def set_show_advanced_options_xhr
+    session[:show_advanced_options] = (params[:show_advanced_options] != 'false')
+    render :nothing => true
+  end
+  
   def listen_to_part_xhr
     update_fractal_piece
     part_type = params[:part_type]
