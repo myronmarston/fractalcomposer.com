@@ -30,6 +30,7 @@ var field_hash = $H({ validate : function() {return <%= var_name %>.validate();}
                       description : '<%= description %>', 
                       override_checkbox_id : <%= override_checkbox_id ? "'#{override_checkbox_id}'" : 'null' %>,
                       owning_panel_id : <%= panel_div_id ? "'#{panel_div_id}'" : 'null' %>,
+                      owning_voice_or_section_id : <%= voice_or_section_id ? "'#{voice_or_section_id}'" : 'null' %>,
                       validate_on_generate_piece : <%= !panel_div_id.nil? %>,
                       validate_on_submit : <%= panel_div_id.nil? %>,
                       remove_on_panel_change : <%= !override_checkbox_id.nil? %> });

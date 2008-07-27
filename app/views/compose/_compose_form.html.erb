@@ -8,8 +8,7 @@
     'submit_to_library' => 'submit_to_library'
   }
 -%>
-<div id="compose_form_wrap">
-  <%= javascript_tag("var live_validation_fields = new Array();") %>
+<div id="compose_form_wrap">  
   <div id="advanced_options_toggle_wrap">
     Show Advanced Options
     <%= check_box_tag "advanced_options_toggle", 1, session[:show_advanced_options], :onclick => remote_function(

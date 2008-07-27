@@ -3,7 +3,7 @@
     index = @voice_or_section.getUniqueIndex
     singular_voices_or_sections_label = @voices_or_sections_label.singularize
     part_description = "#{singular_voices_or_sections_label.titleize} #{index}"
-    div_id = get_one_voice_or_section_id
+    div_id = @voice_or_section_id
     loading_div_id = "#{@voice_or_section_input_id_prefix}_voice_sections_loading"    
     load_voice_sections_js = remote_function(:url => {:action => 'get_voice_sections_xhr'},
             :with => "'voices_or_sections=#{@voices_or_sections_label}&amp;unique_index=#{index}&amp;fieldset_div_id=#{@voice_or_section_input_id_prefix}_voice_sections_fieldset&amp;loading_div_id=#{loading_div_id}&amp;voice_or_section_div_id=#{div_id}'" )            
@@ -13,6 +13,8 @@
     voice_sections_yield_identifier = UUID.random_create.to_s.gsub(/-/, '_')
     delete_button_identifier = UUID.random_create.to_s.gsub(/-/, '_')
     voice_sections_info_identifier = UUID.random_create.to_s.gsub(/-/, '_')
+    
+    delete_id = "#{@voice_or_section_input_id_prefix}_delete_img"
 -%>
 
 <div id="<%= div_id %>" class="one_voice_or_section">  
@@ -33,9 +35,15 @@
                 image_tag('cross.png', 
                     :alt => "Remove #{part_description}",
                     :title => "Remove #{part_description}",
-                    :class => 'delete_voice_or_section_image',
-                    :id => "#{@voice_or_section_input_id_prefix}_delete_img"),              
-                get_delete_voice_or_section_js(@voices_or_sections_label, @voice_or_section, div_id)) %> 
+                    :class => 'delete_voice_or_section_image', 
+                    :id => delete_id), 
+                "delete_voice_or_section(
+                    '#{@voices_or_sections_label}', 
+                    '#{singular_voices_or_sections_label}', 
+                    '#{div_id}', 
+                    #{index}, 
+                    '#{url_for(:action => :delete_voice_or_section_xhr)}')"
+          ) %>          
         </div>      
     <% end -%>
 

@@ -35,27 +35,7 @@ module ComposeHelper
   
   def get_prototype_js_for_element_collection(parent_element_id, css_element_selector)
     "$('#{parent_element_id}').getElementsBySelector('#{css_element_selector}')"
-  end
-  
-  def get_delete_voice_or_section_js(voices_or_sections_label, voice_or_section, div_id)
-    singular_voices_or_sections_label = voices_or_sections_label.singularize
-    plural_voices_or_sections_label = voices_or_sections_label.pluralize
-    notify_server_js = remote_function(:url => {:action => :delete_voice_or_section_xhr}, :with => "'voice_or_section=#{singular_voices_or_sections_label}&amp;unique_index=#{voice_or_section.getUniqueIndex}'")
-    # this javascript does the following:
-    # 1. Gives the user an error message if they are trying to delete the last voice or section
-    # 2. Visually show the user the delete
-    # 3. Notify the server of the delete using AJAX so that it can modify the actual object
-    # 4. After a delay, remove the html element.  The delay is necessary to allow the effect to complete.
-    <<-END_OF_STRING
-        if (#{get_prototype_js_for_element_collection(plural_voices_or_sections_label, 'div.one_voice_or_section')}.length == 1) {
-            alert('You cannot delete the last #{singular_voices_or_sections_label}.  There must always be at least one.');
-        } else {
-            Effect.DropOut('#{div_id}');
-            #{notify_server_js};
-            setTimeout(\"$('#{div_id}').remove()\", 1000);
-        }
-    END_OF_STRING
-  end
+  end    
   
   def get_add_voice_or_section_js(singular_voices_or_sections_label, spinner_id)
     add_voice_or_section_js = remote_function(        
@@ -152,6 +132,7 @@ module ComposeHelper
     # set prefix instance variables used by multiple partials
     if @voices_or_sections_label && @voice_or_section
       index = @voice_or_section.getUniqueIndex
+      @voice_or_section_id = get_one_voice_or_section_id
       @voice_or_section_input_name_prefix = "#{@voices_or_sections_label}[#{index}]"
       @voice_or_section_input_id_prefix = sanatize_input_id(@voice_or_section_input_name_prefix)             
       
@@ -186,8 +167,16 @@ module ComposeHelper
     "style=\"display: none;\""
   end
   
-  def get_live_validation_js(id, validate_now, panel_div_id, description, override_checkbox_id, *validations)                  
-    javascript_tag(render(:partial => 'live_validation', :locals => {:id => id, :validate_now => validate_now, :constructor_args => "validMessage: null, wait: #{LIVE_VALIDATION_DELAY}", :panel_div_id => panel_div_id, :description => description, :override_checkbox_id => override_checkbox_id, :validations => validations}))    
+  def get_live_validation_js(id, validate_now, panel_div_id, voice_or_section_id, description, override_checkbox_id, *validations)                  
+    javascript_tag(render(:partial => 'live_validation', 
+                          :locals => {:id => id, 
+                                      :validate_now => validate_now, 
+                                      :constructor_args => "validMessage: null, wait: #{LIVE_VALIDATION_DELAY}", 
+                                      :panel_div_id => panel_div_id, 
+                                      :voice_or_section_id => voice_or_section_id,
+                                      :description => description, 
+                                      :override_checkbox_id => override_checkbox_id, 
+                                      :validations => validations}))    
   end    
   
   def get_live_validation_var_name(id)
@@ -256,11 +245,13 @@ module ComposeHelper
   def get_generate_piece_button_js(piece_spinner_id)
     js = <<-EOS
       function() {
+        $('#{piece_spinner_id}').show();
         if (check_field_validity(function(f) {
           return f.get('validate_on_generate_piece');          
         })) {
           #{get_listen_ajax_js('generate_piece_xhr', 'compose_form', piece_spinner_id, 'Your Generated Piece')}      
         }
+        $('#{piece_spinner_id}').hide();
       }
     EOS
     

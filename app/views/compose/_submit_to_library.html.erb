@@ -4,7 +4,7 @@
       <strong>Piece Title:</strong> (required)         
     </label>
     <%= text_field 'user_submission', 'title', :size => 35, :maxlength => 50, :class => 'textbox submit_to_library_field' %>    
-    <%= get_live_validation_js('user_submission_title', false, nil, "Piece Title", nil, {:type => 'Validate.Presence'}) %>
+    <%= get_live_validation_js('user_submission_title', false, nil, nil, "Piece Title", nil, {:type => 'Validate.Presence'}) %>
   </p>
   
   <p> 
@@ -12,7 +12,7 @@
       <strong>Name:</strong> (required)         
     </label>
     <%= text_field 'user_submission', 'name', :size => 35, :maxlength => 50, :class => 'textbox submit_to_library_field' %>    
-    <%= get_live_validation_js('user_submission_name', false, nil, "Name", nil, {:type => 'Validate.Presence'}) %>
+    <%= get_live_validation_js('user_submission_name', false, nil, nil, "Name", nil, {:type => 'Validate.Presence'}) %>
   </p>
 
   <p> 
@@ -20,7 +20,7 @@
       <strong>Email:</strong> (required, but will not be displayed)         
     </label>
     <%= text_field 'user_submission', 'email', :size => 35, :class => 'textbox submit_to_library_field' %>    
-    <%= get_live_validation_js('user_submission_email', false, nil, "Email", nil,
+    <%= get_live_validation_js('user_submission_email', false, nil, nil, "Email", nil,
         {:type => 'Validate.Presence'},
         {:type => 'Validate.Email'}) %>
   </p>

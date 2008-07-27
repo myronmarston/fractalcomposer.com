@@ -2,6 +2,7 @@
     piece_spinner_id = 'piece_spinner'
     start_over_submit_spinner_id = 'start_over_submit_spinner'
 %>
+<%= javascript_tag("var live_validation_fields = new Array();") %>
 <% form_remote_tag  :url => {:action => 'generate_piece_xhr'},
                     :html => {:id => 'compose_form'},                    
                     :before => "$('#{piece_spinner_id}').show()",

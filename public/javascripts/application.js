@@ -51,7 +51,7 @@ function check_field_validity(select_function) {
     if (invalid_fields.length == 0) return true;
     invalid_fields = invalid_fields.invoke('get', 'description');               
            
-    alert('Please fix the following fields before continuing: \n\n' + invalid_fields.join('\n'));
+    alert('There are some fields with invalid values.  Please fix the following fields before continuing: \n\n' + invalid_fields.join('\n'));
     return false;
 }
 
@@ -69,4 +69,26 @@ function remove_live_validation_fields_for_panel(panel_div_id) {
     remove_live_validation_fields(function(field) {
         return field.get('owning_panel_id') == panel_div_id && field.get('remove_on_panel_change');
     });
+}
+
+function remove_live_validation_fields_for_voice_or_section(voice_or_section_id) {
+    remove_live_validation_fields(function(field) {
+        return field.get('owning_voice_or_section_id') == voice_or_section_id;
+    });
+}
+
+function delete_voice_or_section(plural_voices_or_sections_label, singular_voices_or_sections_label, div_id, voice_or_section_index, server_notification_url) {                     
+    if ($(plural_voices_or_sections_label).getElementsBySelector('div.one_voice_or_section').length == 1) {
+        alert('You cannot delete the last ' + singular_voices_or_sections_label + '.  There must always be at least one.');
+    } else {
+        Effect.DropOut(div_id);
+        new Ajax.Request(server_notification_url, 
+          {asynchronous:true, 
+           evalScripts:true, 
+           parameters:'voice_or_section=' + singular_voices_or_sections_label + '&unique_index=' + voice_or_section_index});
+        remove_live_validation_fields_for_voice_or_section(div_id);
+        setTimeout("$('" + div_id + "').remove()", 1000);
+    }
+    
+    return false;
 }

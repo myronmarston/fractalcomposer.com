@@ -5,7 +5,7 @@
 Volume Adjustment:
 <% volume_id = "#{settings_input_id_prefix}_volume_adjustment" -%>
 <%= text_field_tag "#{settings_input_name_prefix}[volume_adjustment]", settings.getVolumeAdjustment, :size => 2, :id => volume_id, :class => 'textbox' %>
-<%= get_live_validation_js(volume_id, true, panel_div_id, "Volume Adjustment (#{@current_item_description})", override_checkbox_id,
+<%= get_live_validation_js(volume_id, true, panel_div_id, @voice_or_section_id, "Volume Adjustment (#{@current_item_description})", override_checkbox_id,
     {:type => 'Validate.Presence'},     
     {:type => 'Validate.Format', :args => "{ pattern: /^[+-]?(0*\\.\\d+|0)$/, failureMessage: 'Must be a value greater than -1.0 and less than 1.0.' }"}) %>
 <%= info('volume_adjustment', volume_id, '<br />') %>
@@ -13,7 +13,7 @@ Volume Adjustment:
 Scale Step Offset:
 <% offset_id = "#{settings_input_id_prefix}_scale_step_offset" -%>
 <%= text_field_tag "#{settings_input_name_prefix}[scale_step_offset]", settings.getScaleStepOffset, :size => 2, :id => offset_id, :class => 'textbox' %>
-<%= get_live_validation_js(offset_id, true, panel_div_id, "Scale Step Offset (#{@current_item_description})", override_checkbox_id,
+<%= get_live_validation_js(offset_id, true, panel_div_id, @voice_or_section_id, "Scale Step Offset (#{@current_item_description})", override_checkbox_id,
     {:type => 'Validate.Presence'},     
     {:type => 'Validate.Numericality', :args => "{ onlyInteger: true, minimum: -11, maximum: 11, notANumberMessage: 'Must be an integer!' }"}) %>
 <%= info('scale_step_offset', offset_id, '<br />') %>

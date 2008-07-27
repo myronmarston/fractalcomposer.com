@@ -3,7 +3,7 @@
         
     Time Signature:
     <%= text_field_tag :time_signature, @fractal_piece.getTimeSignature, :size => 4, :class => 'textbox' %>
-    <%= get_live_validation_js('time_signature', true, 'piece_settings', 'Time Signature', nil,
+    <%= get_live_validation_js('time_signature', true, 'piece_settings', nil, 'Time Signature', nil,
         {:type => 'Validate.Presence'}, 
         {:type => 'Validate.Format', :args => "{ pattern: /#{com.myronmarston.music.settings.TimeSignature::REGEX_PATTERN_STRING}/, failureMessage: 'Must be a positive fraction with a power of 2 in the denominator.' }"}) %>
     <% remote_time_sig_js = remote_function(
@@ -17,7 +17,7 @@
     
     Tempo:    
     <%= text_field_tag :tempo, @fractal_piece.getTempo, :size => 4, :class => 'textbox' %>
-    <%= get_live_validation_js('tempo', true, 'piece_settings', 'Tempo', nil,
+    <%= get_live_validation_js('tempo', true, 'piece_settings', nil, 'Tempo', nil,
         {:type => 'Validate.Presence'}, 
         {:type => 'Validate.Numericality', :args => "{ onlyInteger: true, minimum: #{com.myronmarston.music.Tempo::MIN_TEMPO_BPM}, maximum: #{com.myronmarston.music.Tempo::MAX_TEMPO_BPM}, notANumberMessage: 'Must be an integer!' }"}) %>    
     <%= info('tempo', nil, '<br />') %>
