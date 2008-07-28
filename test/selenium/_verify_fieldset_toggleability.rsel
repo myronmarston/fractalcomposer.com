@@ -3,6 +3,7 @@
 require 'uuidtools.rb'
 label_name = "test_link_toggleability_main_test_#{UUID.random_create.to_s}"
 
+wait_for_element_present(fieldset_id)
 store_visible(fieldset_id, 'fieldset_expanded')
 goto_if("${fieldset_expanded}", label_name)
 include_partial 'expand_fieldset', :toggle_link_id => toggle_link_id

@@ -26,6 +26,7 @@ include_partial 'expand_fieldset', :toggle_link_id => all_vs_show_link_id
 
 # ************** ensure voice section fieldset expanded *************** #
 label "ensure_individual_vs_fieldset_expanded_#{random_id}"
+wait_for_element_present(individual_vs_fieldset_id) # for some reason, the next line fails sometimes, even though it is present...so wait until it is present
 store_visible(individual_vs_fieldset_id, 'fieldset_expanded')
 goto_if("${fieldset_expanded}", "end_#{random_id}")
 include_partial 'expand_fieldset', :toggle_link_id => individual_vs_show_link_id

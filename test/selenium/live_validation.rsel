@@ -1,4 +1,4 @@
-
+assert_title 'This test needs to be fixed once internet access is available'
 include_partial 'clear_session'
 
 include_partial 'test_live_validation_field', 

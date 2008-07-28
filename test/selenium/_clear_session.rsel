@@ -1,2 +1,4 @@
+open '/selenium/setup'
 open '/compose'
-include_partial 'ajax_action', :cmd => 'click', :target => 'start_over_button'
+#include_partial 'ajax_action', :cmd => 'click', :target => 'start_over_button'
+include_partial 'set_checkbox_value', :ajax => true, :id => 'advanced_options_toggle', :value => true

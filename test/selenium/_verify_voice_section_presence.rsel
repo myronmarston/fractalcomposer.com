@@ -2,7 +2,8 @@ show_link_id = "#{this_voice_or_section}s_#{this_index}__voice_sections__#{other
 link_text = "Voice Section for #{other_voice_or_section.titleize} #{other_index}*"
 
 if present
-    verify_element_present show_link_id
+    #verify_element_present show_link_id
+    wait_for_element_present show_link_id
     verify_text show_link_id, link_text
 else
     verify_element_not_present show_link_id
