@@ -1,0 +1,7 @@
+validation_error = (validation_error.nil? ? false : validation_error)
+
+if validation_error
+    click 'generate_piece_button'
+else
+    include_partial 'ajax_action', :cmd => 'click', :target => 'generate_piece_button'
+end

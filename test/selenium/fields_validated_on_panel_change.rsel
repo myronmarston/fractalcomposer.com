@@ -1,0 +1,44 @@
+include_partial 'clear_session'
+
+# set a germ so we can generate a piece...
+include_partial 'set_textbox_value', :id => 'germ_string', :value => 'G4 A4', :ajax => true
+
+{'tempo' => 'Tempo',
+ 'time_signature' => 'Time Signature'}.each_pair do |field, description| 
+    include_partial 'verify_field_validates_on_panel_change',
+        :current_tab => 'piece_settings',
+        :field_description => description,
+        :field_id => field
+end
+
+include_partial 'click_tab', :from_tab => 'piece_settings', :to_tab => 'voices'
+
+include_partial 'verify_fields_validate_on_panel_change_for_voice_or_section', 
+    :voice_or_section => 'voice',
+    :index => 1,
+    :voice_section_index => 1
+
+include_partial 'add_voice_or_section', 
+    :voice_or_section => 'voice',
+    :index => 4
+
+include_partial 'verify_fields_validate_on_panel_change_for_voice_or_section', 
+    :voice_or_section => 'voice',
+    :index => 4,
+    :voice_section_index => 1
+
+include_partial 'click_tab', :from_tab => 'voices', :to_tab => 'sections'
+
+include_partial 'verify_fields_validate_on_panel_change_for_voice_or_section', 
+    :voice_or_section => 'section',
+    :index => 1,
+    :voice_section_index => 2
+
+include_partial 'add_voice_or_section', 
+    :voice_or_section => 'section',
+    :index => 5
+
+include_partial 'verify_fields_validate_on_panel_change_for_voice_or_section', 
+    :voice_or_section => 'voice',
+    :index => 5,
+    :voice_section_index => 2

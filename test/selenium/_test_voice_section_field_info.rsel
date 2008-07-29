@@ -10,7 +10,11 @@ include_partial 'test_field_info', :id_prefix => "#{full_prefix}_rest"
 include_partial 'test_field_info', :id_prefix => "#{full_prefix}_override_voice_settings"
 include_partial 'test_field_info', :id_prefix => "#{full_prefix}_override_section_settings"
 
-include_partial 'set_checkbox_value', :id => "#{full_prefix}_override_voice_settings", :value => true, :ajax => true
+include_partial 'override_voice_section_settings',
+    :full_prefix => full_prefix,  
+    :settings_type => 'voice',
+    :value => true
+
 include_partial 'test_field_info', :id_prefix => "#{voice_settings_prefix}_octave_adjustment"
 include_partial 'test_field_info', :id_prefix => "#{voice_settings_prefix}_speed_scale_factor"
 include_partial 'test_field_info', :id_prefix => "#{voice_settings_prefix}_volume_adjustment"
@@ -18,7 +22,11 @@ include_partial 'test_field_info', :id_prefix => "#{voice_settings_prefix}_scale
 include_partial 'test_field_info', :id_prefix => "#{voice_settings_prefix}__self_similarity_settings_self_similarity_iterations"
 include_partial 'test_field_info', :id_prefix => "#{voice_settings_prefix}__self_similarity_settings"
 
-include_partial 'set_checkbox_value', :id => "#{full_prefix}_override_section_settings", :value => true, :ajax => true
+include_partial 'override_voice_section_settings',
+    :full_prefix => full_prefix,  
+    :settings_type => 'section',
+    :value => true
+
 include_partial 'test_field_info', :id_prefix => "#{section_settings_prefix}_apply_inversion"
 include_partial 'test_field_info', :id_prefix => "#{section_settings_prefix}_apply_retrograde"
 include_partial 'test_field_info', :id_prefix => "#{section_settings_prefix}_volume_adjustment"

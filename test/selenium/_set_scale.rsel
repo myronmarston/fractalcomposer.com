@@ -1,0 +1,15 @@
+prefix ||= ''
+verify_value_changing = (verify_value_changing.nil? ? false : verify_value_changing)
+key_should_be_visible = (key_should_be_visible.nil? ? true : key_should_be_visible)
+
+include_partial 'set_select_value', 
+    :id => "#{prefix}scale", 
+    :text => value,
+    :verify_value_changing => verify_value_changing, 
+    :ajax => true
+
+if key_should_be_visible
+    wait_for_visible "#{prefix}key" 
+else
+    wait_for_not_visible "#{prefix}key" 
+end

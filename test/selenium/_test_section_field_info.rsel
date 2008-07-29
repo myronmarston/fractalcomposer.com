@@ -4,7 +4,7 @@ prefix = "sections_#{section_index}"
 section_settings_prefix = "#{prefix}__section_settings"
 
 include_partial 'test_field_info', :id_prefix => "#{prefix}_override_scale"
-include_partial 'set_checkbox_value', :id => "#{prefix}_override_scale", :value => true, :ajax => true
+include_partial 'override_section_scale', :section_index => section_index, :value => true
 include_partial 'test_field_info', :id_prefix => "#{prefix}__scale"
 include_partial 'test_field_info', :id_prefix => "#{section_settings_prefix}_apply_inversion"
 include_partial 'test_field_info', :id_prefix => "#{section_settings_prefix}_apply_retrograde"

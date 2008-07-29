@@ -1,0 +1,7 @@
+prefix = "sections_#{section_index}"
+include_partial 'set_checkbox_value', 
+    :id => "#{prefix}_override_scale", 
+    :value => value, 
+    :ajax => value
+
+wait_for_element_present "#{prefix}__scale_show_info_image" if value

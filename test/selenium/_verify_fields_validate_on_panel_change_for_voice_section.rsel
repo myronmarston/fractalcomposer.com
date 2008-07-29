@@ -1,0 +1,54 @@
+include_partial 'ensure_voice_section_visible', 
+    :voice_section_prefix => "#{current_tab}_#{index_1}",
+    :voice_section_index => index_2
+
+prefix = "#{current_tab}_#{index_1}__voice_sections__#{index_2}"
+
+include_partial 'override_voice_section_settings',
+    :current_tab => current_tab,
+    :index_1 => index_1,
+    :index_2 => index_2,
+    :settings_type => 'voice',
+    :value => true
+
+include_partial 'verify_fields_validate_on_panel_change_for_voice_settings',
+    :current_tab => current_tab,
+    :field_prefix => prefix,
+    :check_no_alert_when_fields_are_valid => false
+
+include_partial 'override_voice_section_settings',
+    :current_tab => current_tab,
+    :index_1 => index_1,
+    :index_2 => index_2,
+    :settings_type => 'section',
+    :value => true
+
+include_partial 'verify_fields_validate_on_panel_change_for_section_settings',
+    :current_tab => current_tab,
+    :field_prefix => prefix,
+    :check_no_alert_when_fields_are_valid => false
+
+include_partial 'set_bad_values_for_voice_section',
+    :current_tab => current_tab,
+    :index_1 => index_1,
+    :index_2 => index_2
+
+include_partial 'override_voice_section_settings',
+    :current_tab => current_tab,
+    :index_1 => index_1,
+    :index_2 => index_2,
+    :settings_type => 'voice',
+    :value => false
+
+include_partial 'override_voice_section_settings',
+    :current_tab => current_tab,
+    :index_1 => index_1,
+    :index_2 => index_2,
+    :settings_type => 'section',
+    :value => false
+
+# now it should work since we're not overriding the settings anymore...
+include_partial 'click_tab', :from_tab => current_tab, :to_tab => 'piece_settings'
+
+# return to the origianl tab
+include_partial 'click_tab', :from_tab => 'piece_settings', :to_tab => current_tab

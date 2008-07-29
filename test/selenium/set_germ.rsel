@@ -22,7 +22,7 @@ include_partial 'refresh_page_and_verify_germ_output'
 
 # Change the Scale type; this should update the output
 store_element_width 'germ_image', 'germ_image_width'
-include_partial 'set_select_value', :id => 'scale', :text => 'Minor Scale', :ajax => true, :verify_value_changing => false
+include_partial 'set_scale', :value => 'Minor Scale', :verify_value_changing => false
 include_partial 'germ_output_present'
 
 # The width should be different because of the update of the scale
@@ -57,7 +57,7 @@ open '/compose'
 include_partial 'germ_error_present', :germ_error_string_var => 'germ_error_string'
 
 # Change the various things we changed before; the germ error should stay.
-include_partial 'set_select_value', :id => 'scale', :text => 'Major Pentatonic Scale', :ajax => true, :verify_value_changing => false
+include_partial 'set_scale', :value => 'Major Pentatonic Scale', :verify_value_changing => false
 include_partial 'germ_error_present', :germ_error_string_var => 'germ_error_string'
 include_partial 'set_select_value', :id => 'key', :text => 'D', :ajax => true, :verify_value_changing => false
 include_partial 'germ_error_present', :germ_error_string_var => 'germ_error_string'

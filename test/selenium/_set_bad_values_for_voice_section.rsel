@@ -1,0 +1,43 @@
+include_partial 'ensure_voice_section_visible', 
+    :voice_section_prefix => "#{current_tab}_#{index_1}",
+    :voice_section_index => index_2
+
+prefix = "#{current_tab}_#{index_1}__voice_sections__#{index_2}"
+
+include_partial 'override_voice_section_settings',
+    :current_tab => current_tab,
+    :index_1 => index_1,
+    :index_2 => index_2,
+    :settings_type => 'voice',
+    :value => true
+
+include_partial 'override_voice_section_settings',
+    :current_tab => current_tab,
+    :index_1 => index_1,
+    :index_2 => index_2,
+    :settings_type => 'section',
+    :value => true
+
+# set bad values for all the overriden voice settings fields, and then
+# uncheck 'override voice settings'.  Try changing tabs-no alert should popup
+['octave_adjustment',
+ 'speed_scale_factor',
+ 'volume_adjustment',
+ 'scale_step_offset',
+ '_self_similarity_settings_self_similarity_iterations'].each do |field|
+    include_partial 'type_textbox_value', 
+        :id => "#{prefix}__voice_settings_#{field}",
+        :value => 'x&r'
+end
+
+['volume_adjustment',
+ 'scale_step_offset'].each do |field|
+    include_partial 'type_textbox_value', 
+        :id => "#{prefix}__section_settings_#{field}",
+        :value => 'x&r'
+end
+
+click "#{current_tab}_piece_settings_tab_link"
+# we should get a validation alert--but the message will likely change, so let's not bother to test it here
+wait_for_alert_present
+verify_alert '*'

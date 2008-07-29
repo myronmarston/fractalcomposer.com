@@ -2,6 +2,7 @@ lightwindow_test_id = 'lightwindow'
 
 verify_not_visible lightwindow_test_id
 include_partial 'ajax_action', :cmd => 'click', :target => button_id
+wait_for_visible lightwindow_test_id
 verify_visible lightwindow_test_id
 
 # note: I tried to verify the visibility, but that fails for some reason

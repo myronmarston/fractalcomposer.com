@@ -1,4 +1,5 @@
-#verify_xpath_count "//select[@id='#{input_prefix}key']/option", 15
+# someimtes it fails on the first one, so add a wait...
+wait_for_element_present "//select[@id='#{input_prefix}key']/option[@value='Ab']"    
 %w( Ab Eb Bb F C G D A E B F# C# G# D# A# ).each do |key|
     verify_element_present "//select[@id='#{input_prefix}key']/option[@value='#{key}']"    
 end

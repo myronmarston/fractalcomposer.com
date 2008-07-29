@@ -1,0 +1,44 @@
+check_no_alert_when_fields_are_valid = (check_no_alert_when_fields_are_valid.nil? ? true : check_no_alert_when_fields_are_valid)
+bad_value = 'x&r'
+# which tab we go to doesn't really matter as long as it is different...
+to_tab = (current_tab == 'piece_settings' ? 'voices' : 'piece_settings')
+
+store_value(field_id, 'original_field_value')
+
+# type a bad value...
+include_partial 'type_textbox_value', :id => field_id, :value => bad_value
+
+verify_visible(current_tab)
+verify_not_visible(to_tab)
+click "#{current_tab}_#{to_tab}_tab_link"
+# we should get a validation alert--but the message will likely change, so let's not bother to test it here
+wait_for_alert_present
+verify_alert("*#{field_description}*")
+
+# we should still be on the same tab...
+verify_visible(current_tab)
+verify_not_visible(to_tab)
+
+# check that the same alert happens on click of generate piece button
+include_partial 'click_generate_piece', :validation_error => true
+wait_for_alert_present
+verify_alert("*#{field_description}*")
+verify_not_visible 'lightwindow'
+
+# change the value back to the original good value...
+# use set_textbox_value instead of type_textbox_value because typing has a bug
+# with periods, and we have an original volume value of 0.0
+include_partial 'set_textbox_value', :id => field_id, :value => '${original_field_value}', :ajax => false
+
+if check_no_alert_when_fields_are_valid
+    # now try to change tabs; it should work...
+    include_partial 'click_tab', :from_tab => current_tab, :to_tab => to_tab
+
+    # put us back on the old tab...
+    include_partial 'click_tab', :from_tab => to_tab, :to_tab => current_tab
+end
+
+# test that generate piece works now, too...
+include_partial 'test_listen_popup', 
+    :button_id => 'generate_piece_button', 
+    :div_id_prefix => 'generated_piece'

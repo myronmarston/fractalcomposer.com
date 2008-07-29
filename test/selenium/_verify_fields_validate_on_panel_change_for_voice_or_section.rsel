@@ -1,0 +1,29 @@
+current_tab = voice_or_section.pluralize
+assert_visible current_tab
+
+include_partial "verify_fields_validate_on_panel_change_for_#{voice_or_section}_settings",
+    :current_tab => current_tab,
+    :field_prefix => "#{current_tab}_#{index}"
+
+# try it on a voice section...
+
+include_partial 'verify_fields_validate_on_panel_change_for_voice_section',
+    :current_tab => current_tab,
+    :index_1 => index,
+    :index_2 => voice_section_index
+
+include_partial 'set_bad_values_for_voice_section',
+    :current_tab => current_tab,
+    :index_1 => index,
+    :index_2 => voice_section_index
+
+# delete the voice; we should be able to change tabs even though the fields had invalid values
+include_partial 'delete_voice_or_section', 
+    :voice_or_section => voice_or_section, 
+    :index => index
+
+# now it should work since we deleted the voice or section with the bad values
+include_partial 'click_tab', :from_tab => current_tab, :to_tab => 'piece_settings'
+
+# return to the original tab
+include_partial 'click_tab', :from_tab => 'piece_settings', :to_tab => current_tab

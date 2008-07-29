@@ -1,7 +1,7 @@
 include_partial 'clear_session'
 
 # change the values on the piece settings tab
-include_partial 'set_select_value', :id => 'scale', :text => 'Major Pentatonic Scale', :verify_value_changing => true, :ajax => true
+include_partial 'set_scale', :value => 'Major Pentatonic Scale', :verify_value_changing => true
 include_partial 'set_select_value', :id => 'key', :text => 'E', :verify_value_changing => true, :ajax => false
 include_partial 'set_textbox_value', :id => 'time_signature', :value => '6/8', :verify_value_changing => true, :ajax => true
 include_partial 'set_textbox_value', :id => 'tempo', :value => '60', :verify_value_changing => true, :ajax => false

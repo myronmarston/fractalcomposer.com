@@ -1,0 +1,10 @@
+check_no_alert_when_fields_are_valid = (check_no_alert_when_fields_are_valid.nil? ? true : check_no_alert_when_fields_are_valid)
+
+{'volume_adjustment' => 'Volume Adjustment',
+ 'scale_step_offset' => 'Scale Step Offset'}.each_pair do |field, description| 
+    include_partial 'verify_field_validates_on_panel_change',
+        :current_tab => current_tab,
+        :field_description => description,
+        :field_id => "#{field_prefix}__section_settings_#{field}",
+        :check_no_alert_when_fields_are_valid => check_no_alert_when_fields_are_valid
+end

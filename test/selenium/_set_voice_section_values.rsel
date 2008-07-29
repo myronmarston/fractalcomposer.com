@@ -13,11 +13,11 @@ include_partial 'set_checkbox_value',
     :ajax => false,
     :verify_value_changing => verify_values_changing
 
-include_partial 'set_checkbox_value', 
-    :id => "#{prefix}_override_voice_settings",
-    :value => override_voice_settings,
-    :ajax => override_voice_settings,
-    :verify_value_changing => verify_values_changing
+include_partial 'override_voice_section_settings',
+    :prefix => voice_section_prefix,
+    :index_2 => voice_section_index,
+    :settings_type => 'voice',
+    :value => override_voice_settings
 
 # set_voice_settings_values is an optional parameter
 # that can be passed as false to update the override_voice_settings checkbox
@@ -38,11 +38,11 @@ if override_voice_settings && set_voice_settings_values
         :volume => volume
 end
 
-include_partial 'set_checkbox_value', 
-    :id => "#{prefix}_override_section_settings",
-    :value => override_section_settings,
-    :ajax => override_section_settings,
-    :verify_value_changing => verify_values_changing
+include_partial 'override_voice_section_settings',
+    :prefix => voice_section_prefix,
+    :index_2 => voice_section_index,
+    :settings_type => 'section',
+    :value => override_section_settings
 
 # set_section_settings_values is an optional parameter
 # that can be passed as false to update the override_section_settings checkbox

@@ -1,0 +1,13 @@
+full_prefix ||= nil
+
+if full_prefix.nil?
+    prefix = (prefix.nil? ? "#{current_tab}_#{index_1}" : prefix)
+    full_prefix = "#{prefix}__voice_sections__#{index_2}"
+end
+
+include_partial 'set_checkbox_value',
+    :id => "#{full_prefix}_override_#{settings_type}_settings", 
+    :ajax => value,
+    :value => value   
+
+wait_for_element_present "#{full_prefix}_#{settings_type}_settings_fieldset" if value
