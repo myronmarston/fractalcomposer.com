@@ -2,6 +2,10 @@
     piece_spinner_id = 'piece_spinner'
     start_over_submit_spinner_id = 'start_over_submit_spinner'
 %>
+<% content_for :additional_head_includes do -%>
+    <%= javascript_include_tag 'compose' %>
+<% end -%>
+
 <%= javascript_tag("var live_validation_fields = new Array();") %>
 <% form_remote_tag  :url => {:action => 'generate_piece_xhr'},
                     :html => {:id => 'compose_form'},                    
@@ -18,7 +22,8 @@
       </div>
       
       <div id="open_submit_to_library_form_button_wrap">
-        <input type="button" class="button" id="open_submit_to_library_form_button" value="Submit to Library" onclick="<%= get_lightwindow_js('submit_to_library', 'Submit your piece to the library', '400', '770') %>" />        
+        <input type="button" class="button" id="open_submit_to_library_form_button" value="Submit to Library" />        
+        <%= get_open_submit_to_library_form_button_js(start_over_submit_spinner_id) %>
       </div>
       
       <div id="start_over_button_wrap">      

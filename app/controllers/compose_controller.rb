@@ -171,12 +171,19 @@ class ComposeController < ApplicationController
     respond_to { |format| format.js } 
   end
   
+  def open_submit_to_library_form_xhr
+    update_fractal_piece
+    @last_generated_fractal_piece_xml = get_last_generated_piece_fractal_piece_xml
+    @current_fractal_piece_xml = @fractal_piece.getXmlRepresentation    
+    respond_to { |format| format.js } 
+  end
+  
   def submit_to_library_xhr    
     @user_submission = UserSubmission.new(params[:user_submission])
     @user_submission.generated_piece_id = session[:last_generated_piece_id]    
     @user_submission_saved = @user_submission.save
     respond_to { |format| format.js }
-  end
+  end  
         
   protected
   
@@ -328,8 +335,20 @@ class ComposeController < ApplicationController
     end    
   end
   
+  def get_last_generated_piece_fractal_piece_xml
+    id = session[:last_generated_piece_id]
+    return '' unless id
+    begin
+      last_generated_piece = GeneratedPiece.find(id)
+    rescue ActiveRecord::RecordNotFound
+      return ''
+    end
+    
+    return last_generated_piece.fractal_piece
+  end
+  
   def get_temp_directory_for_session    
-    temp_dir = session[:session_temp_dir] || temp_dir = "/temp/dir_#{UUID.random_create.to_s}"
+    temp_dir = session[:session_temp_dir] || temp_dir = "/temp/#{UUID.random_create.to_s}"
     
     # File.exist? also works on directories
     # mode 0755 is read/write/execute for the user who creates the file, 

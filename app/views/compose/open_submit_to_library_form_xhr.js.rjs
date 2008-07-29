@@ -1,0 +1,10 @@
+logger.info "last xml = \n#{@last_generated_fractal_piece_xml}\n\n"
+logger.info "this xml = \n#{@current_fractal_piece_xml}\n\n"
+if @last_generated_fractal_piece_xml == @current_fractal_piece_xml
+  get_lightwindow_js('submit_to_library', 'Submit your piece to the library', '400', '770')
+else
+  msg = (@last_generated_fractal_piece_xml == '' ? 
+         'You must generate the piece before you can submit it to the library.' : 
+         'Your settings have changed since you last generated the piece.  Please re-generate the piece.' )
+  page.alert(msg)
+end

@@ -258,6 +258,22 @@ module ComposeHelper
     javascript_tag("Event.observe('generate_piece_button', 'click', #{js})")
   end
   
+  def get_open_submit_to_library_form_button_js(spinner_id)    
+    remote_js = remote_function(
+      :url => {:action => 'open_submit_to_library_form_xhr'},
+      :with => "$('compose_form').serialize()",
+      :before => "$('#{spinner_id}').show()",
+      :complete => "$('#{spinner_id}').hide()")
+    
+    js = <<-EOS
+      function() {
+        #{remote_js}
+      }
+    EOS
+    
+    javascript_tag("Event.observe('open_submit_to_library_form_button', 'click', #{js})")
+  end
+  
   def get_listen_ajax_js(action, serialize_id, spinner_id, title, other_params = '')
     remote_function(        
       :url => {:action => action}, 
