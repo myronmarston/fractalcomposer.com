@@ -151,9 +151,9 @@ class ComposeController < ApplicationController
     render :nothing => true
   end
     
-  def generate_piece_xhr    
-    update_fractal_piece
-    save_piece_files       
+  def generate_piece_xhr        
+    update_fractal_piece         
+    save_piece_files unless get_last_generated_piece_fractal_piece_xml == @fractal_piece.getXmlRepresentation
     respond_to { |format| format.js }     
   end
   
@@ -172,7 +172,7 @@ class ComposeController < ApplicationController
   end
   
   def open_submit_to_library_form_xhr
-    update_fractal_piece
+    update_fractal_piece    
     @last_generated_fractal_piece_xml = get_last_generated_piece_fractal_piece_xml
     @current_fractal_piece_xml = @fractal_piece.getXmlRepresentation    
     respond_to { |format| format.js } 
@@ -339,12 +339,12 @@ class ComposeController < ApplicationController
     id = session[:last_generated_piece_id]
     return '' unless id
     begin
-      last_generated_piece = GeneratedPiece.find(id)
+      @last_generated_piece = GeneratedPiece.find(id)
     rescue ActiveRecord::RecordNotFound
       return ''
     end
     
-    return last_generated_piece.fractal_piece
+    return @last_generated_piece.fractal_piece
   end
   
   def get_temp_directory_for_session    

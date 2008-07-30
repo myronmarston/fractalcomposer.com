@@ -226,32 +226,10 @@ module ComposeHelper
     image_tag(image_url, :alt => 'Music Notation', :id => id)
   end
   
-  def get_lightwindow_js(href, title, height, width)
-    <<-EOS
-      myLightWindow.activateWindow({
-        href: '#{href}',
-        title: '#{title}',
-        type: 'inline',
-        height: #{height},
-        width: #{width}
-      });
-    EOS
-  end
-
-  def get_listening_lightwindow_js(part_description)
-    get_lightwindow_js('#hidden_content_for_lightwindow', part_description, 500, 770)    
-  end
-  
   def get_generate_piece_button_js(piece_spinner_id)
     js = <<-EOS
       function() {
-        $('#{piece_spinner_id}').show();
-        if (check_field_validity(function(f) {
-          return f.get('validate_on_generate_piece');          
-        })) {
-          #{get_listen_ajax_js('generate_piece_xhr', 'compose_form', piece_spinner_id, 'Your Generated Piece')}      
-        }
-        $('#{piece_spinner_id}').hide();
+        generatePiece('#{piece_spinner_id}', '#{url_for(:action => 'generate_piece_xhr')}')
       }
     EOS
     
@@ -267,33 +245,43 @@ module ComposeHelper
     
     js = <<-EOS
       function() {
-        #{remote_js}
+        if (check_field_validity_for_generate_piece()) {
+          #{remote_js}
+        }
       }
     EOS
     
     javascript_tag("Event.observe('open_submit_to_library_form_button', 'click', #{js})")
   end
-  
-  def get_listen_ajax_js(action, serialize_id, spinner_id, title, other_params = '')
-    remote_function(        
-      :url => {:action => action}, 
-      :with => "Form.serialize($('#{serialize_id}'))" + other_params,
-      :before => "$('#{spinner_id}').show()",
-      :complete => "$('#{spinner_id}').hide();" + get_listening_lightwindow_js(title))            
-  end
-
+    
   def listen_to_part_link(part_description, serialize_id, id_prefix, part_type, other_params)                
     spinner_id = "#{id_prefix}_listen_spinner"
     html = render(:partial => 'spinner', :locals => {:display => 'none', :div_id => spinner_id, :bottom_px => 1}) 
+    id = "#{id_prefix}_listen_link"
     
-    html << link_to_function(
+    html << link_to(
         image_tag('music_icon.gif', 
           :class => 'icon', 
           :alt => "Listen to #{part_description}",
-          :title => "Listen to #{part_description}"),
-        :id => "#{id_prefix}_listen_link",
-        :onclick => get_listen_ajax_js('listen_to_part_xhr', serialize_id, spinner_id, part_description, "+ '&amp;part_type=#{part_type}#{other_params}'"))                       
-      
+          :title => "Listen to #{part_description}"), 
+        '#',
+        :onclick => 'return false',
+        :id => id)
+   
+    js_function = <<-EOS
+      function() {
+        launchListeningPopupAjax(
+          '#{url_for(:action => 'listen_to_part_xhr')}', 
+          '#{spinner_id}', 
+          '#{part_description}', 
+          '#{serialize_id}', 
+          '&part_type=#{part_type}#{other_params}'
+        );         
+      }
+    EOS
+                  
+    html << javascript_tag("Event.observe('#{id}', 'click', #{js_function})")
+    
     return html
   end
   

@@ -57,6 +57,12 @@ function check_field_validity(select_function) {
     return false;
 }
 
+function check_field_validity_for_generate_piece() {
+  return check_field_validity(function(f) {
+    return f.get('validate_on_generate_piece');          
+  });
+}
+
 function remove_live_validation_fields(select_function) {
     live_validation_fields = live_validation_fields.reject(select_function);    
 }
@@ -93,4 +99,38 @@ function delete_voice_or_section(plural_voices_or_sections_label, singular_voice
     }
     
     return false;
+}
+
+function launchLightwindow(href, title, height, width) {   
+//    germ_midi_player = $('germ_midi_player_wrapper')
+//    if (germ_midi_player != null) germ_midi_player.hide();
+// TODO: find a way to show the germ midi player when light window is closed
+    
+    myLightWindow.activateWindow({
+      href: href,
+      title: title,
+      type: 'inline',
+      height: height,
+      width: width
+    });            
+}
+
+function launchListeningPopupAjax(ajax_url, spinner_id, title, serialize_id, other_params) {
+    $(spinner_id).show();
+    new Ajax.Request(ajax_url, 
+      {asynchronous:true, 
+       evalScripts:true, 
+       onComplete:function(request){
+           $(spinner_id).hide(); 
+           launchLightwindow('#hidden_content_for_lightwindow', title, 500, 770);
+       }, 
+       parameters:Form.serialize($(serialize_id)) + other_params});         
+}
+
+function generatePiece(spinner_id, ajax_url) {
+    $(spinner_id).show();
+    if (check_field_validity_for_generate_piece()) {
+      launchListeningPopupAjax(ajax_url, spinner_id, 'Your Generated Piece', 'compose_form', '')          
+    }
+    $(spinner_id).hide();
 }
