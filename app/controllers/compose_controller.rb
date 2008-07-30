@@ -175,10 +175,27 @@ class ComposeController < ApplicationController
     update_fractal_piece    
     @last_generated_fractal_piece_xml = get_last_generated_piece_fractal_piece_xml
     @current_fractal_piece_xml = @fractal_piece.getXmlRepresentation    
+    
+    params[:user_submission] = {
+      :title => 'Title_' + Time.now.to_i.to_s,
+      :name => 'Name_' + Time.now.to_i.to_s,
+      :email => 'myron.marston@gmail.com'
+    }
+    
+    puts "params = #{params.inspect}"
+    @user_submission = UserSubmission.new(params[:user_submission])
+    @user_submission.generated_piece_id = session[:last_generated_piece_id]    
+    @user_submission_saved = @user_submission.save
+    
     respond_to { |format| format.js } 
   end
   
   def submit_to_library_xhr    
+    puts "params = #{params.inspect}"
+    params[:user_submission][:title] = 'Title_' + Time.now.to_i.to_s
+    params[:user_submission][:name] = 'Name_' + Time.now.to_i.to_s
+    params[:user_submission][:email] = 'myron.marston@gmail.com'
+    puts "params = #{params.inspect}"
     @user_submission = UserSubmission.new(params[:user_submission])
     @user_submission.generated_piece_id = session[:last_generated_piece_id]    
     @user_submission_saved = @user_submission.save

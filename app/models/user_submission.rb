@@ -1,6 +1,3 @@
-require 'rubygems'
-require 'rufus/scheduler'
-
 require 'jruby'
 java.lang.Thread.currentThread.setContextClassLoader(JRuby.runtime.jruby_class_loader)
 
@@ -15,6 +12,8 @@ require 'path_helper'
     
 class UserSubmission < ActiveRecord::Base
   extend PathHelper    
+  
+  GENERATED_IMAGE_WIDTH = 500 unless defined? GENERATED_IMAGE_WIDTH
   
   generate_validations
   validates_email_format_of :email
@@ -40,45 +39,36 @@ class UserSubmission < ActiveRecord::Base
   end 
   
   def after_create        
-    start_processing_if_needed
+    UserSubmissionProcessor.start_processor_if_necessary
   end
   
-  def start_processing_if_needed   
-    return if self.processing_completed
-        
-    if self.processing_began.nil? || self.processing_began < Time.now.ago(3600) #3600 seconds = 1 hour
-      # if the processing began more than an hour ago, it must have failed for
-      # some reason, such as the server being killed mid-process, so start it again
-      
-      # todo: does the thread terminate when it is done or do I need to kill it?
-      @@scheduler ||= Rufus::Scheduler.start_new
-      @@scheduler.schedule_in('1s') do # begin immediately...
-          UserSubmission.process(self.id)
-      end
-    end    
-  end  
-  
-  def self.process(user_submission_id)            
-    user_submission = UserSubmission.find(user_submission_id)
-    user_submission.update_attribute(:processing_began, Time.now)    
-    generated_piece = user_submission.generated_piece    
+  def process
+    self.update_attribute(:processing_began, Time.now)    
+    generated_piece = self.generated_piece    
         
     fractal_piece = com.myronmarston.music.settings.FractalPiece.loadFromXml(generated_piece.fractal_piece)
-    output_manager = fractal_piece.createPieceResultOutputManager    
+    piece_output_manager = fractal_piece.createPieceResultOutputManager    
     
-    user_submission_dir = user_submission.get_user_submission_dir
-    filename_without_extension = "#{user_submission_dir}/#{UserSubmission.sanitize_filename(user_submission.title)}"
-    mp3_filename = "#{filename_without_extension}.mp3"
-    
-    output_manager.saveMp3File(UserSubmission.get_local_filename(mp3_filename))
-    user_submission.update_attribute(:mp3_file, UserSubmission.get_url_filename(mp3_filename))
-    
-    output_manager.saveLilypondResults(UserSubmission.get_local_filename(filename_without_extension), user_submission.title, user_submission.name)
-    user_submission.update_attribute(:lilypond_results_file, UserSubmission.get_url_filename(filename_without_extension))
-    
-    user_submission.update_attribute(:processing_completed, Time.now)    
+    process_save_file('.mp3', :mp3_file) {|f| piece_output_manager.saveMp3File(f)}
+    process_save_file('.pdf', :piece_pdf_file) {|f| piece_output_manager.savePdfFile(f, self.title, self.name)}
+    process_save_file('.png', :piece_image_file) {|f| piece_output_manager.savePngFile(f, self.title, self.name, GENERATED_IMAGE_WIDTH)}
+    process_save_file('_germ.png', :germ_image_file) {|f| fractal_piece.createGermOutputManager.savePngFile(f, GENERATED_IMAGE_WIDTH)}
+        
+    self.update_attribute(:processing_completed, Time.now)    
   end
   
+  private
+  
+  def process_save_file(extension, field)
+    filename = get_base_filename + extension
+    yield UserSubmission.get_local_filename(filename)
+    self.update_attribute(field, UserSubmission.get_url_filename(filename))    
+  end
+  
+  def get_base_filename
+    "#{get_user_submission_dir}/#{UserSubmission.sanitize_filename(self.title)}"
+  end
+        
   def get_user_submission_dir
     user_submission_dir = "/user_submissions/#{self.id}"
     local_dir = UserSubmission.get_local_filename(user_submission_dir)

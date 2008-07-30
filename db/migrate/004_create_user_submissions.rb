@@ -13,7 +13,8 @@ class CreateUserSubmissions < ActiveRecord::Migration
       t.column :description, :string, :null => true            
       t.column :generated_piece_id, :integer, :null => false
       t.column :mp3_file, :string, :null => true
-      t.column :lilypond_results_file, :string, :null => true
+      t.column :piece_pdf_file, :string, :null => true
+      t.column :piece_image_file, :string, :null => true
       t.column :germ_image_file, :string, :null => true
       t.column :processing_began, :datetime, :null => true
       t.column :processing_completed, :datetime, :null => true
