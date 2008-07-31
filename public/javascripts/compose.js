@@ -1,6 +1,7 @@
 /*
  * Contains javascript functions used by the compose page.
  */
+ var live_validation_fields = new Array();
  
  function fireEvent(element,event){
   if (document.createEventObject){
@@ -41,7 +42,31 @@ function performAdvancedOptionsToggle() {
       elements.invoke('hide');      
     } else {
       elements.invoke('show');      
-    }       
+    }              
+}
+                                      
+function create_live_validation_field(id, delay, panel_div_id, voice_or_section_id, description, override_checkbox_id, validations) {    
+  var input_element = ( panel_div_id == '' ? LW$(id) : $(id) )
+  var validator = new LiveValidation(input_element, {validMessage: null, wait: delay});
+  
+  validations.each (function(validation) {
+    validator.add(validation.type, validation.args);    
+  });  
+       
+  var field_hash = $H({ 
+      id : id,      
+      validate : function() {return validator.validate();}, 
+      description : description,
+      override_checkbox_id : override_checkbox_id,
+      owning_panel_id : panel_div_id,
+      owning_voice_or_section_id : voice_or_section_id,
+      validate_on_generate_piece : !panel_div_id.empty(),
+      validate_on_submit : panel_div_id.empty(),
+      remove_on_panel_change : !override_checkbox_id.empty()
+  });
+                        
+  live_validation_fields.push(field_hash);
+  return validator;
 }
 
 function check_field_validity(select_function) {
@@ -57,9 +82,28 @@ function check_field_validity(select_function) {
     return false;
 }
 
+function update_submit_form_result(new_content) {
+    LW$('submit_to_library_result_wrap').update(new_content);
+}
+
 function check_field_validity_for_generate_piece() {
   return check_field_validity(function(f) {
     return f.get('validate_on_generate_piece');          
+  });
+}
+
+function LW$(id) {
+  var lw_element = $('lightwindow_contents');
+  if (lw_element == null) return $(id);
+  
+  var elements = lw_element.getElementsBySelector('#' + id);
+  if (elements.size == 0) return $(id);
+  return elements[0];
+}
+
+function check_field_validity_for_submit_to_library() {  
+  return check_field_validity(function(f) {
+    return f.get('validate_on_submit');          
   });
 }
 
@@ -85,6 +129,12 @@ function remove_live_validation_fields_for_voice_or_section(voice_or_section_id)
     });
 }
 
+function remove_live_validation_fields_for_submit_form() {
+    remove_live_validation_fields(function(field) {
+        return field.get('validate_on_submit');
+    });    
+}
+
 function delete_voice_or_section(plural_voices_or_sections_label, singular_voices_or_sections_label, div_id, voice_or_section_index, server_notification_url) {                     
     if ($(plural_voices_or_sections_label).getElementsBySelector('div.one_voice_or_section').length == 1) {
         alert('You cannot delete the last ' + singular_voices_or_sections_label + '.  There must always be at least one.');
@@ -99,6 +149,20 @@ function delete_voice_or_section(plural_voices_or_sections_label, singular_voice
     }
     
     return false;
+}
+
+function resizeLightwindow() {
+    myLightWindow.resizeTo.height = $('lightwindow_contents').scrollHeight+(myLightWindow.options.contentOffset.height);
+    myLightWindow.resizeTo.width = $('lightwindow_contents').scrollWidth+(myLightWindow.options.contentOffset.width);       
+    myLightWindow._processWindow();    
+}
+
+function launchLightwindow_autoSize(href, title) {      
+    myLightWindow.activateWindow({
+      href: href,
+      title: title,
+      type: 'inline'
+    });            
 }
 
 function launchLightwindow(href, title, height, width) {   

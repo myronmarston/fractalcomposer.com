@@ -1,6 +1,3 @@
-require 'jruby'
-java.lang.Thread.currentThread.setContextClassLoader(JRuby.runtime.jruby_class_loader)
-
 require 'fileutils.rb'
 require 'FractalComposer.jar'
 require 'simple-xml-1.7.2.jar'
@@ -48,11 +45,13 @@ class UserSubmission < ActiveRecord::Base
         
     fractal_piece = com.myronmarston.music.settings.FractalPiece.loadFromXml(generated_piece.fractal_piece)
     piece_output_manager = fractal_piece.createPieceResultOutputManager    
+    germ_output_manager = fractal_piece.createGermOutputManager
     
-    process_save_file('.mp3', :mp3_file) {|f| piece_output_manager.saveMp3File(f)}
+    process_save_file('.mp3', :piece_mp3_file) {|f| piece_output_manager.saveMp3File(f)}
     process_save_file('.pdf', :piece_pdf_file) {|f| piece_output_manager.savePdfFile(f, self.title, self.name)}
     process_save_file('.png', :piece_image_file) {|f| piece_output_manager.savePngFile(f, self.title, self.name, GENERATED_IMAGE_WIDTH)}
-    process_save_file('_germ.png', :germ_image_file) {|f| fractal_piece.createGermOutputManager.savePngFile(f, GENERATED_IMAGE_WIDTH)}
+    process_save_file('_germ.mp3', :germ_mp3_file) {|f| germ_output_manager.saveMp3File(f)}
+    process_save_file('_germ.png', :germ_image_file) {|f| germ_output_manager.savePngFile(f, GENERATED_IMAGE_WIDTH)}
         
     self.update_attribute(:processing_completed, Time.now)    
   end

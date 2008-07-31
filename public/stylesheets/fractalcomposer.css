@@ -59,7 +59,7 @@ form#compose_form input.button {
     margin: 10px 20px;
 }
 
-form#compose_form .textbox {
+form#compose_form .textbox, form#submit_to_library_form .textbox{
     border: 1px solid #9CC8F4;
 }
 
@@ -238,6 +238,10 @@ div#main div.tab_panel_body div.info p {
 
 #submit_to_library_panel p {
     margin-bottom: 0px;
+}
+
+#submit_to_library_form {
+    text-align: left;    
 }
 
 #submit_to_library_result {

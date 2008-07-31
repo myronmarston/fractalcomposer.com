@@ -66,13 +66,14 @@ Rails::Initializer.run do |config|
   # Make Active Record use UTC-base instead of local time
   # config.active_record.default_timezone = :utc
   
-  config.action_controller.allow_forgery_protection = false
+  config.action_controller.allow_forgery_protection = false    
   
   # required gems...
   #config.gem "RedCloth"
   #config.gem "activerecord-jdbc-adapter" 
 end
 
+ActiveRecord::Base.allow_concurrency = true
 
 ActionMailer::Base.smtp_settings = {
     :address => "mail.ghostsandspirits.net",

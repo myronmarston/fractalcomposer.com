@@ -1,10 +1,16 @@
 <div id="submit_to_library_panel">  
+<%= javascript_tag('remove_live_validation_fields_for_submit_form()') %>
+<% form_remote_tag  :url => {:action => 'submit_to_library_xhr'}, 
+                    :html => {:id => 'submit_to_library_form'},                    
+                    :before => "$('submit_to_library_spinner').show(); $('submit_to_library_result_wrap').hide();",
+                    :complete => "$('submit_to_library_spinner').hide(); $('submit_to_library_result_wrap').show();" do -%>                    
   <p> 
     <label for="user_submission_title">
       <strong>Piece Title:</strong> (required)         
     </label>
-    <%= text_field 'user_submission', 'title', :size => 35, :maxlength => 50, :class => 'textbox submit_to_library_field' %>    
-    <%= get_live_validation_js('user_submission_title', false, nil, nil, "Piece Title", nil, {:type => 'Validate.Presence'}) %>
+    <%= text_field 'user_submission', 'title', :size => 35, :maxlength => 50, :class => 'textbox submit_to_library_field' %>        
+    <%= get_live_validation_js('user_submission_title', false, nil, nil, "Piece Title", nil, 
+       "{type: Validate.Presence, args: {}}") %>    
   </p>
   
   <p> 
@@ -12,7 +18,8 @@
       <strong>Name:</strong> (required)         
     </label>
     <%= text_field 'user_submission', 'name', :size => 35, :maxlength => 50, :class => 'textbox submit_to_library_field' %>    
-    <%= get_live_validation_js('user_submission_name', false, nil, nil, "Name", nil, {:type => 'Validate.Presence'}) %>
+    <%= get_live_validation_js('user_submission_name', false, nil, nil, "Name", nil, 
+       "{type: Validate.Presence, args: {}}") %>
   </p>
 
   <p> 
@@ -21,8 +28,7 @@
     </label>
     <%= text_field 'user_submission', 'email', :size => 35, :class => 'textbox submit_to_library_field' %>    
     <%= get_live_validation_js('user_submission_email', false, nil, nil, "Email", nil,
-        {:type => 'Validate.Presence'},
-        {:type => 'Validate.Email'}) %>
+       "{type: Validate.Presence, args: {}}, {type: Validate.Email, args: {}}") %>        
   </p>
 
   <p> 
@@ -39,13 +45,22 @@
     <%= text_area 'user_submission', 'description', :rows => 10, :cols => 71, :class => 'textbox' %>    
   </p>
   
-  <input type="button" class="button" id="submit_to_library_button" value="Submit Piece to Library" onclick="<%= remote_function(        
+  <p>    
+    <%
+        submit_button_id = 'submit_to_library_button'
+        remote_js = remote_function(        
           :url => {:action => 'submit_to_library_xhr'}, 
-          :with => "Form.serialize($('submit_to_library_panel'))",
-          :before => "$('submit_to_library_spinner').show(); $('submit_to_library_result_wrap').hide();",
-          :complete => "$('submit_to_library_spinner').hide(); $('submit_to_library_result_wrap').show();") %>" />  
-  <%= render :partial => 'spinner', :locals => {:display => 'none', :div_id => 'submit_to_library_spinner', :bottom_px => 8} %>      
-
+          :with => "LW$('submit_to_library_form').serialize()",
+          :before => "LW$('submit_to_library_spinner').show(); LW$('submit_to_library_result_wrap').hide();",
+          :complete => "LW$('submit_to_library_spinner').hide(); LW$('submit_to_library_result_wrap').show();")
+    -%>    
+    <input type="button" class="button" id="<%= submit_button_id%>" value="Submit Piece to Library" />
+    <%= javascript_tag("Event.observe(LW$('#{submit_button_id}'), 'click', function() {
+        if (check_field_validity_for_submit_to_library()) { #{remote_js} }; 
+    });") %>
+    <%= render :partial => 'spinner', :locals => {:display => 'none', :div_id => 'submit_to_library_spinner', :bottom_px => 8} %>      
+  </p>    
   <div id="submit_to_library_result_wrap">
-  </div>
+  </div>    
+  <% end -%>
 </div>

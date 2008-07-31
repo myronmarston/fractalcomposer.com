@@ -1,1 +1,5 @@
-page.replace_html 'submit_to_library_result_wrap', :partial => 'submit_to_library_result'
+page.call 'update_submit_form_result', (render :file => 'compose/_submit_to_library_result.html.erb', :use_full_path => true)
+page.delay 0.2 do
+  page.call 'resizeLightwindow'
+end
+

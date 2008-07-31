@@ -1,5 +1,6 @@
 if @last_generated_fractal_piece_xml == @current_fractal_piece_xml  
-  page.call('launchLightwindow', 'submit_to_library', 'Submit your piece to the library', '400', '770')  
+  page.replace_html 'submit_to_library', :partial => 'submit_to_library'
+  page.call('launchLightwindow_autoSize', 'submit_to_library', 'Submit your piece to the library')  
 else
   msg = (@last_generated_fractal_piece_xml == '' ? 
          'You must generate the piece before you can submit it to the library.' : 

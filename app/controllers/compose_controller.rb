@@ -1,6 +1,3 @@
-require 'jruby'
-java.lang.Thread.currentThread.setContextClassLoader(JRuby.runtime.jruby_class_loader)
-
 require 'path_helper'
 require 'uuidtools.rb'
 require 'fileutils.rb'
@@ -167,6 +164,7 @@ class ComposeController < ApplicationController
     delete_temp_directory_for_session
     reset_session
     @fractal_piece = get_new_fractal_piece     
+    #TODO: this doesn't seem to clear everything out, such as last generated piece
     clear_germ_files
     respond_to { |format| format.js } 
   end
@@ -174,28 +172,11 @@ class ComposeController < ApplicationController
   def open_submit_to_library_form_xhr
     update_fractal_piece    
     @last_generated_fractal_piece_xml = get_last_generated_piece_fractal_piece_xml
-    @current_fractal_piece_xml = @fractal_piece.getXmlRepresentation    
-    
-    params[:user_submission] = {
-      :title => 'Title_' + Time.now.to_i.to_s,
-      :name => 'Name_' + Time.now.to_i.to_s,
-      :email => 'myron.marston@gmail.com'
-    }
-    
-    puts "params = #{params.inspect}"
-    @user_submission = UserSubmission.new(params[:user_submission])
-    @user_submission.generated_piece_id = session[:last_generated_piece_id]    
-    @user_submission_saved = @user_submission.save
-    
+    @current_fractal_piece_xml = @fractal_piece.getXmlRepresentation           
     respond_to { |format| format.js } 
   end
   
   def submit_to_library_xhr    
-    puts "params = #{params.inspect}"
-    params[:user_submission][:title] = 'Title_' + Time.now.to_i.to_s
-    params[:user_submission][:name] = 'Name_' + Time.now.to_i.to_s
-    params[:user_submission][:email] = 'myron.marston@gmail.com'
-    puts "params = #{params.inspect}"
     @user_submission = UserSubmission.new(params[:user_submission])
     @user_submission.generated_piece_id = session[:last_generated_piece_id]    
     @user_submission_saved = @user_submission.save
@@ -205,7 +186,6 @@ class ComposeController < ApplicationController
   protected
   
   def update_germ(save_files, germ_string) 
-    logger.info "germ string = #{germ_string}"
     session[:germ_string] = germ_string
     begin
       @fractal_piece.setGermString(germ_string)

@@ -167,16 +167,11 @@ module ComposeHelper
     "style=\"display: none;\""
   end
   
-  def get_live_validation_js(id, validate_now, panel_div_id, voice_or_section_id, description, override_checkbox_id, *validations)                  
-    javascript_tag(render(:partial => 'live_validation', 
-                          :locals => {:id => id, 
-                                      :validate_now => validate_now, 
-                                      :constructor_args => "validMessage: null, wait: #{LIVE_VALIDATION_DELAY}", 
-                                      :panel_div_id => panel_div_id, 
-                                      :voice_or_section_id => voice_or_section_id,
-                                      :description => description, 
-                                      :override_checkbox_id => override_checkbox_id, 
-                                      :validations => validations}))    
+  def get_live_validation_js(id, validate_now, panel_div_id, voice_or_section_id, description, override_checkbox_id, validations)                  
+    js = <<-EOS
+      var #{get_live_validation_var_name(id)} = create_live_validation_field('#{id}', #{LIVE_VALIDATION_DELAY}, '#{panel_div_id}', '#{voice_or_section_id}', '#{description}', '#{override_checkbox_id}', [#{validations}]);
+    EOS
+    javascript_tag(js)  
   end    
   
   def get_live_validation_var_name(id)
@@ -194,9 +189,9 @@ module ComposeHelper
   
   def get_guido_image(guido_filename, id)
     image_url =  'http://clef.cs.ubc.ca/scripts/salieri/gifserv.pl?'
-    image_url << 'defph=1350pt;'    
+    #image_url << 'defph=1350pt;'    
     image_url << 'defpw=620pt;'    
-    image_url << 'zoom=1.1;'    
+    image_url << 'zoom=0.8;'    
     image_url << 'crop=yes;'
     image_url << 'mode=gif;'
     
