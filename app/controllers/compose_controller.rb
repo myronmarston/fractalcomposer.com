@@ -27,6 +27,8 @@ import java.lang.NumberFormatException
 class ComposeController < ApplicationController
   extend PathHelper
   
+  ALREADY_SUBMITTED_MSG = 'This piece has already been submitted to the library.' unless defined? ALREADY_SUBMITTED_MSG
+  
   # these filters persist @fractal_piece between requests; all actions need this
   before_filter :load_fractal_piece_from_session
   after_filter :store_fractal_piece_in_session
@@ -150,7 +152,7 @@ class ComposeController < ApplicationController
     
   def generate_piece_xhr        
     update_fractal_piece         
-    save_piece_files unless get_last_generated_piece_fractal_piece_xml == @fractal_piece.getXmlRepresentation
+    save_piece_files unless get_last_generated_piece_fractal_piece_xml == current_piece_xml
     respond_to { |format| format.js }     
   end
   
@@ -172,14 +174,25 @@ class ComposeController < ApplicationController
   def open_submit_to_library_form_xhr
     update_fractal_piece    
     @last_generated_fractal_piece_xml = get_last_generated_piece_fractal_piece_xml
-    @current_fractal_piece_xml = @fractal_piece.getXmlRepresentation           
+    current_piece_xml #fetch the xml into an instance variable
+    @piece_already_submitted = current_piece_already_submitted?
     respond_to { |format| format.js } 
   end
   
   def submit_to_library_xhr    
-    @user_submission = UserSubmission.new(params[:user_submission])
-    @user_submission.generated_piece_id = session[:last_generated_piece_id]    
-    @user_submission_saved = @user_submission.save
+    @piece_already_submitted = current_piece_already_submitted?
+    
+    unless @piece_already_submitted
+      @user_submission = UserSubmission.new(params[:user_submission])
+      @user_submission.generated_piece_id = session[:last_generated_piece_id]    
+      @user_submission_saved = @user_submission.save
+
+      if @user_submission_saved
+        session[:previously_submitted_pieces] ||= Array.new
+        session[:previously_submitted_pieces] << @user_submission.generated_piece_id
+      end  
+    end    
+    
     respond_to { |format| format.js }
   end  
         
@@ -332,6 +345,21 @@ class ComposeController < ApplicationController
     end    
   end
   
+  def current_piece_xml
+    @current_fractal_piece_xml ||= @fractal_piece.getXmlRepresentation           
+  end
+  
+  def current_piece_already_submitted?
+    current_xml = current_piece_xml
+    
+    (session[:previously_submitted_pieces] || []).each do |previous_piece_id|
+      previous_piece = GeneratedPiece.find(previous_piece_id)
+      return true if previous_piece.fractal_piece == current_xml
+    end
+    
+    return false
+  end
+  
   def get_last_generated_piece_fractal_piece_xml
     id = session[:last_generated_piece_id]
     return '' unless id
@@ -426,7 +454,7 @@ class ComposeController < ApplicationController
   end
 
   def store_fractal_piece_in_session           
-    session[:fractal_piece] = @fractal_piece.getXmlRepresentation if @fractal_piece         
+    session[:fractal_piece] = current_piece_xml if @fractal_piece         
   end
   
   def get_new_fractal_piece

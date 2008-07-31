@@ -1,5 +1,10 @@
-page.call 'update_submit_form_result', (render :file => 'compose/_submit_to_library_result.html.erb', :use_full_path => true)
-page.delay 0.2 do
-  page.call 'resizeLightwindow'
+if @piece_already_submitted
+  page.alert(ComposeController::ALREADY_SUBMITTED_MSG)
+else
+  page.call 'update_submit_form_result', (render :file => 'compose/_submit_to_library_result.html.erb', :use_full_path => true)
+  page.delay 0.2 do
+    page.call 'resizeLightwindow'
+  end
 end
+
 

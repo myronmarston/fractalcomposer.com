@@ -1,8 +1,10 @@
-if @last_generated_fractal_piece_xml == @current_fractal_piece_xml  
+if !@piece_already_submitted && @last_generated_fractal_piece_xml == @current_fractal_piece_xml  
   page.replace_html 'submit_to_library', :partial => 'submit_to_library'
   page.call('launchLightwindow_autoSize', 'submit_to_library', 'Submit your piece to the library')  
 else
-  msg = (@last_generated_fractal_piece_xml == '' ? 
+  msg = @piece_already_submitted ? 
+        ComposeController::ALREADY_SUBMITTED_MSG :
+        (@last_generated_fractal_piece_xml == '' ? 
          'You must generate the piece before you can submit it to the library.' : 
          'Your settings have changed since you last generated the piece.  Please re-generate the piece and check it to make sure you are satisfied with it before submitting it to the library.' )
   page.alert(msg)
