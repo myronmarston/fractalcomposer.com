@@ -4,6 +4,10 @@
    TODO: change the mouse icon over buttons to indicate they can be pressed
  *************************************************************/
 
+#piece_title {
+    text-align: center;
+}
+
 #hidden_content_for_lightwindow, #submit_to_library {
     display: none;
 }

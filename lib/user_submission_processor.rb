@@ -1,4 +1,5 @@
 class UserSubmissionProcessor    
+  SLEEP_TIME = 30 unless defined? SLEEP_TIME
   @@semaphore = Mutex.new
   @@singleton_thread = nil unless defined? @@singleton_thread
   
@@ -20,9 +21,14 @@ class UserSubmissionProcessor
     #TODO: how to I propagate exceptions to rails' exception-handling mechanism?
     while true
       user_submission = UserSubmission.find(:first, :conditions => {:processing_completed => nil}, :order => 'created_at')
-      logger.info "processing user submission: #{user_submission.inspect}"
-      break unless user_submission
-      user_submission.process  
+      
+      if user_submission
+        logger.info "***** processing user submission: #{user_submission.inspect}"      
+        user_submission.process  
+      else          
+        logger.info "***** no unprocessed user submissions found. Sleeping for #{SLEEP_TIME} seconds" 
+        sleep SLEEP_TIME
+      end            
     end
     
     @@semaphore.synchronize do
