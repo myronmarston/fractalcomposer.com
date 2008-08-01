@@ -8,6 +8,7 @@ require 'tritonus_share-0.3.6.jar'
 require 'path_helper'
     
 class UserSubmission < ActiveRecord::Base
+  acts_as_rated :rater_class => 'IpAddress', :rating_range => 1..5  
   extend PathHelper    
   
   GENERATED_IMAGE_WIDTH = 500 unless defined? GENERATED_IMAGE_WIDTH
@@ -55,6 +56,19 @@ class UserSubmission < ActiveRecord::Base
         
     self.update_attribute(:processing_completed, Time.now)    
   end
+    
+  def rating_width
+    # each star image, including margins is 30 pixels wide.
+    # however, the star itself is only 18 pixels wide, with a 6 pixel margin on each side
+    rating = self.rating_average
+    return nil unless rating
+    int_part = rating.to_i
+    fractional_part = rating - int_part
+    
+    width_for_int_part = (int_part * 30) 
+    return width_for_int_part if fractional_part == 0
+    return width_for_int_part + 6 + (fractional_part * 18).to_i
+  end
   
   private
   
@@ -78,9 +92,5 @@ class UserSubmission < ActiveRecord::Base
     Dir.mkdir(local_dir, 0755) unless File.exist?(local_dir)     
     user_submission_dir
   end      
-  
-  def get_lilypond_pdf
-    "#{self.lilypond_results_file}.pdf"
-  end
-  
+      
 end

@@ -1,0 +1,1 @@
+page.replace 'star-rating-wrap', :partial => 'star_rating'

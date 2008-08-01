@@ -1,0 +1,13 @@
+<div id="star-rating-wrap">
+  Rate this piece! 
+  <br />
+  <%= desc = current_rating_description %>
+  <br />
+  <%= render :file => 'compose/_spinner', :use_full_path => true, :locals => {:display => 'none', :div_id => 'star_rating_spinner'} %>
+  <ul class="star-rating">      
+      <li id="current_star_rating" class="current-rating" style="width:<%= @user_submission.rating_width -%>px;">
+        <%= desc %>
+      </li>
+      <%= rating_stars %>            
+  </ul>  
+</div>

@@ -1,8 +1,11 @@
 require 'migration_helper'
+#require File.dirname(__FILE__) + '/../../app/models/user_submission'
 class CreateUserSubmissions < ActiveRecord::Migration
   extend MigrationHelper
   
   def self.up
+    ActiveRecord::Base.create_ratings_table :with_rater => true
+          
     create_table :user_submissions do |t|
       t.column :name, :string, :null => false
       t.column :email, :string, :null => false
@@ -18,7 +21,9 @@ class CreateUserSubmissions < ActiveRecord::Migration
       t.column :piece_pdf_file, :string, :null => true
       t.column :piece_image_file, :string, :null => true
       t.column :germ_mp3_file, :string, :null => true
-      t.column :germ_image_file, :string, :null => true      
+      t.column :germ_image_file, :string, :null => true                  
+      
+      ActiveRecord::Base.generate_ratings_columns t
       t.timestamps
     end
     
@@ -26,6 +31,7 @@ class CreateUserSubmissions < ActiveRecord::Migration
   end
 
   def self.down
-    drop_table :user_submissions
+    drop_table :user_submissions   
+    ActiveRecord::Base.drop_ratings_table
   end
 end
