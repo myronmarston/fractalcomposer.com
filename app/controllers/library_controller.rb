@@ -6,18 +6,23 @@ class LibraryController < ApplicationController
   end
   
   def view_piece
-    begin
+    if @user_submission      
       if @user_submission.processing_completed.nil?        
         UserSubmissionProcessor.start_processor_if_necessary
         render :action => 'still_processing' 
       end      
-    rescue ActiveRecord::RecordNotFound
-      # TODO: return the proper http error code
-      render :action => 'piece_not_found'          
+    else
+      #TODO: test the status code
+      render :action => 'piece_not_found', :status => 404          
     end              
+    
+    # just render the view_piece template...
   end
   
-  def rate
+  def rate    
+    #TODO: prevent bots from rating this, using:
+    # -> check user agent?
+    # -> nofollow or some other attribute?
     @user_submission.rate params[:rating].safe_to_i, IpAddress.get(request.remote_ip)
     if request.xml_http_request?
       respond_to { |format| format.js } 
@@ -29,7 +34,11 @@ class LibraryController < ApplicationController
   private
   
   def load_user_submission
-    @user_submission = UserSubmission.find(params[:id]) if params.has_key?(:id)
+    begin
+      @user_submission = UserSubmission.find(params[:id]) if params.has_key?(:id)
+    rescue ActiveRecord::RecordNotFound      
+      @user_submission = nil
+    end
   end
   
 end

@@ -276,6 +276,11 @@ div.ne_corner_wrap {
     right: 40px
 }
 
+#piece_content {
+    margin: 20px;
+    text-align: center;
+}
+
 /*** Tabbed Panels ***/
 /*
 Adapted from Kalsey CSS tabs:

@@ -3,11 +3,14 @@
   <br />
   <%= desc = current_rating_description %>
   <br />
-  <%= render :file => 'compose/_spinner', :use_full_path => true, :locals => {:display => 'none', :div_id => 'star_rating_spinner'} %>
+  <% 
+  # TODO: make the star rating inline so that the spinner can be on the same line.  Check the webpage in the CSS file for details.
+  %>
   <ul class="star-rating">      
       <li id="current_star_rating" class="current-rating" style="width:<%= @user_submission.rating_width -%>px;">
         <%= desc %>
       </li>
-      <%= rating_stars %>            
-  </ul>  
+      <%= rating_stars %>                  
+  </ul>    
+  <%= render :file => 'compose/_spinner', :use_full_path => true, :locals => {:display => 'none', :div_id => 'star_rating_spinner'} %>    
 </div>
