@@ -1,13 +1,18 @@
-if @valid 
-  if @comment.is_preview?
-    page.replace_html('preview_comment', :partial => 'comment', :locals => {:comment => @comment})
-  else
-    page.replace_html('preview_comment', '')
-    page.insert_html(:before, 'preview_comment', :partial => 'comment', :locals => {:comment => @comment})
+if @comment.is_preview? && @valid
+  page.replace_html('preview_comment', :partial => 'comment', :locals => {:comment => @comment})    
+  #todo: figure out the proper visual effect
+  page.visual_effect(:appear, 'preview_comment')
+else
+  page.replace_html('preview_comment', '')
+end
+
+if !@comment.is_preview? && @valid
+  page.insert_html(:before, 'preview_comment', :partial => 'comment', :locals => {:comment => @comment})
+  #todo: visual effect here, too...
+  page.visual_effect(:appear, @comment.html_div_id)
     
-    # clear the comment before we render the comment form...
-    @comment = Comment.new
-  end  
+  # clear the comment before we render the comment form...
+  @comment = Comment.new
 end
 
 page.replace('comment_form', :partial => 'comment_form')

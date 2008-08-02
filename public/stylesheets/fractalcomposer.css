@@ -63,7 +63,7 @@ form#compose_form input.button {
     margin: 10px 20px;
 }
 
-.textbox {
+.textbox, .comment-even, .comment-odd, #comment_errors {
     border: 1px solid #9CC8F4;
 }
 
@@ -248,7 +248,7 @@ div#main div.tab_panel_body div.info p {
     text-align: left;    
 }
 
-#submit_to_library_result, #comment_errors {
+#submit_to_library_result {
     line-height: 1.2em;
     border: 2px solid #A8CFF9;
     margin: 0px 20px 10px 20px;
@@ -295,6 +295,34 @@ div.ne_corner_wrap {
 
 #comment_list {
   list-style:none;  
+}
+
+.comment-comment {    
+  font-family: "Trebuchet MS", Tahoma, arial, Sans-serif;   
+  color: #2361BA;  
+}
+
+.comment-date {
+    font-size: 80%;
+}
+
+.comment-odd, .comment-even {
+    margin: 20px 25px 20px 20px;    
+    padding: 10px;
+    font-size: 120%;        
+}
+
+.comment-odd, #comment_errors {
+    background: #E5F0FB;    
+}
+
+.comment-even {
+    background: #F4F8FD;
+}
+
+#comment_errors {
+    margin: 10px;
+    padding: 10px;    
 }
 
 /*** Tabbed Panels ***/

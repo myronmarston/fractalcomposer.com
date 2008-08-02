@@ -2,7 +2,7 @@
   <h3>
       <%= user_submission_title_by_name %>
       <% if @user_submission.display_email? -%>
-          (<%= mail_to @user_submission.email, nil, :encode => :hex %>)
+          (<%= mail_to h(@user_submission.email), nil, :encode => :hex %>)
       <% end -%>
   </h3>  
   Composed & Generated on <%= @user_submission.created_at.strftime("%A, %B %d, %Y at %I:%M %p") %>
@@ -32,7 +32,5 @@
     <%= render :partial => 'comment', :locals => {:comment => @comment} if @comment.is_preview? && @valid %>
   </div>
 </div>
-<div id='leave_a_comment'>
-Post a Comment
-</div>
+
 <%= render :partial => 'comment_form' %>

@@ -1,7 +1,7 @@
 module LibraryHelper
   
   def user_submission_title_by_name    
-    "&#8220;#{@user_submission.title}&#8221; by #{link_to_if(@user_submission.website && @user_submission.website != '', @user_submission.name, @user_submission.website)}"
+    "&#8220;#{h @user_submission.title}&#8221; by #{link_to_if(@user_submission.website && @user_submission.website != '', h(@user_submission.name), h(@user_submission.website))}"
   end
   
   def rating_stars

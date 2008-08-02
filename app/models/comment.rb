@@ -3,26 +3,26 @@ class Comment < ActiveRecord::Base
   DUPLICATE_COMMENT_ERROR_MSG = 'Your comment has already been posted.' unless defined? DUPLICATE_COMMENT_ERROR_MSG
   
   belongs_to :commentable, :polymorphic => true
-  validates_presence_of :comment, :author_ip_address, :author_name, :author_email, :message => MISSING_FIELD_ERROR_MSG
-  validates_email_format_of :author_email, :if => :do_email_validation?  
-  validates_http_url :author_website
+  validates_presence_of :comment, :ip_address, :name, :email, :message => MISSING_FIELD_ERROR_MSG
+  validates_email_format_of :email, :if => :do_email_validation?  
+  validates_http_url :website
   attr_accessor :is_website_tester
   attr_accessor :is_preview
   
   def before_validation
     return if self.is_website_tester
-    return if self.author_website.nil? || self.author_website == '' 
+    return if self.website.nil? || self.website == '' 
     
     #add the "http://" if it is an invalid website and that would make it valid...
     test_comment = Comment.new
     test_comment.is_website_tester = true
-    test_comment.author_website = self.author_website
-    if !test_comment.valid? && test_comment.errors.invalid?(:author_website)
-      test_comment.author_website = "http://#{test_comment.author_website}"
+    test_comment.website = self.website
+    if !test_comment.valid? && test_comment.errors.invalid?(:website)
+      test_comment.website = "http://#{test_comment.website}"
       
       test_comment.valid?
-      if !test_comment.errors.invalid?(:author_website)
-        self.author_website = test_comment.author_website
+      if !test_comment.errors.invalid?(:website)
+        self.website = test_comment.website
       end
     end
   end 
@@ -30,8 +30,8 @@ class Comment < ActiveRecord::Base
   def validate
     # prevent duplicates...
     existing_comment = Comment.find(:first, 
-      :conditions => ['commentable_type = ? and commentable_id = ? and author_name = ? and author_email = ? and author_website = ? and comment = ?',
-                       commentable_type,        commentable_id,        author_name,        author_email,        author_website,        comment])
+      :conditions => ['commentable_type = ? and commentable_id = ? and name = ? and email = ? and website = ? and comment = ?',
+                       commentable_type,        commentable_id,        name,        email,        website,        comment])
                    
     errors.add_to_base(DUPLICATE_COMMENT_ERROR_MSG) if existing_comment                        
   end
@@ -102,7 +102,7 @@ class Comment < ActiveRecord::Base
   protected
   
   def do_email_validation?
-    self.author_email && self.author_email != ''
+    self.email && self.email != ''
   end
   
 end

@@ -37,9 +37,13 @@ class LibraryController < ApplicationController
   end
   
   def add_comment
+    # Get odd or even for what this comment will be if it gets added.
+    @odd_or_even_comment = (@user_submission.comments.size.even? ? 'odd' : 'even')
+    puts "o or e = #{@odd_or_even_comment}; #{@user_submission.comments.size}"
+        
     # get the decrypted values, and a few of my own
     vals = @captcha.values.merge(
-      :author_ip_address => request.remote_ip,
+      :ip_address => request.remote_ip,
       :commentable_type => UserSubmission.to_s,
       :commentable_id => @user_submission.id
     )     
@@ -56,10 +60,10 @@ class LibraryController < ApplicationController
     
     # add the captcha error as necessary...
     @comment.errors.add_to_base(@captcha.error) unless @captcha.valid?
-    
+        
     # add it to the comments if it's a valid non-preview comment    
     @user_submission.comments << @comment if @is_valid_non_preview
-    
+            
     if request.xml_http_request?
       respond_to { |format| format.js } 
     else
@@ -84,7 +88,7 @@ class LibraryController < ApplicationController
     @captcha = NegativeCaptcha.new(
       :secret => ::NEGATIVE_CAPTCHA_SECRET,
       :spinner => request.remote_ip, 
-      :fields => [:author_name, :author_email, :author_website, :comment], #Whatever fields are in your form 
+      :fields => [:name, :email, :website, :comment], #Whatever fields are in your form 
       :params => params)
   end
 
