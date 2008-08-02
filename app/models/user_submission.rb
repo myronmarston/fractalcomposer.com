@@ -8,11 +8,13 @@ require 'tritonus_share-0.3.6.jar'
 require 'path_helper'
     
 class UserSubmission < ActiveRecord::Base
-  acts_as_rated :rater_class => 'IpAddress', :rating_range => 1..5  
-  extend PathHelper    
+  extend PathHelper  
   
   GENERATED_IMAGE_WIDTH = 500 unless defined? GENERATED_IMAGE_WIDTH
   
+  acts_as_rated :rater_class => 'IpAddress', :rating_range => 1..5  
+  acts_as_commentable    
+      
   generate_validations
   validates_email_format_of :email
   validates_http_url :website 

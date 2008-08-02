@@ -63,7 +63,7 @@ form#compose_form input.button {
     margin: 10px 20px;
 }
 
-form#compose_form .textbox, form#submit_to_library_form .textbox{
+.textbox {
     border: 1px solid #9CC8F4;
 }
 
@@ -248,14 +248,17 @@ div#main div.tab_panel_body div.info p {
     text-align: left;    
 }
 
-#submit_to_library_result {
+#submit_to_library_result, #comment_errors {
     line-height: 1.2em;
     border: 2px solid #A8CFF9;
     margin: 0px 20px 10px 20px;
     padding-bottom: 10px;
 }
 
-#submit_to_library_result div#errorExplanation h2, #submit_to_library_result div#errorExplanation p {
+#submit_to_library_result div#errorExplanation h2, 
+#submit_to_library_result div#errorExplanation p,
+#comment_errors div#errorExplanation h2, 
+#comment_errors div#errorExplanation p {
     display: none;
 }
 
@@ -279,6 +282,19 @@ div.ne_corner_wrap {
 #piece_content {
     margin: 20px;
     text-align: center;
+}
+
+#comment_form {
+    padding: 0px 20px 20px 20px;
+    line-height: 0.5em;
+}
+
+#comment_form div {
+    margin-top: 20px;
+}
+
+#comment_list {
+  list-style:none;  
 }
 
 /*** Tabbed Panels ***/

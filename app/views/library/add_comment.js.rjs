@@ -1,0 +1,10 @@
+if @valid 
+  if @comment.is_preview?
+    page.replace_html('preview_comment', :partial => 'comment', :locals => {:comment => @comment})
+  else
+    page.replace_html('preview_comment', '')
+    page.insert_html(:before, 'preview_comment', :partial => 'comment', :locals => {:comment => @comment})
+  end  
+end
+
+page.replace('comment_form', :partial => 'comment_form')

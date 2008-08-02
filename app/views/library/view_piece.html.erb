@@ -26,3 +26,13 @@
   <br/><%= render :partial => 'mp3_player', :locals => {:mp3_file => @user_submission.piece_mp3_file} %>  
   <br/><%= image_tag(@user_submission.piece_image_file) %>
 </div>
+<div id="comment_list">
+  <%= render :partial => 'comment', :collection => @user_submission.comments %>
+  <div id="preview_comment">    
+    <%= render :partial => 'comment', :locals => {:comment => @comment} if @comment.is_preview? && @valid %>
+  </div>
+</div>
+<div id='leave_a_comment'>
+Post a Comment
+</div>
+<%= render :partial => 'comment_form' %>

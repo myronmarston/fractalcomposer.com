@@ -35,6 +35,7 @@ ActionController::Routing::Routes.draw do |map|
   map.about 'about/', :controller => 'static_page', :name => 'about'
   map.examples 'examples/', :controller => 'static_page', :name => 'examples'
   
+  map.connnect 'library/', :controller => 'library', :action => 'index'  
   map.connect 'library/:id', :controller => 'library', :action => 'view_piece'  
   
   # Install the default routes as the lowest priority.

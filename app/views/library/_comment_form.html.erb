@@ -1,0 +1,59 @@
+  <% url_hash = {:action => 'add_comment', :id => @user_submission} %>
+  <% form_remote_tag :url => url_hash,
+                     :html => {:action => url_for(url_hash), :id => 'comment_form'},
+                     :before => "$('new_comment_spinner').show()",
+                     :complete => "$('new_comment_spinner').hide()" do %> 
+    <% unless @valid -%>  
+        <div id="comment_errors">
+          <h3>There was a problem with your comment.</h3>
+          <p>Please review the following errors:</p>
+          <%= error_messages_for(:comment) %>   
+        </div>
+    <% end -%>
+
+    <div>
+      <%= negative_captcha(@captcha) %>      	  		
+      <label for="author_name">
+        <strong>Name</strong> (required)         
+      </label>
+      <%= negative_text_field_tag @captcha, :author_name, @comment.author_name, :size => 35, :maxlength => 80, :class => 'textbox' %>      
+    </div>
+    
+    <div>
+      <label for="author_email">
+        <strong>Email</strong> (required, but will not be displayed)         
+      </label>
+      <%= negative_text_field_tag @captcha, :author_email, @comment.author_email, :size => 35, :class => 'textbox' %>      
+    </div>
+
+    <div>
+      <label for="author_website">
+        <strong>Website</strong>        
+      </label>
+      <%= negative_text_field_tag @captcha, :author_website, @comment.author_website, :size => 35, :class => 'textbox' %>      
+    </div>
+
+    <div>
+      <label for="comment">
+        <strong>Comment</strong>        
+      </label>      
+      <%= negative_text_area_tag @captcha, :comment, @comment.comment, :rows => 10, :cols => 71, :class => 'textbox' %>
+      <br />You can use some HTML tags, such as <%= 'none!' %>.
+      <br />
+    </div>
+    
+    <div>
+      <%= hidden_field_tag 'clicked_button', '' %>
+      <%= submit_tag "Post Comment", 
+          :class => 'button', 
+          :id => 'post_comment_button' %>
+      <%= comment_form_button_js('post_comment_button') %>
+
+      <%= submit_tag "Preview", 
+          :class => 'button', 
+          :id => 'preview_button' %>
+      <%= comment_form_button_js('preview_button') %>
+
+      <%= render :file => 'compose/_spinner', :use_full_path => true, :locals => {:display => 'none', :div_id => 'new_comment_spinner'} %>                
+  </div>
+<% end %>

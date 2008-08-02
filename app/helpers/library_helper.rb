@@ -44,4 +44,8 @@ module LibraryHelper
     "Currently Rated #{number_with_precision(@user_submission.rating_average, 1)} out of 5 Stars (#{pluralize(@user_submission.rating_count, 'Vote')})"
   end
   
+  def comment_form_button_js(id)
+    javascript_tag("Event.observe('#{id}', 'click', function() { $('clicked_button').value = $('#{id}').value; });")
+  end
+  
 end
