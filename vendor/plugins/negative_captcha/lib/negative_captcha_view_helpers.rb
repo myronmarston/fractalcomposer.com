@@ -7,14 +7,14 @@ module NegativeCaptchaViewHelpers
   end
   #TODO: autocomplete?
   def negative_text_field_tag(negative_captcha, field, value, options={})
-    text_field_tag(negative_captcha.fields[field], value, options.merge(:tabindex => '1', :id => "id_#{negative_captcha.fields[field]}")) +
+    text_field_tag(negative_captcha.fields[field], value, options.merge(:tabindex => '1')) +
     content_tag('div', :style => 'position: absolute; left: -2000px;') {
       text_field_tag(field, '', :tabindex => '999')
     }
   end
   
   def negative_text_area_tag(negative_captcha, field, value, options={})
-    text_area_tag(negative_captcha.fields[field], value, options.merge(:tabindex => '1', :id => "id_#{negative_captcha.fields[field]}")) +
+    text_area_tag(negative_captcha.fields[field], value, options.merge(:tabindex => '1')) +
     content_tag('div', :style => 'position: absolute; left: -2000px;') {
       text_area_tag(field, '', :tabindex => '999', :rows => 2, :cols => 30)
     }

@@ -4,6 +4,9 @@ if @valid
   else
     page.replace_html('preview_comment', '')
     page.insert_html(:before, 'preview_comment', :partial => 'comment', :locals => {:comment => @comment})
+    
+    # clear the comment before we render the comment form...
+    @comment = Comment.new
   end  
 end
 

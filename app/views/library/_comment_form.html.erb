@@ -17,6 +17,7 @@
         <strong>Name</strong> (required)         
       </label>
       <%= negative_text_field_tag @captcha, :author_name, @comment.author_name, :size => 35, :maxlength => 80, :class => 'textbox' %>      
+      <%= javascript_tag("create_live_validation_field_basic('#{@captcha.fields[:author_name]}', #{ComposeHelper::LIVE_VALIDATION_DELAY}, [{type: Validate.Presence, args: {} }]);") %>
     </div>
     
     <div>
@@ -24,22 +25,27 @@
         <strong>Email</strong> (required, but will not be displayed)         
       </label>
       <%= negative_text_field_tag @captcha, :author_email, @comment.author_email, :size => 35, :class => 'textbox' %>      
+      <%= javascript_tag("create_live_validation_field_basic('#{@captcha.fields[:author_email]}', #{ComposeHelper::LIVE_VALIDATION_DELAY}, [{type: Validate.Presence, args: {} }, {type: Validate.Email, args: {} }]);") %>
     </div>
 
     <div>
       <label for="author_website">
-        <strong>Website</strong>        
+        <strong>Website</strong> (optional)
       </label>
       <%= negative_text_field_tag @captcha, :author_website, @comment.author_website, :size => 35, :class => 'textbox' %>      
     </div>
 
     <div>
       <label for="comment">
-        <strong>Comment</strong>        
-      </label>      
+        <strong>Comment</strong> (required)        
+      </label>            
+      <%
+      #
+    %>
       <%= negative_text_area_tag @captcha, :comment, @comment.comment, :rows => 10, :cols => 71, :class => 'textbox' %>
-      <br />You can use some HTML tags, such as <%= 'none!' %>.
+      <%= javascript_tag("create_live_validation_field_basic('#{@captcha.fields[:comment]}', #{ComposeHelper::LIVE_VALIDATION_DELAY}, [{type: Validate.Presence, args: {} }]);") %>            
       <br />
+      <br />You can use some HTML tags, such as <%= 'none' %>.      
     </div>
     
     <div>

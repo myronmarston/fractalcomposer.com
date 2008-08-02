@@ -43,6 +43,7 @@ class LibraryController < ApplicationController
       :commentable_type => UserSubmission.to_s,
       :commentable_id => @user_submission.id
     )     
+    
     @comment = Comment.new(vals)              
         
     # there are different ways to tell if the user clicked 'Preview' or 'Post Comment'

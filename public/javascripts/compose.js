@@ -47,11 +47,7 @@ function performAdvancedOptionsToggle() {
                                       
 function create_live_validation_field(id, delay, panel_div_id, voice_or_section_id, description, override_checkbox_id, validations) {    
   var input_element = ( panel_div_id == '' ? LW$(id) : $(id) )
-  var validator = new LiveValidation(input_element, {validMessage: null, wait: delay});
-  
-  validations.each (function(validation) {
-    validator.add(validation.type, validation.args);    
-  });  
+  var validator = create_live_validation_field_basic(input_element, delay, validations);
        
   var field_hash = $H({ 
       id : id,      

@@ -13,7 +13,7 @@ class NegativeCaptcha
     @secret = opts[:secret]||MD5.hexdigest("this_is_a_secret_key")
     @spinner = MD5.hexdigest(([timestamp, @secret] + (opts[:spinner].is_a?(Array) ? opts[:spinner] : [opts[:spinner]]))*'-')
     @message = opts[:message]||"Please try again. This usually happens because an automated script attempted to submit this form."
-    @fields = opts[:fields].inject({}){|hash, field_name| hash[field_name] = MD5.hexdigest([field_name, @spinner, @secret]*'-'); hash }
+    @fields = opts[:fields].inject({}){|hash, field_name| hash[field_name] = 'a' + MD5.hexdigest([field_name, @spinner, @secret]*'-'); hash }
     @timestamp = Time.now()
     @values = {}
     @error = "No params provided"
