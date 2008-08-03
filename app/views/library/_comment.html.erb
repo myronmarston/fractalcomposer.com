@@ -1,16 +1,21 @@
-<div class="comment-<%= (@odd_or_even_comment ||= nil) || cycle('odd', 'even') %>" id="<%= comment.html_div_id %>">
-    <span class="comment-author-name">
-        <b><%= link_to_unless(comment.website.nil? || comment.website == '',
-            h(comment.name),
-            h(comment.website)) %></b> said: <%= "(preview)" if comment.is_preview? %>
-    </span>
+<%
+    div_id = comment.html_div_id
+%>
+<div class="comment-<%= (@odd_or_even_comment ||= nil) || cycle('odd', 'even') %>" id="<%= div_id %>">
+    <div class="comment-inner-wrap">
+        <span class="comment-author-name">
+            <b><%= link_to_unless(comment.website.nil? || comment.website == '',
+                h(comment.name),
+                h(comment.website)) %></b> said: <%= "(preview)" if comment.is_preview? %>
+        </span>
 
-    <div class="comment-date">
-        <%= comment.created_at_description %>
-    </div>
+        <div class="comment-date">
+            <%= comment.created_at_description %>
+        </div>
 
-    <div class="comment-comment">
-        <%= sanitize(simple_format(comment.comment)) %>        
+        <div class="comment-comment">
+            <%= sanitize(simple_format(comment.comment)) %>        
+        </div>
     </div>
 </div>
-
+<%= javascript_tag("create_rounded_corners('#{div_id}');") %>

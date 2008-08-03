@@ -40,11 +40,11 @@ module ApplicationHelper
 
   def get_menu_items
     [
-      {:name => 'Home', :options => {:controller => 'static_page', :name => 'home'}},
-      {:name => 'About', :options => {:controller => 'static_page', :name => 'about'}},      
-      {:name => 'Examples', :options => {:controller => 'static_page', :name => 'examples'}},
-      {:name => 'Compose', :options => {:controller => 'compose'}},
-      {:name => 'Library', :options => {:controller => 'library'}}
+      {:name => 'Home', :options => {:controller => 'static_page', :name => 'home'}, :is_current => Proc.new {|opt| current_page? opt}},
+      {:name => 'About', :options => {:controller => 'static_page', :name => 'about'}, :is_current => Proc.new {|opt| current_page? opt}},      
+      {:name => 'Examples', :options => {:controller => 'static_page', :name => 'examples'}, :is_current => Proc.new {|opt| current_page? opt}},
+      {:name => 'Compose', :options => {:controller => 'compose'}, :is_current => Proc.new {|opt| opt[:controller] == params[:controller]}},
+      {:name => 'Library', :options => {:controller => 'library'}, :is_current => Proc.new {|opt| opt[:controller] == params[:controller]}}
     ]
   end
 

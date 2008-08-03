@@ -38,6 +38,9 @@ ActionController::Routing::Routes.draw do |map|
   map.connnect 'library/', :controller => 'library', :action => 'index'  
   map.connect 'library/:id', :controller => 'library', :action => 'view_piece'  
   
+  map.connnect 'compose/', :controller => 'compose', :action => 'index'  
+  map.connnect 'compose/:user_submission_id', :controller => 'compose', :action => 'index', :user_submission_id => /\d+/
+  
   # Install the default routes as the lowest priority.
   map.connect ':controller/:action/:id'
   map.connect ':controller/:action/:id.:format'    

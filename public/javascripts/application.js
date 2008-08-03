@@ -10,3 +10,10 @@ function create_live_validation_field_basic(id_or_element, delay, validations) {
        
   return validator;
 }
+
+function create_rounded_corners(id) {
+  // the border is set for when javascript is disabled, but we want to disable
+  // it and replace it with the rico rounded corner with border.
+  $(id).setStyle({border: 'none'});
+  Rico.Corner.round($(id), {bgColor: '#ffffff', border: '#9cc8f4;'});
+}

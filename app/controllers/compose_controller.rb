@@ -1,3 +1,4 @@
+#TODO: passing a user_submission_id doesn't work quite right. it appears that more session variables are being cached and reused from the previously used fractal piece
 require 'path_helper'
 require 'uuidtools.rb'
 require 'fileutils.rb'
@@ -187,16 +188,20 @@ class ComposeController < ApplicationController
       @user_submission.generated_piece_id = session[:last_generated_piece_id]    
       @user_submission_saved = @user_submission.save
 
-      if @user_submission_saved
-        session[:previously_submitted_pieces] ||= Array.new
-        session[:previously_submitted_pieces] << @user_submission.generated_piece_id
-      end  
+      add_previously_submitted_piece_to_session(@user_submission.generated_piece_id) if @user_submission_saved          
     end    
     
     respond_to { |format| format.js }
   end  
         
   protected
+  
+  def add_previously_submitted_piece_to_session(generated_piece_id)
+    puts "add_previously_submitted_piece_to_session begin: #{session[:previously_submitted_pieces].inspect}"
+    session[:previously_submitted_pieces] ||= Array.new
+    session[:previously_submitted_pieces] << generated_piece_id unless session[:previously_submitted_pieces].include? generated_piece_id
+    puts "add_previously_submitted_piece_to_session end: #{session[:previously_submitted_pieces].inspect}"
+  end
   
   def update_germ(save_files, germ_string) 
     session[:germ_string] = germ_string
@@ -428,15 +433,31 @@ class ComposeController < ApplicationController
   end  
   
   def load_fractal_piece_from_session        
+    puts "load_fractal_piece_from_session params = #{params.inspect}"
     begin
-      @fractal_piece = FractalPiece.loadFromXml(session[:fractal_piece]) if session[:fractal_piece]
+      # first, check to see if the user is trying to work with an existing user submitted piece...
+      if params.has_key?(:user_submission_id)
+        begin
+          user_sub = UserSubmission.find(params[:user_submission_id])
+          piece_xml = user_sub.generated_piece.fractal_piece
+          add_previously_submitted_piece_to_session(user_sub.generated_piece_id)
+        rescue ActiveRecord::RecordNotFound      
+          # bad id parameter, just ignore and we'll default to using the piece in the session or create a new one
+        end        
+      end
+      
+      puts "1 piece_xml = #{piece_xml}"
+      piece_xml ||= session[:fractal_piece] if session[:fractal_piece]
+      puts "2 piece_xml = #{piece_xml}"
+      
+      @fractal_piece = FractalPiece.loadFromXml(piece_xml) if piece_xml && piece_xml != ''
     rescue NativeException => ex
       # if our serialization changes, we will get an exception. in this case, 
       # just log the error and start the fractal piece over      
       logger.error("An error occurred while loading the fractal piece from the session: #{ex.message}")
     end
     
-    @fractal_piece = get_new_fractal_piece if @fractal_piece.nil?      
+    @fractal_piece ||= get_new_fractal_piece
     
     if @fractal_piece.getGerm.size > 0      
       # we have a valid germ; set our instance variables if the files exist

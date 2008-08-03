@@ -63,7 +63,7 @@ form#compose_form input.button {
     margin: 10px 20px;
 }
 
-.textbox, .comment-even, .comment-odd, #comment_errors {
+.textbox, .comment-even, .comment-odd, #comment_errors, #comment_form {
     border: 1px solid #9CC8F4;
 }
 
@@ -284,17 +284,18 @@ div.ne_corner_wrap {
     text-align: center;
 }
 
-#comment_form {
-    padding: 0px 20px 20px 20px;
+#comment-form-inner-wrap {
+    padding: 1px 20px 20px 20px;
     line-height: 0.5em;
 }
 
-#comment_form div {
+#comment-form-inner-wrap div {
     margin-top: 20px;
 }
 
-#comment_list {
-  list-style:none;  
+#library-piece-wrap h3.section-heading {
+    margin-left: 40px;
+    margin-bottom: -5px;
 }
 
 .comment-comment {    
@@ -306,10 +307,13 @@ div.ne_corner_wrap {
     font-size: 80%;
 }
 
+.comment-inner-wrap {        
+    font-size: 120%; 
+    padding: 10px 20px;           
+}
+
 .comment-odd, .comment-even {
-    margin: 20px 25px 20px 20px;    
-    padding: 10px;
-    font-size: 120%;        
+    margin: 10px 25px 20px 20px;           
 }
 
 .comment-odd, #comment_errors {
@@ -323,6 +327,11 @@ div.ne_corner_wrap {
 #comment_errors {
     margin: 10px;
     padding: 10px;    
+}
+
+input.comment-form-button {
+    width: 120px;    
+    margin-right: 20px;
 }
 
 /*** Tabbed Panels ***/

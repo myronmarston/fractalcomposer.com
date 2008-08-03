@@ -1,36 +1,53 @@
-<div id="piece_title">
-  <h3>
-      <%= user_submission_title_by_name %>
-      <% if @user_submission.display_email? -%>
-          (<%= mail_to h(@user_submission.email), nil, :encode => :hex %>)
-      <% end -%>
-  </h3>  
-  Composed & Generated on <%= @user_submission.created_at.strftime("%A, %B %d, %Y at %I:%M %p") %>
-  <br />
-  <%= link_to('MP3', @user_submission.piece_mp3_file) %> | <%= link_to('PDF', @user_submission.piece_pdf_file) %>
-</div>
-
-<div id="piece_content">  
-  <%= render :partial => 'star_rating' %>
-  <% if @user_submission.description && @user_submission.description != '' -%>
+<div id="library-piece-wrap">
+  <div id="piece_title">
+    <h3>
+        <%= user_submission_title_by_name %>
+        <% if @user_submission.display_email? -%>
+            (<%= mail_to h(@user_submission.email), nil, :encode => :hex %>)
+        <% end -%>
+    </h3>  
+    Composed & Generated on <%= @user_submission.created_at.strftime("%A, %B %d, %Y at %I:%M %p") %>
     <br />
-    <b>Description</b>:<%= auto_link(simple_format(sanitize(@user_submission.description))) %>  
-  <% end -%>
-
-  <br/>
-  <b>Germ</b>: 
-  <br/><%= render :partial => 'mp3_player', :locals => {:mp3_file => @user_submission.germ_mp3_file} %>  
-  <br/><%= image_tag(@user_submission.germ_image_file) %>
-
-  <br/><b>The Piece</b>: 
-  <br/><%= render :partial => 'mp3_player', :locals => {:mp3_file => @user_submission.piece_mp3_file} %>  
-  <br/><%= image_tag(@user_submission.piece_image_file) %>
-</div>
-<div id="comment_list">
-  <%= render :partial => 'comment', :collection => @user_submission.comments %>
-  <div id="preview_comment">    
-    <%= render :partial => 'comment', :locals => {:comment => @comment} if @comment.is_preview? && @valid %>
+    <%= link_to('MP3', @user_submission.piece_mp3_file) %> | <%= link_to('PDF', @user_submission.piece_pdf_file) %>
   </div>
-</div>
 
-<%= render :partial => 'comment_form' %>
+  <div id="piece_content">  
+    <%= render :partial => 'star_rating' %>
+    <% if @user_submission.description && @user_submission.description != '' -%>
+      <br />
+      <b>Description</b>:<%= auto_link(simple_format(sanitize(@user_submission.description))) %>  
+    <% end -%>
+
+    <br/>
+    <b>The Germ</b>: 
+    <br/><%= render :partial => 'mp3_player', :locals => {:mp3_file => @user_submission.germ_mp3_file} %>  
+    <br/><%= image_tag(@user_submission.germ_image_file) %>
+
+    <br/><b>The Piece</b>: 
+    <br/><%= render :partial => 'mp3_player', :locals => {:mp3_file => @user_submission.piece_mp3_file} %>  
+    <br/>
+    Think you can improve this piece?  <%= link_to('Experiment with it', :controller => 'compose', :action => 'index', :user_submission_id => @user_submission) %>
+    <br />
+    <%= link_to_function('Show Notation', 'return false;', :id => 'show-piece-image-link', :style => 'display: none') %>      
+    <div id="piece-image-wrap">    
+      <%= link_to_function('Hide Notation', 'return false;', :id => 'hide-piece-image-link', :style => 'display: none') %>          
+      <%= image_tag(@user_submission.piece_image_file) %>
+    </div>
+    <%= javascript_tag(
+      "Event.observe('hide-piece-image-link', 'click', function() { $('piece-image-wrap', 'hide-piece-image-link').invoke('hide'); $('show-piece-image-link').show(); });\n" +
+      "Event.observe('show-piece-image-link', 'click', function() { $('piece-image-wrap', 'hide-piece-image-link').invoke('show'); $('show-piece-image-link').hide(); });\n" + 
+      "$('hide-piece-image-link', 'show-piece-image-link').invoke('show'); $('piece-image-wrap').hide();"
+    ) %>     
+
+  </div>
+  
+  <h3 class="section-heading">Comments</h3>
+  <div id="comment_list">
+    <%= render :partial => 'comment', :collection => @user_submission.comments %>
+    <div id="preview_comment">    
+      <%= render :partial => 'comment', :locals => {:comment => @comment} if @comment.is_preview? && @valid %>
+    </div>
+  </div>
+  <h3 class="section-heading">Please leave a comment!</h3>
+  <%= render :partial => 'comment_form' %>
+</div>
