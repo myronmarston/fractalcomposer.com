@@ -1,7 +1,7 @@
 class CreateIpAddresses < ActiveRecord::Migration
   def self.up
     create_table :ip_addresses do |t|
-      t.column :ip_address, :string, :null => false 
+      t.column :ip_address, :string, :limit => 20, :null => false 
       t.timestamps
     end
     

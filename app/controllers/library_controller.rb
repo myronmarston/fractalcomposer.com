@@ -12,6 +12,7 @@ class LibraryController < ApplicationController
         UserSubmissionProcessor.start_processor_if_necessary
         render :action => 'still_processing' 
       else
+        @user_submission.page_view(request.remote_ip)
         @comment = flash[:comment]
         @valid = (@comment ? @comment.valid? : true) # true is the default so we don't get error messages
         @comment ||= Comment.new                       
@@ -39,7 +40,6 @@ class LibraryController < ApplicationController
   def add_comment
     # Get odd or even for what this comment will be if it gets added.
     @odd_or_even_comment = (@user_submission.comments.size.even? ? 'odd' : 'even')
-    puts "o or e = #{@odd_or_even_comment}; #{@user_submission.comments.size}"
         
     # get the decrypted values, and a few of my own
     vals = @captcha.values.merge(

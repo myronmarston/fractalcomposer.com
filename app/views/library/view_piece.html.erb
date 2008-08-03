@@ -40,12 +40,12 @@
     ) %>     
 
   </div>
-  
-  <h3 class="section-heading">Comments</h3>
+  <% is_valid_preview_comment = @comment.is_preview? && @valid %>
+  <h3 id="comments-heading" class="section-heading"<%= (@user_submission.comments.size > 0 || is_valid_preview_comment ? '' : "style=\"display: none\"") %>>Comments</h3>
   <div id="comment_list">
     <%= render :partial => 'comment', :collection => @user_submission.comments %>
     <div id="preview_comment">    
-      <%= render :partial => 'comment', :locals => {:comment => @comment} if @comment.is_preview? && @valid %>
+      <%= render :partial => 'comment', :locals => {:comment => @comment} if is_valid_preview_comment %>
     </div>
   </div>
   <h3 class="section-heading">Please leave a comment!</h3>

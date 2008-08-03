@@ -1,5 +1,5 @@
 require 'migration_helper'
-#require File.dirname(__FILE__) + '/../../app/models/user_submission'
+
 class CreateUserSubmissions < ActiveRecord::Migration
   extend MigrationHelper
   
@@ -22,15 +22,26 @@ class CreateUserSubmissions < ActiveRecord::Migration
       t.column :piece_image_file, :string, :null => true
       t.column :germ_mp3_file, :string, :null => true
       t.column :germ_image_file, :string, :null => true                  
+      t.column :comment_count, :integer, :null => false, :default => 0
+      t.column :total_page_views, :integer, :null => false, :default => 0
+      t.column :unique_page_views, :integer, :null => false, :default => 0
       
       ActiveRecord::Base.generate_ratings_columns t
       t.timestamps
     end
     
+    create_table :user_submission_unique_page_views do |t|
+      t.column :user_submission_id, :integer, :null => false
+      t.column :ip_address, :string, :limit => 20, :null => false
+      t.timestamps
+    end
+    
     foreign_key(:user_submissions, :generated_piece_id, :generated_pieces)
+    foreign_key(:user_submission_unique_page_views, :user_submission_id, :user_submissions, 'fk_user_submission_unique_page_views')
   end
 
   def self.down
+    drop_table :user_submission_unique_page_views
     drop_table :user_submissions   
     ActiveRecord::Base.drop_ratings_table
   end

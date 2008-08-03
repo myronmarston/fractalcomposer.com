@@ -7,8 +7,6 @@ class IpAddress < ActiveRecord::Base
   # than storing it directly...except for the ratings.
   
   def self.get(ip_address)
-    existing_record = self.find_by_ip_address(ip_address)
-    return existing_record if existing_record    
-    self.create(:ip_address => ip_address)    
+    return self.find_or_create_by_ip_address(ip_address)
   end
 end

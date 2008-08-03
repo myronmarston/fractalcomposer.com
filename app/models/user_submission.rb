@@ -10,7 +10,7 @@ require 'path_helper'
 class UserSubmission < ActiveRecord::Base
   extend PathHelper  
   
-  GENERATED_IMAGE_WIDTH = 500 unless defined? GENERATED_IMAGE_WIDTH
+  GENERATED_IMAGE_WIDTH = 450 unless defined? GENERATED_IMAGE_WIDTH
   
   acts_as_rated :rater_class => 'IpAddress', :rating_range => 1..5  
   acts_as_commentable    
@@ -70,6 +70,11 @@ class UserSubmission < ActiveRecord::Base
     width_for_int_part = (int_part * 30) 
     return width_for_int_part if fractional_part == 0
     return width_for_int_part + 6 + (fractional_part * 18).to_i
+  end
+  
+  def page_view(ip_address)
+    UserSubmission.increment_counter(:total_page_views, self.id)    
+    UserSubmissionUniquePageView.page_view(self, ip_address)               
   end
   
   private

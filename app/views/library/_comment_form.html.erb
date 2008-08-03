@@ -18,16 +18,14 @@
         <label for="name">
           <strong>Name</strong> (required)         
         </label>
-        <%= negative_text_field_tag @captcha, :name, @comment.name, :size => 35, :maxlength => 80, :class => 'textbox' %>      
-        <%= javascript_tag("create_live_validation_field_basic('#{@captcha.fields[:name]}', #{ComposeHelper::LIVE_VALIDATION_DELAY}, [{type: Validate.Presence, args: {} }]);") %>
+        <%= negative_text_field_tag @captcha, :name, @comment.name, :size => 35, :maxlength => 80, :class => 'textbox' %>              
       </div>
 
       <div>
         <label for="email">
           <strong>Email</strong> (required, but will not be displayed)         
         </label>
-        <%= negative_text_field_tag @captcha, :email, @comment.email, :size => 35, :class => 'textbox' %>      
-        <%= javascript_tag("create_live_validation_field_basic('#{@captcha.fields[:email]}', #{ComposeHelper::LIVE_VALIDATION_DELAY}, [{type: Validate.Presence, args: {} }, {type: Validate.Email, args: {} }]);") %>
+        <%= negative_text_field_tag @captcha, :email, @comment.email, :size => 35, :class => 'textbox' %>              
       </div>
 
       <div>
@@ -44,8 +42,7 @@
         <%
         #
       %>
-        <%= negative_text_area_tag @captcha, :comment, @comment.comment, :rows => 10, :cols => 71, :class => 'textbox' %>
-        <%= javascript_tag("create_live_validation_field_basic('#{@captcha.fields[:comment]}', #{ComposeHelper::LIVE_VALIDATION_DELAY}, [{type: Validate.Presence, args: {} }]);") %>            
+        <%= negative_text_area_tag @captcha, :comment, @comment.comment, :rows => 10, :cols => 71, :class => 'textbox' %>        
         <br />
         <br />You can use some HTML tags, such as <%= 'none' %>.      
       </div>
@@ -55,16 +52,24 @@
         
         <%= submit_tag "Post Comment", 
             :class => 'button comment-form-button', 
-            :id => 'post_comment_button' %>
-        <%= comment_form_button_js('post_comment_button') %>
+            :id => 'post_comment_button' %>        
 
         <%= submit_tag "Preview", 
             :class => 'button comment-form-button', 
-            :id => 'preview_button' %>
-        <%= comment_form_button_js('preview_button') %>
+            :id => 'preview_button' %>        
 
         <%= render :file => 'compose/_spinner', :use_full_path => true, :locals => {:display => 'none', :div_id => 'new_comment_spinner'} %>                
     </div>
   </div>
 <% end %>
-<%= javascript_tag("create_rounded_corners('comment_form');") %>
+
+<%= javascript_tag(
+  # for some reason, the rounded corners javascript prevents any javascript that comes before it from working,
+  # so put everything else after it...
+  "create_rounded_corners('comment_form');" +    
+  "create_live_validation_field_basic('#{@captcha.fields[:name]}', #{ComposeHelper::LIVE_VALIDATION_DELAY}, [{type: Validate.Presence, args: {} }]);" +
+  "create_live_validation_field_basic('#{@captcha.fields[:email]}', #{ComposeHelper::LIVE_VALIDATION_DELAY}, [{type: Validate.Presence, args: {} }, {type: Validate.Email, args: {} }]);" +
+  "create_live_validation_field_basic('#{@captcha.fields[:comment]}', #{ComposeHelper::LIVE_VALIDATION_DELAY}, [{type: Validate.Presence, args: {} }]);"
+) %>            
+<%= comment_form_button_js('post_comment_button') %>
+<%= comment_form_button_js('preview_button') %>

@@ -26,6 +26,18 @@ class Comment < ActiveRecord::Base
       end
     end
   end 
+  
+  def after_create
+    if self.commentable_type == UserSubmission.to_s
+      UserSubmission.increment_counter(:comment_count, self.commentable_id)
+    end    
+  end
+  
+  def after_destroy
+    if self.commentable_type == UserSubmission.to_s
+      UserSubmission.decrement_counter(:comment_count, self.commentable_id)
+    end    
+  end
 
   def validate
     # prevent duplicates...
@@ -76,16 +88,6 @@ class Comment < ActiveRecord::Base
   def is_preview?
     self.is_preview
   end 
-#  def is_preview?
-#     case self.is_preview
-#         when 1 : true
-#         when '1' : true
-#         when true : true
-#         when 't' : true
-#         when 'true' : true
-#         else false  
-#     end    
-#  end
   
   def html_div_id
     self.is_preview? ? "comment_preview" : "comment_#{self.id}"

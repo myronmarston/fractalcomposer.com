@@ -6,10 +6,11 @@ else
   page.replace_html('preview_comment', '')
 end
 
-if !@comment.is_preview? && @valid
+if !@comment.is_preview? && @valid  
   page.insert_html(:before, 'preview_comment', :partial => 'comment', :locals => {:comment => @comment})
   #todo: visual effect here, too...
   page.visual_effect(:appear, @comment.html_div_id)
+  page.show 'comments-heading'
     
   # clear the comment before we render the comment form...
   @comment = Comment.new
