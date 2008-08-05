@@ -2,11 +2,25 @@
     settings_input_id_prefix = sanatize_input_id(settings_input_name_prefix)           
 -%>
 
+Octave Adjustment:
+<% octave_id = "#{settings_input_id_prefix}_octave_adjustment" -%>
+<%= text_field_tag "#{settings_input_name_prefix}[octave_adjustment]", settings.getOctaveAdjustment, :size => 2, :id => octave_id, :class => 'textbox' %>
+<%= get_live_validation_js(octave_id, true, panel_div_id, @voice_or_section_id, "Octave Adjustment (#{@current_item_description})", override_checkbox_id,
+    "{type: Validate.Presence, args: {}}, {type: Validate.Numericality, args: { onlyInteger: true, minimum: -4, maximum: 4, notANumberMessage: 'Must be an integer!' }}") %>
+<%= info('octave_adjustment', octave_id, '<br />') %>
+
+Rhythm Scale Factor:
+<% speed_id = "#{settings_input_id_prefix}_speed_scale_factor" -%>
+<%= text_field_tag "#{settings_input_name_prefix}[speed_scale_factor]", settings.getSpeedScaleFactor, :size => 2, :id => speed_id, :class => 'textbox' %>
+<%= get_live_validation_js(speed_id, true, panel_div_id, @voice_or_section_id, "Rhythm Scale Factor (#{@current_item_description})", override_checkbox_id,
+    "{type: Validate.Presence, args: {}}, {type: Validate.Format, args: { pattern: /#{com.myronmarston.util.Fraction::POSITIVE_FRACTION_REGEX_STRING}/, failureMessage: 'Must be a positive integer or fraction.' }}") %>
+<%= info('rhythm_scale_factor', speed_id, '<br />') %>
+
 Volume Adjustment:
 <% volume_id = "#{settings_input_id_prefix}_volume_adjustment" -%>
 <%= text_field_tag "#{settings_input_name_prefix}[volume_adjustment]", settings.getVolumeAdjustment, :size => 2, :id => volume_id, :class => 'textbox' %>
 <%= get_live_validation_js(volume_id, true, panel_div_id, @voice_or_section_id, "Volume Adjustment (#{@current_item_description})", override_checkbox_id,
-    "{type: Validate.Presence, args: {}}, {type: Validate.Format, args: { pattern: /^[+-]?(0*\\.\\d+|0)$/, failureMessage: 'Must be a value greater than -1.0 and less than 1.0.' }}") %>
+    "{type: Validate.Presence, args: {}}, {type: validateVolumeAdjustmentFraction, args: { pattern: /#{com.myronmarston.util.Fraction::FRACTION_REGEX_STRING}/}}") %>
 <%= info('volume_adjustment', volume_id, '<br />') %>
 
 Scale Step Offset:

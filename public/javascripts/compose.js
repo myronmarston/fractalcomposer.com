@@ -32,6 +32,27 @@ function enableButton(element_id) {
     }    
 }
 
+function validateVolumeAdjustmentFraction(valueToValidate, args) {    
+    var failureMsg = 'Must be an integer or fraction between -1 and 1.';
+    var match = args.pattern.exec(valueToValidate);
+    if (null == match) {
+        Validate.fail(failureMsg);
+    } else {
+        var numerator = Number(match[1]);
+        var denominator = Number(match[2]); 
+        var floatVal = (isNaN(denominator) ? numerator : numerator / denominator);
+        if (floatVal <= -1 || floatVal > 1) {
+            Validate.fail(failureMsg);
+        }
+    }
+    return true;
+}
+
+function switch_tab(tab_id) {
+    $('piece_settings', 'voices', 'sections').invoke('hide');
+    $(tab_id).show();    
+}
+
 function performAdvancedOptionsToggle() {    
     var elements = [$('piece_settings_voices_tab_link'), $('piece_settings_sections_tab_link')];
     if ($('advanced_options_toggle').getValue() == null) {      

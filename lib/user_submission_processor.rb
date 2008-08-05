@@ -20,15 +20,19 @@ class UserSubmissionProcessor
     sleep 1
     #TODO: how to I propagate exceptions to rails' exception-handling mechanism?
     while true
-      user_submission = UserSubmission.find(:first, :conditions => {:processing_completed => nil}, :order => 'created_at')
-      
-      if user_submission
-        logger.info "***** processing user submission: #{user_submission.inspect}"      
-        user_submission.process  
-      else          
-        logger.info "***** no unprocessed user submissions found. Sleeping for #{SLEEP_TIME} seconds" 
-        sleep SLEEP_TIME
-      end            
+      begin      
+        user_submission = UserSubmission.find(:first, :conditions => {:processing_completed => nil}, :order => 'created_at')
+
+        if user_submission
+          logger.info "***** processing user submission: #{user_submission.inspect}"              
+          user_submission.process  
+        else          
+          logger.info "***** no unprocessed user submissions found. Sleeping for #{SLEEP_TIME} seconds" 
+          sleep SLEEP_TIME
+        end  
+      rescue Exception => ex
+        logger.error "***** An exception occurred while processing the user submissions: #{ex.inspect}"
+      end
     end
     
     @@semaphore.synchronize do

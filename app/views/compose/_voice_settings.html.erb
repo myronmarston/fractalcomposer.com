@@ -1,24 +1,10 @@
 <%    
-    voice_settings_input_name_prefix = "#{input_prefix}[voice_settings]"
-    voice_settings_input_id_prefix = sanatize_input_id(voice_settings_input_name_prefix)   
+    voice_settings_input_name_prefix = "#{input_prefix}[voice_settings]"       
     self_similarity_settings = settings.getSelfSimilaritySettings        
     input_name_prefix_sss = "#{voice_settings_input_name_prefix}[self_similarity_settings]"
     input_id_prefix_sss = sanatize_input_id(input_name_prefix_sss)
 -%>
 <div class="voice_or_section_settings">
-Octave Adjustment:
-<% octave_id = "#{voice_settings_input_id_prefix}_octave_adjustment" -%>
-<%= text_field_tag "#{voice_settings_input_name_prefix}[octave_adjustment]", settings.getOctaveAdjustment, :size => 2, :id => octave_id, :class => 'textbox' %>
-<%= get_live_validation_js(octave_id, true, panel_div_id, @voice_or_section_id, "Octave Adjustment (#{@current_item_description})", override_checkbox_id,
-    "{type: Validate.Presence, args: {}}, {type: Validate.Numericality, args: { onlyInteger: true, minimum: -4, maximum: 4, notANumberMessage: 'Must be an integer!' }}") %>
-<%= info('octave_adjustment', octave_id, '<br />') %>
-
-Rhythm Scale Factor:
-<% speed_id = "#{voice_settings_input_id_prefix}_speed_scale_factor" %>
-<%= text_field_tag "#{voice_settings_input_name_prefix}[speed_scale_factor]", settings.getSpeedScaleFactor, :size => 2, :id => speed_id, :class => 'textbox' %>
-<%= get_live_validation_js(speed_id, true, panel_div_id, @voice_or_section_id, "Rhythm Scale Factor (#{@current_item_description})", override_checkbox_id,
-    "{type: Validate.Presence, args: {}}, {type: Validate.Format, args: { pattern: /#{com.myronmarston.util.Fraction::POSITIVE_FRACTION_REGEX_STRING}/, failureMessage: 'Must be a positive integer or fraction.' }}") %>
-<%= info('rhythm_scale_factor', speed_id, '<br />') %>
 
 <%= render :partial => 'voice_or_section_common_settings', 
            :locals => {:settings_input_name_prefix => voice_settings_input_name_prefix,

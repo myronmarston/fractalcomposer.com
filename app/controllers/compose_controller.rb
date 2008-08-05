@@ -244,9 +244,11 @@ class ComposeController < ApplicationController
     end
   end
   
-  def update_voice_or_section_common_settings(settings, settings_hash)    
-    set_float_value(settings_hash, :volume_adjustment) {|f| settings.setVolumeAdjustment(f)}
+  def update_voice_or_section_common_settings(settings, settings_hash)        
+    set_string_value(settings_hash, :volume_adjustment) {|f| settings.setVolumeAdjustment(Fraction.new(f))}
     set_int_value(settings_hash, :scale_step_offset) {|i| settings.setScaleStepOffset(i)}
+    set_int_value(settings_hash, :octave_adjustment) {|val| settings.setOctaveAdjustment(val)}
+    set_string_value(settings_hash, :speed_scale_factor) {|val| settings.setSpeedScaleFactor(Fraction.new(val))}        
   end
   
   def update_voice(unique_voice_index, voice_hash)
@@ -260,8 +262,6 @@ class ComposeController < ApplicationController
   end
   
   def update_voice_settings(voice_settings, voice_settings_hash)       
-    set_int_value(voice_settings_hash, :octave_adjustment) {|val| voice_settings.setOctaveAdjustment(val)}
-    set_string_value(voice_settings_hash, :speed_scale_factor) {|val| voice_settings.setSpeedScaleFactor(Fraction.new(val))}    
     
     update_voice_or_section_common_settings(voice_settings, voice_settings_hash)
     
@@ -498,7 +498,7 @@ class ComposeController < ApplicationController
   def set_float_value(hash, hash_key)
     begin
       yield hash[hash_key].safe_to_f if hash.has_key?(hash_key)
-    rescue NotAFloatError => ex
+    rescue Exception => ex
       #TODO: this should rescue all errors.  What is the root error class?
       logger.error("An error occurred while setting the #{hash_key.to_s.titleize}: #{ex.message}")
     end
@@ -507,7 +507,7 @@ class ComposeController < ApplicationController
   def set_int_value(hash, hash_key)
     begin
       yield hash[hash_key].safe_to_i if hash.has_key?(hash_key)
-    rescue NotAnIntError => ex
+    rescue Exception => ex
       #TODO: this should resuce all errors.  What is the root error class?
       logger.error("An error occurred while setting the #{hash_key.to_s.titleize}: #{ex.message}")
     end
@@ -516,8 +516,8 @@ class ComposeController < ApplicationController
   def set_string_value(hash, hash_key)
     begin
       yield hash[hash_key].to_s if hash.has_key?(hash_key)
-    rescue      
-      logger.error("An error occurred while setting the #{hash_key.to_s.titleize}.")
+    rescue Exception => ex     
+      logger.error("An error occurred while setting the #{hash_key.to_s.titleize}: #{ex.message}")
     end
   end
    

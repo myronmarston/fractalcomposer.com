@@ -189,8 +189,8 @@ module ComposeHelper
   
   def get_guido_image(guido_filename, id)
     image_url =  'http://clef.cs.ubc.ca/scripts/salieri/gifserv.pl?'
-    #image_url << 'defph=1350pt;'    
-    image_url << 'defpw=620pt;'    
+    image_url << 'defpw=15.0cm;'
+    image_url << 'defph=100.0cm;'            
     image_url << 'zoom=0.8;'    
     image_url << 'crop=yes;'
     image_url << 'mode=gif;'
@@ -198,6 +198,7 @@ module ComposeHelper
     # unused parameters:
     #image_url << 'markvoice=;'
     #image_url << 'rtp=;'
+    #http://clef.cs.ubc.ca/scripts/salieri/gifserv.pl?defpw=10.0cm;defph=24.0cm;zoom=1.0;markvoice=;rtp=;crop=yes;mode=gif;gmndata=%5B%5Cmeter%3C%224%2F4%22%3E%20c%20d%20e%20f%20g%20a%20h%20c%20d%20e%20%20%5D;gmnurl=;midiurl=;mdurl=;submit=%20%20%20Send%20%20
     
     image_url << 'gmnurl=;'
     
@@ -295,7 +296,7 @@ module ComposeHelper
       if (check_field_validity(function(f) { 
             return f.get('owning_panel_id') == '#{from_panel_div_id}'; 
       })) {
-          switchid('#{to_panel_div_id}');
+          switch_tab('#{to_panel_div_id}', ['piece_settings', 'voices', 'sections']);
           #{get_additional_tab_javascript(from_panel_div_id)}
       } 
 
@@ -304,6 +305,6 @@ module ComposeHelper
     EOS
     
     javascript_tag("Event.observe('#{tab_link_id}', 'click', #{js})")
-  end
+  end    
  
 end
