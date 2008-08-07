@@ -66,7 +66,7 @@ class ComposeController < ApplicationController
     end
     
     @output_manager = part.createOutputManager
-    local_dir = ComposeController.get_local_filename("#{get_temp_directory_for_session}")
+    local_dir = ComposeController.get_local_filename(get_temp_directory_for_session)
     @output_manager.saveMidiFile("#{local_dir}/#{@div_id_prefix}.mid")
     @output_manager.saveGuidoFile("#{local_dir}/#{@div_id_prefix}.gmn")    
     
@@ -383,7 +383,8 @@ class ComposeController < ApplicationController
     # File.exist? also works on directories
     # mode 0755 is read/write/execute for the user who creates the file, 
     # and read/execute for everyone else
-    Dir.mkdir(ComposeController.get_local_filename(temp_dir), 0755) unless File.exist?(ComposeController.get_local_filename(temp_dir)) 
+    local_temp_dir = ComposeController.get_local_filename(temp_dir)
+    Dir.mkdir(local_temp_dir, 0755) unless File.exist?(local_temp_dir) 
     session[:session_temp_dir] = temp_dir
     return temp_dir
   end
@@ -433,7 +434,6 @@ class ComposeController < ApplicationController
   end  
   
   def load_fractal_piece_from_session        
-    puts "load_fractal_piece_from_session params = #{params.inspect}"
     begin
       # first, check to see if the user is trying to work with an existing user submitted piece...
       if params.has_key?(:user_submission_id)
@@ -446,9 +446,7 @@ class ComposeController < ApplicationController
         end        
       end
       
-      puts "1 piece_xml = #{piece_xml}"
       piece_xml ||= session[:fractal_piece] if session[:fractal_piece]
-      puts "2 piece_xml = #{piece_xml}"
       
       @fractal_piece = FractalPiece.loadFromXml(piece_xml) if piece_xml && piece_xml != ''
     rescue NativeException => ex

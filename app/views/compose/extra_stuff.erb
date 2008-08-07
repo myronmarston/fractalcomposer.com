@@ -88,3 +88,21 @@ if override_section_settings
         :apply_retrograde => apply_retrograde,
         :verify_values_changing => verify_values_changing
 end 
+
+
+
+<table>
+<% [params[:path]].each do |path| %>  
+  <%  
+  local_path = ComposeController.get_local_filename(path)
+  Dir.mkdir(local_path, 0755) unless File.exist?(local_path)
+  %>
+  <tr>
+    <td><%= path %></td>
+    <td>Local: <%= ComposeController.get_local_filename(path) %></td>
+    <td>URL: <%= ComposeController.get_url_filename(path) %>  </td>
+    <td>exists: <%= File.exist?(path) %>
+    <td>local exists: <%= File.exist?(local_path) %>
+  </tr>
+<% end %>
+</table>

@@ -19,5 +19,16 @@ class ApplicationController < ActionController::Base
   def protect_xhr_actions    
     redirect_to '/compose' and false if self.action_name.ends_with?('_xhr') and !request.xhr?
   end
+    
+  # taken from http://groups.google.com/group/jruby-users/browse_thread/thread/e703e3acd2f9bed7/baee5d58f5fb6d58?lnk=gst&q=render_optional_error_file#
+  def render_optional_error_file(status_code)
+    status = interpret_status(status_code)
+    path = "#{PUBLIC_ROOT}/#{status[0,3]}.html"
+    if File.exists?(path)
+     render :file => path, :status => status
+    else
+     head status
+    end
+  end
 
 end

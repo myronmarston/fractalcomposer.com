@@ -8,6 +8,7 @@ Warbler::Config.new do |config|
 
   # Additional files/directories to include, above those in config.dirs
   # config.includes = FileList["db"]
+  config.includes = FileList["sun-web.xml"] 
 
   # Additional files/directories to exclude
   # config.excludes = FileList["lib/tasks/*"]
@@ -32,7 +33,7 @@ Warbler::Config.new do |config|
   # The Rails gems are included by default unless the vendor/rails directory is present.
   # config.gems += ["activerecord-jdbcmysql-adapter", "jruby-openssl"]
   # config.gems << "tzinfo"
-
+  config.gems = ["activerecord-jdbc-adapter", "ActiveRecord-JDBC", "RedCloth", "dr_nic_magic_models"]
   # Uncomment this if you don't want to package rails gem.
   # config.gems -= ["rails"]
 
