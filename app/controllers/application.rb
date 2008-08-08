@@ -30,5 +30,20 @@ class ApplicationController < ActionController::Base
      head status
     end
   end
+  
+  # overrides of exception notifiable methods to use new PUBLIC_ROOT constant
+  def render_404
+      respond_to do |type|
+        type.html { render :file => "#{PUBLIC_ROOT}/404.html", :status => "404 Not Found" }
+        type.all  { render :nothing => true, :status => "404 Not Found" }
+      end
+    end
+
+    def render_500
+      respond_to do |type|
+        type.html { render :file => "#{PUBLIC_ROOT}/500.html", :status => "500 Error" }
+        type.all  { render :nothing => true, :status => "500 Error" }
+      end
+    end
 
 end

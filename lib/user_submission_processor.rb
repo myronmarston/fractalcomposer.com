@@ -31,7 +31,7 @@ class UserSubmissionProcessor
           sleep SLEEP_TIME
         end  
       rescue Exception => ex
-        logger.error "***** An exception occurred while processing the user submissions: #{ex.inspect}"
+        logger.error "***** An exception occurred while processing the user submissions: #{ex.inspect} \n#{ex.backtrace}"
       end
     end
     

@@ -4,3 +4,5 @@ PUBLIC_ROOT = if defined?($servlet_context)
  else
    RAILS_ROOT + '/public'
  end
+ 
+PUBLIC_ROOT_WITHOUT_TRAILING_SLASH = PUBLIC_ROOT.chomp(File::SEPARATOR).chomp(File::ALT_SEPARATOR)
