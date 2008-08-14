@@ -10,8 +10,8 @@ include_partial 'verify_checkbox_value', :id => "#{prefix}_override_section_sett
 
 include_partial('verify_voice_settings_values',
     :voice_settings_prefix => prefix,
-    :octave_adjustment => octave_adjustment,
-    :speed_scale_factor => speed_scale_factor,
+    :octave_adjustment => voice_octave_adjustment,
+    :speed_scale_factor => voice_speed_scale_factor,
     :volume_adjustment => voice_volume_adjustment,
     :scale_step_offset => voice_scale_step_offset,
     :self_similarity_iterations => self_similarity_iterations,
@@ -23,5 +23,7 @@ include_partial('verify_section_settings_values',
     :section_settings_prefix => prefix,
     :apply_inversion => apply_inversion,
     :apply_retrograde => apply_retrograde,
+    :octave_adjustment => section_octave_adjustment,
+    :speed_scale_factor => section_speed_scale_factor,
     :volume_adjustment => section_volume_adjustment,
     :scale_step_offset => section_scale_step_offset) if override_section_settings

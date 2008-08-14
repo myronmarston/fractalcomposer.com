@@ -1,11 +1,10 @@
 # set a default value so we don't have to pass a value
 verify_values_changing = (verify_values_changing.nil? ? false : verify_values_changing)
 
-include_partial 'set_textbox_value', :id => "#{voice_settings_prefix}__voice_settings_octave_adjustment", :value => octave_adjustment, :ajax => false, :verify_value_changing => verify_values_changing
-include_partial 'set_textbox_value', :id => "#{voice_settings_prefix}__voice_settings_speed_scale_factor", :value => speed_scale_factor, :ajax => false, :verify_value_changing => verify_values_changing
-
 include_partial 'set_voice_or_section_settings_common_values',
     :settings_prefix => "#{voice_settings_prefix}__voice_settings",
+    :octave_adjustment => octave_adjustment,
+    :speed_scale_factor => speed_scale_factor,
     :volume_adjustment => volume_adjustment,
     :scale_step_offset => scale_step_offset,
     :verify_values_changing => verify_values_changing

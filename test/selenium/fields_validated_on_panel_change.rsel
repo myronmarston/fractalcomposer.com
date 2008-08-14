@@ -38,6 +38,8 @@ include_partial 'add_voice_or_section',
     :voice_or_section => 'section',
     :index => 5
 
+include_partial 'click_tab', :from_tab => 'sections', :to_tab => 'voices'
+
 include_partial 'verify_fields_validate_on_panel_change_for_voice_or_section', 
     :voice_or_section => 'voice',
     :index => 5,

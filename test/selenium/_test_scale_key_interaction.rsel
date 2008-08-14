@@ -10,7 +10,7 @@ include_partial 'verify_key_options_present_for_major_key', :input_prefix => inp
 include_partial 'verify_select_value', :id => "#{input_prefix}key", :text => 'C'
 
 # Change to a minor key; we should still have C as our key, but a different list of keys
-include_partial 'set_scale', :prefix => input_prefix, :value => 'Minor Scale', :verify_value_changing => true
+include_partial 'set_scale', :prefix => input_prefix, :value => 'Natural Minor Scale', :verify_value_changing => true
 verify_visible "#{input_prefix}key_name_selection"
 include_partial 'verify_key_options_present_for_minor_key', :input_prefix => input_prefix
 include_partial 'verify_select_value', :id => "#{input_prefix}key", :text => 'C'

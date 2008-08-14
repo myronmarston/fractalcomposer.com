@@ -17,4 +17,6 @@ include_partial 'set_voice_or_section_settings_common_values',
     :settings_prefix => "#{section_settings_prefix}__section_settings",
     :volume_adjustment => volume_adjustment,
     :scale_step_offset => scale_step_offset,
+    :octave_adjustment => octave_adjustment,
+    :speed_scale_factor => speed_scale_factor,
     :verify_values_changing => verify_values_changing

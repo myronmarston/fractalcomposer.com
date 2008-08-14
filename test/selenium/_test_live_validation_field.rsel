@@ -10,18 +10,20 @@ var_name = "#{id}_initial_value"
 store_value id, var_name
 tests.each do |test_hash|    
     test_hash[:test_values].each do |test_value|
+        error_msg_regex = "regexp:<span.*?>#{test_hash[:error_message]}"
+        span_xpath = "//span[@class='LV_validation_message LV_invalid']"
+
         # our tests assume the error message is not already present
-        # TODO: this fails because the text is found in the javascript.  use a regular expression instead
-        verify_text_not_present test_hash[:error_message]
+        verify_element_not_present span_xpath
 
         include_partial 'type_textbox_value', :id => id, :value => test_value[:bad]
         pause ComposeHelper::LIVE_VALIDATION_DELAY
         pause 100
-        verify_text_present test_hash[:error_message]
+        verify_text span_xpath, test_hash[:error_message]
 
         include_partial 'type_textbox_value', :id => id, :value => (test_value[:good] || '$(initial_value)')
         pause ComposeHelper::LIVE_VALIDATION_DELAY
         pause 100
-        verify_text_not_present test_hash[:error_message]
+        verify_element_not_present span_xpath
     end
 end

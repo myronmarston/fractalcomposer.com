@@ -1,10 +1,9 @@
-verify_value "#{voice_settings_prefix}__voice_settings_octave_adjustment", octave_adjustment
-verify_value "#{voice_settings_prefix}__voice_settings_speed_scale_factor", speed_scale_factor
-
 include_partial 'verify_voice_or_section_settings_common_values',
     :settings_prefix => "#{voice_settings_prefix}__voice_settings",
     :volume_adjustment => volume_adjustment,
-    :scale_step_offset => scale_step_offset
+    :scale_step_offset => scale_step_offset,
+    :octave_adjustment => octave_adjustment,
+    :speed_scale_factor => speed_scale_factor
 
 verify_value "#{voice_settings_prefix}__voice_settings__self_similarity_settings_self_similarity_iterations", self_similarity_iterations
 include_partial 'verify_checkbox_value', :id => "#{voice_settings_prefix}__voice_settings__self_similarity_settings_pitch", :value => pitch

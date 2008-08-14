@@ -22,7 +22,7 @@ include_partial 'refresh_page_and_verify_germ_output'
 
 # Change the Scale type; this should update the output
 store_element_width 'germ_image', 'germ_image_width'
-include_partial 'set_scale', :value => 'Minor Scale', :verify_value_changing => false
+include_partial 'set_scale', :value => 'Natural Minor Scale', :verify_value_changing => false
 include_partial 'germ_output_present'
 
 # The width should be different because of the update of the scale

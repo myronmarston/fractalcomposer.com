@@ -1,2 +1,4 @@
+verify_value "#{settings_prefix}_octave_adjustment", octave_adjustment
+verify_value "#{settings_prefix}_speed_scale_factor", speed_scale_factor
 verify_value "#{settings_prefix}_volume_adjustment", volume_adjustment
 verify_value "#{settings_prefix}_scale_step_offset", scale_step_offset

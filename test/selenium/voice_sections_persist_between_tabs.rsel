@@ -6,9 +6,9 @@ var_hash_1 = {
     :rest => true,
     :override_voice_settings => true,
     :override_section_settings => true,
-    :octave_adjustment => '-3',
-    :speed_scale_factor => '5/3',
-    :voice_volume_adjustment => '0.23',
+    :voice_octave_adjustment => '-3',
+    :voice_speed_scale_factor => '5/3',
+    :voice_volume_adjustment => '23/100',
     :voice_scale_step_offset => '3',
     :self_similarity_iterations => '3',
     :pitch => false,
@@ -16,11 +16,13 @@ var_hash_1 = {
     :volume => true,
     :apply_inversion => true,
     :apply_retrograde => true,
-    :section_volume_adjustment => '0.13',
-    :section_scale_step_offset => '2'
+    :section_octave_adjustment => '3',
+    :section_speed_scale_factor => '3/5',
+    :section_volume_adjustment => '13/100',
+    :section_scale_step_offset => '2',
 }
 
-# set values on all the voice sections...
+# set values on some of the voice sections...
 (1..2).each do |voice_index|    
     (1..2).each do |section_index|
         include_partial 'set_voice_section_values',
@@ -48,9 +50,9 @@ var_hash_2 = {
     :rest => false,
     :override_voice_settings => true,
     :override_section_settings => true,
-    :octave_adjustment => '2',
-    :speed_scale_factor => '1/9',
-    :voice_volume_adjustment => '-0.18',
+    :voice_octave_adjustment => '2',
+    :voice_speed_scale_factor => '1/9',
+    :voice_volume_adjustment => '-9/50',
     :voice_scale_step_offset => '-3',
     :self_similarity_iterations => '2',
     :pitch => true,
@@ -58,7 +60,9 @@ var_hash_2 = {
     :volume => false,
     :apply_inversion => false,
     :apply_retrograde => false,
-    :section_volume_adjustment => '0.63',
+    :section_octave_adjustment => '-2',
+    :section_speed_scale_factor => '9',
+    :section_volume_adjustment => '63/100',
     :section_scale_step_offset => '-4'
 }
 

@@ -17,7 +17,7 @@ include_partial 'verify_voice_values',
     :instrument => 'Piano 1',
     :octave_adjustment => '1',
     :speed_scale_factor => '2',
-    :volume_adjustment => '0.0',
+    :volume_adjustment => '0',
     :scale_step_offset => '0',
     :self_similarity_iterations => '1',
     :pitch => true, :rhythm => false, :volume => true
@@ -27,7 +27,7 @@ include_partial 'verify_voice_values',
     :instrument => 'Piano 1',
     :octave_adjustment => '0',
     :speed_scale_factor => '1',
-    :volume_adjustment => '0.0',
+    :volume_adjustment => '0',
     :scale_step_offset => '0',
     :self_similarity_iterations => '1',
     :pitch => false, :rhythm => false, :volume => false
@@ -37,7 +37,7 @@ include_partial 'verify_voice_values',
     :instrument => 'Piano 1',
     :octave_adjustment => '-1',
     :speed_scale_factor => '1/2',
-    :volume_adjustment => '0.0',
+    :volume_adjustment => '0',
     :scale_step_offset => '0',
     :self_similarity_iterations => '1',
     :pitch => false, :rhythm => false, :volume => false
@@ -64,32 +64,40 @@ include_partial 'verify_section_values',
     :apply_inversion => false, 
     :apply_retrograde => false, 
     :override_scale => false,
-    :volume_adjustment => '0.0',
-    :scale_step_offset => '0'
+    :volume_adjustment => '0',
+    :scale_step_offset => '0',
+    :octave_adjustment => '0',
+    :speed_scale_factor => '1'
 
 include_partial 'verify_section_values', 
     :section_index => 2, 
     :apply_inversion => true, 
     :apply_retrograde => false, 
     :override_scale => false,
-    :volume_adjustment => '0.0',
-    :scale_step_offset => '0'
+    :volume_adjustment => '0',
+    :scale_step_offset => '0',
+    :octave_adjustment => '0',
+    :speed_scale_factor => '1'
 
 include_partial 'verify_section_values', 
     :section_index => 3, 
     :apply_inversion => true, 
     :apply_retrograde => true, 
     :override_scale => false,
-    :volume_adjustment => '0.0',
-    :scale_step_offset => '0'
+    :volume_adjustment => '0',
+    :scale_step_offset => '0',
+    :octave_adjustment => '0',
+    :speed_scale_factor => '1'
 
 include_partial 'verify_section_values', 
     :section_index => 4, 
     :apply_inversion => false, 
     :apply_retrograde => true, 
     :override_scale => false,
-    :volume_adjustment => '0.0',
-    :scale_step_offset => '0'
+    :volume_adjustment => '0',
+    :scale_step_offset => '0',
+    :octave_adjustment => '0',
+    :speed_scale_factor => '1'
 
 # Verify that we don't have a 5th section
 verify_text_not_present 'Section 5'

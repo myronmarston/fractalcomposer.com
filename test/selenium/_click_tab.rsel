@@ -1,4 +1,4 @@
-#include_partial 'ajax_action', :cmd => 'click', :target => "#{from_tab}_#{to_tab}_tab_link"
-click "#{from_tab}_#{to_tab}_tab_link"
+include_partial 'ajax_action', :cmd => 'click', :target => "#{from_tab}_#{to_tab}_tab_link"
+#click "#{from_tab}_#{to_tab}_tab_link"
 include_partial 'assert_tab_visibility', :id => to_tab
 verify_alert_not_present

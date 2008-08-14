@@ -9,3 +9,16 @@ include_partial 'set_textbox_value',
     :value => scale_step_offset, 
     :ajax => false, 
     :verify_value_changing => verify_values_changing
+
+include_partial 'set_textbox_value', 
+    :id => "#{settings_prefix}_octave_adjustment", 
+    :value => octave_adjustment, 
+    :ajax => false, 
+    :verify_value_changing => verify_values_changing
+
+include_partial 'set_textbox_value', 
+    :id => "#{settings_prefix}_speed_scale_factor", 
+    :value => speed_scale_factor, 
+    :ajax => false, 
+    :verify_value_changing => verify_values_changing
+    

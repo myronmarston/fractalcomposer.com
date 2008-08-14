@@ -9,8 +9,10 @@ include_partial 'click_tab', :from_tab => 'piece_settings', :to_tab => 'sections
         :section_index => section_index,
         :apply_inversion => false, 
         :apply_retrograde => false,
-        :volume_adjustment => '0.0',
+        :volume_adjustment => '0',
         :scale_step_offset => '0',
+        :octave_adjustment => '0',
+        :speed_scale_factor => '1',
         :override_scale => true
 
     include_partial 'test_scale_key_interaction', :input_prefix => "sections_#{section_index}__"    

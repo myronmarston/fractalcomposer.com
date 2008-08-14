@@ -15,7 +15,7 @@ include_partial 'click_tab', :from_tab => 'piece_settings', :to_tab => 'voices'
         :instrument => 'Viola',
         :octave_adjustment => '4',
         :speed_scale_factor => '3',
-        :volume_adjustment => '0.37',
+        :volume_adjustment => '3/10',
         :scale_step_offset => '2',
         :self_similarity_iterations => '3',
         :pitch => false, :rhythm => true, :volume => false
@@ -35,9 +35,9 @@ include_partial 'click_tab', :from_tab => 'piece_settings', :to_tab => 'voices'
             :rest => true,
             :override_voice_settings => true,
             :override_section_settings => false,
-            :octave_adjustment => '4',
-            :speed_scale_factor => '3',
-            :voice_volume_adjustment => '0.37',
+            :voice_octave_adjustment => '4',
+            :voice_speed_scale_factor => '3',
+            :voice_volume_adjustment => '3/10',
             :voice_scale_step_offset => '2',
             :self_similarity_iterations => '3',
             :pitch => false, :rhythm => true, :volume => false
