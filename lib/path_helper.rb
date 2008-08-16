@@ -4,6 +4,10 @@ module PathHelper
     filename.sub(PUBLIC_ROOT_WITHOUT_TRAILING_SLASH, '')
   end
   
+  def get_full_url_filename(filename, request)
+    File.join("#{request.protocol}#{request.host_with_port}", get_url_filename(filename))    
+  end
+  
   def get_local_filename(filename)
     return '' if filename.nil?
     

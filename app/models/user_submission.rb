@@ -90,7 +90,7 @@ class UserSubmission < ActiveRecord::Base
   end
         
   def get_user_submission_dir
-    user_submission_dir = "/user_submissions/#{self.id}"
+    user_submission_dir = "/user_generated_files/user_submissions/#{self.id}"
     local_dir = UserSubmission.get_local_filename(user_submission_dir)
     
     # File.exist? also works on directories

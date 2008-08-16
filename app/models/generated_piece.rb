@@ -8,7 +8,7 @@ class GeneratedPiece < ActiveRecord::Base
   
   def generate_piece(fractal_piece, save)        
     self.fractal_piece = fractal_piece.getXmlRepresentation
-    dir = "generated_pieces/#{UUID.random_create.to_s}"
+    dir = "user_generated_files/generated_pieces/#{UUID.random_create.to_s}"
     Dir.mkdir(GeneratedPiece.get_local_filename(dir), 0755)
     self.generated_midi_file = GeneratedPiece.get_url_filename("#{dir}/piece.mid")
     self.generated_guido_file = GeneratedPiece.get_url_filename("#{dir}/piece.gmn")

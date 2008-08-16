@@ -198,9 +198,7 @@ module ComposeHelper
     # unused parameters:
     #image_url << 'markvoice=;'
     #image_url << 'rtp=;'
-    #http://clef.cs.ubc.ca/scripts/salieri/gifserv.pl?defpw=10.0cm;defph=24.0cm;zoom=1.0;markvoice=;rtp=;crop=yes;mode=gif;gmndata=%5B%5Cmeter%3C%224%2F4%22%3E%20c%20d%20e%20f%20g%20a%20h%20c%20d%20e%20%20%5D;gmnurl=;midiurl=;mdurl=;submit=%20%20%20Send%20%20
-    
-    image_url << 'gmnurl=;'
+    #http://clef.cs.ubc.ca/scripts/salieri/gifserv.pl?defpw=10.0cm;defph=24.0cm;zoom=1.0;markvoice=;rtp=;crop=yes;mode=gif;gmndata=%5B%5Cmeter%3C%224%2F4%22%3E%20c%20d%20e%20f%20g%20a%20h%20c%20d%20e%20%20%5D;gmnurl=;midiurl=;mdurl=;submit=%20%20%20Send%20%20        
     
     if (request.host =~ /localhost/)
       # We're running on my development machine and the Guido note server can't
@@ -209,14 +207,13 @@ module ComposeHelper
       # is just running locally, it's ok.
       
       guido_string = ''
-      File.open(ComposeHelper.get_local_filename(guido_filename), 'r') { |f| guido_string = f.read }
+      File.open(ComposeHelper.get_local_filename(guido_filename), 'r') { |f| guido_string = f.read }      
       image_url << 'gmndata=' + CGI::escape(guido_string) + ';'      
     else
       # We're live on the internet, so the Guido note server can access our 
       # gmn file.  This is the preferred way since the URL won't be too long.
       
-      # TODO: test this!
-      image_url << 'gmnurl=' + url_for(ComposeHelper.get_url_filename(guido_filename)) + ';'
+      image_url << 'gmnurl=' + CGI::escape(ComposeHelper.get_full_url_filename(guido_filename, request) + '?' + Time.now.to_i.to_s) + ';'
     end
        
     image_tag(image_url, :alt => 'Music Notation', :id => id)

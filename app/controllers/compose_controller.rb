@@ -378,7 +378,7 @@ class ComposeController < ApplicationController
   end
   
   def get_temp_directory_for_session    
-    temp_dir = session[:session_temp_dir] || temp_dir = "/temp/#{UUID.random_create.to_s}"
+    temp_dir = session[:session_temp_dir] || temp_dir = "/user_generated_files/temp/#{UUID.random_create.to_s}"
     
     # File.exist? also works on directories
     # mode 0755 is read/write/execute for the user who creates the file, 
