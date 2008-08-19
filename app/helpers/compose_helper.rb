@@ -253,7 +253,7 @@ module ComposeHelper
     id = "#{id_prefix}_listen_link"
     
     html << link_to(
-        image_tag('music_icon.gif', 
+        image_tag('music_blue.png', 
           :class => 'icon', 
           :alt => "Listen to #{part_description}",
           :title => "Listen to #{part_description}"), 
