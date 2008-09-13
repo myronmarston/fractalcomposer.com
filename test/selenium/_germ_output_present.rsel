@@ -1,3 +1,4 @@
+wait_for_visible 'germ_image'
 verify_element_present 'germ_midi_player'
 verify_element_present 'germ_image'
 verify_element_not_present 'germ_string_error'

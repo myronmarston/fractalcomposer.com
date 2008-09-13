@@ -189,7 +189,7 @@ module ComposeHelper
   
   def get_guido_image(guido_filename, id, image_type = :full)
     orig_px_per_cm = 48.0
-    zoom = 0.7
+    zoom = 0.81 # values less than 0.81 sometimes lead to no ledger lines
     px_per_cm = orig_px_per_cm * zoom
     width = case image_type
       when :germ: 416.0
