@@ -47,6 +47,10 @@ Warbler::Config.new do |config|
   # Files to be included in the root of the webapp.  Note that files in public
   # will have the leading 'public/' part of the path stripped during staging.
   # config.public_html = FileList["public/**/*", "doc/**/*"]
+  
+  # user generated files get served out of symlinked directory on the server.
+  # if you want to test in tomcat on your development machine, comment this out.
+  config.public_html.exclude(/user_generated_files/)  
 
   # Pathmaps for controlling how public HTML files are copied into the .war
   # config.pathmaps.public_html = ["%{public/,}p"]
@@ -57,7 +61,7 @@ Warbler::Config.new do |config|
 
   # Value of RAILS_ENV for the webapp
   config.webxml.rails.env = 'production'
-
+  
   # Application booter to use, one of :rack, :rails, or :merb. (Default :rails)
   # config.webxml.booter = :rails
 
