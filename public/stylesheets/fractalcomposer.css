@@ -334,6 +334,11 @@ input.comment-form-button {
     margin-right: 20px;
 }
 
+#main .notation-loading {
+    padding: 0px;
+    margin: 0px;
+}
+
 /*** Tabbed Panels ***/
 /*
 Adapted from Kalsey CSS tabs:

@@ -187,11 +187,20 @@ module ComposeHelper
                        :info_wrap_div_class => info_wrap_div_class}
   end
   
-  def get_guido_image(guido_filename, id)
+  def get_guido_image(guido_filename, id, image_type = :full)
+    orig_px_per_cm = 48.0
+    zoom = 0.7
+    px_per_cm = orig_px_per_cm * zoom
+    width = case image_type
+      when :germ: 416.0
+      when :full: 700.0
+      else raise "Unrecognized image type: #{image_type}"
+    end
+    
     image_url =  'http://clef.cs.ubc.ca/scripts/salieri/gifserv.pl?'
-    image_url << 'defpw=15.0cm;'
+    image_url << "defpw=#{((width / px_per_cm) * 10).to_i / 10.0}cm;"
     image_url << 'defph=100.0cm;'            
-    image_url << 'zoom=0.8;'    
+    image_url << "zoom=#{zoom};"    
     image_url << 'crop=yes;'
     image_url << 'mode=gif;'
     
@@ -216,7 +225,7 @@ module ComposeHelper
       image_url << 'gmnurl=' + CGI::escape(ComposeHelper.get_full_url_filename(guido_filename, request) + '?' + Time.now.to_i.to_s) + ';'
     end
        
-    image_tag(image_url, :alt => 'Music Notation', :id => id)
+    render :partial => 'guido_image', :locals => { :id => id, :image_url => image_url }
   end
   
   def get_generate_piece_button_js(piece_spinner_id)

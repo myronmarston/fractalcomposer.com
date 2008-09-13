@@ -114,7 +114,7 @@ function LW$(id) {
   if (lw_element == null) return $(id);
   
   var elements = lw_element.getElementsBySelector('#' + id);
-  if (elements.size == 0) return $(id);
+  if (elements.size() == 0) return $(id);
   return elements[0];
 }
 

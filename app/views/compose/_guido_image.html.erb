@@ -1,0 +1,8 @@
+<div id="<%= id %>_loading">
+  <h2 class="notation-loading">
+    Loading Notation&hellip;
+    <%= render :partial => 'spinner', :locals => {:display => 'inline', :bottom_px => -4} %>
+  </h2> 
+</div>
+<%= image_tag(image_url, :alt => 'Music Notation', :id => id, :style => 'display: none') %>
+<%= javascript_tag("Event.observe(LW$('#{id}'), 'load', function() {LW$(\'#{id}\').appear(); LW$(\'#{id}_loading\').remove()})") %>
