@@ -1,0 +1,13 @@
+--- 
+ratings_002: 
+  rated_id: !str 7
+  id: !str 2
+  rating: !str 2
+  rated_type: UserSubmission
+  rater_id: !str 2
+ratings_001: 
+  rated_id: !str 4
+  id: !str 1
+  rating: !str 4
+  rated_type: UserSubmission
+  rater_id: !str 1

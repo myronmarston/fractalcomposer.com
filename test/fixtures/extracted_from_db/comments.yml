@@ -1,0 +1,23 @@
+--- 
+comments_001: 
+  commentable_type: UserSubmission
+  comment: Here is a comment... 23432
+  email: myron.marston@gmail.com
+  updated_at: 2008-08-08 22:20:57.0
+  website: ""
+  ip_address: 0:0:0:0:0:0:0:1
+  name: Myron
+  id: !str 1
+  commentable_id: !str 4
+  created_at: 2008-08-08 22:20:57.0
+comments_002: 
+  commentable_type: UserSubmission
+  comment: aldfkjn
+  email: myron.marston@gmail.com
+  updated_at: 2008-09-13 17:07:27.0
+  website: ""
+  ip_address: 127.0.0.1
+  name: Myron
+  id: !str 2
+  commentable_id: !str 8
+  created_at: 2008-09-13 17:07:27.0
