@@ -25,15 +25,17 @@
     <% end -%>
     
     <%= hidden_field_tag "#{@voice_section_input_name_prefix}[ignore]", 'ensure have hash', :id => "#{@voice_section_input_id_prefix}_ignore" %>
-    Rest <%= check_box_tag "#{@voice_section_input_name_prefix}[rest]", 1, @voice_section.getRest, :id => rest_id %>
-    <%= info('rest', rest_id, '<br />') %>
     
-    Override Voice Settings 
-    <%= check_box_tag "#{@voice_section_input_name_prefix}[override_voice_settings]", 
-        1, @voice_section.getOverrideVoiceSettings, 
-        :id => override_voice_cb_id %> 
-    <%= get_voice_section_override_checkbox_onclick_javascript(override_voice_cb_id, voice_loading_div_id, voice_content_div_id, @voice_or_section_div_id, 'Voice', @this_type_unique_index, @other_type_unique_index) %>
-    <%= info('override_voice_settings', override_voice_cb_id) %>
+    <% field_wrap('Rest', 'rest', rest_id, '<br />') do %>
+        <%= check_box_tag "#{@voice_section_input_name_prefix}[rest]", 1, @voice_section.getRest, :id => rest_id %>
+    <% end %>
+    
+    <% field_wrap('Override Voice Settings', 'override_voice_settings', override_voice_cb_id) do %>
+        <%= check_box_tag "#{@voice_section_input_name_prefix}[override_voice_settings]", 
+            1, @voice_section.getOverrideVoiceSettings, 
+            :id => override_voice_cb_id %> 
+        <%= get_voice_section_override_checkbox_onclick_javascript(override_voice_cb_id, voice_loading_div_id, voice_content_div_id, @voice_or_section_div_id, 'Voice', @this_type_unique_index, @other_type_unique_index) %>        
+    <% end %>
 
     <div id="<%= voice_loading_div_id %>" style="display: none">
         <h3>Loading&hellip; <%= render :partial => 'spinner', :locals => {:display => 'inline', :bottom_px => -4} %>  </h3>                 
@@ -48,12 +50,12 @@
         <% end -%>
     </div>    
     
-    Override Section Settings 
-    <%= check_box_tag "#{@voice_section_input_name_prefix}[override_section_settings]", 
-        1, @voice_section.getOverrideSectionSettings, 
-        :id => override_section_cb_id %> 
-    <%= get_voice_section_override_checkbox_onclick_javascript(override_section_cb_id, section_loading_div_id, section_content_div_id, @voice_or_section_div_id, 'Section', @this_type_unique_index, @other_type_unique_index) %>
-    <%= info('override_section_settings', override_section_cb_id) %>
+    <% field_wrap('Override Section Settings', 'override_section_settings', override_section_cb_id) do %>
+      <%= check_box_tag "#{@voice_section_input_name_prefix}[override_section_settings]", 
+          1, @voice_section.getOverrideSectionSettings, 
+          :id => override_section_cb_id %> 
+      <%= get_voice_section_override_checkbox_onclick_javascript(override_section_cb_id, section_loading_div_id, section_content_div_id, @voice_or_section_div_id, 'Section', @this_type_unique_index, @other_type_unique_index) %>      
+    <% end %>
 
     <div id="<%= section_loading_div_id %>" style="display: none">
         <h3>Loading&hellip; <%= render :partial => 'spinner', :locals => {:display => 'inline', :bottom_px => -4} %>  </h3>                 

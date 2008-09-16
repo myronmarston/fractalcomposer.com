@@ -6,11 +6,15 @@
 -%>
 <div class="voice_or_section_settings">
     <%= hidden_field_tag "#{section_settings_input_name_prefix}[ignore]", 'ensure have hash', :id => "#{section_settings_input_id_prefix}_ignore" %>
-    Apply Inversion <%= check_box_tag "#{section_settings_input_name_prefix}[apply_inversion]", 1, settings.getApplyInversion, :id => inversion_id %>
-    <%= info('apply_inversion', inversion_id, '<br />') %>    
-    Apply Retrograde <%= check_box_tag "#{section_settings_input_name_prefix}[apply_retrograde]", 1, settings.getApplyRetrograde, :id => retrograde_id %>
-    <%= info('apply_retrograde', retrograde_id, '<br />') %> 
 
+    <% field_wrap('Apply Inversion', 'apply_inversion', inversion_id, '<br />') do %>
+        <%= check_box_tag "#{section_settings_input_name_prefix}[apply_inversion]", 1, settings.getApplyInversion, :id => inversion_id %>
+    <% end %>
+        
+    <% field_wrap('Apply Retrograde', 'apply_retrograde', retrograde_id, '<br />') do %>
+        <%= check_box_tag "#{section_settings_input_name_prefix}[apply_retrograde]", 1, settings.getApplyRetrograde, :id => retrograde_id %>
+    <% end %>
+    
     <%= render :partial => 'voice_or_section_common_settings', 
                :locals => {:settings_input_name_prefix => section_settings_input_name_prefix,
                            :settings => settings,

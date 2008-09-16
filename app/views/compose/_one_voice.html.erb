@@ -4,9 +4,9 @@
 %>
 <% render :layout => 'one_voice_or_section_wrapper' do %>    
       
-      Instrument:
-      <%= select_tag "#{@voice_or_section_input_name_prefix}[instrument]", options_for_select(@instrument_names, @voice_or_section.getInstrumentName), :id => instrument_id %>              
-      <%= info('instrument', instrument_id) %>
+      <% field_wrap('Instrument', 'instrument', instrument_id) do %>
+        <%= select_tag "#{@voice_or_section_input_name_prefix}[instrument]", options_for_select(@instrument_names, @voice_or_section.getInstrumentName), :id => instrument_id %>                      
+      <% end %>
       
       <%= render :partial => 'voice_settings', 
                  :locals => {:settings => @voice_or_section.getSettings, 
