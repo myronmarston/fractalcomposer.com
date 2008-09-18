@@ -3,28 +3,36 @@
    PURPOSE: contains CSS for fractal composer.com
    TODO: change the mouse icon over buttons to indicate they can be pressed
  *************************************************************/
-div.field-label {
-    text-align: left;
-    left: 0;
-    width: 60%;
-    right: 40%;
-}
 
-div.field-input {
-    right: 0;
-    width: 40%;
-    left: 60%;
-    text-align: right;
+div.germ-input-wrap {
+    min-height: 60px;
 }
-div.field-label, div.field-input {
-    position: absolute;
-}    
 
 div.field-wrap {
     position: relative;
     min-height: 24px;
+    border-top: 1px solid #9CC8F4;
 }
 
+div.field-label, div.field-input, div.field-info {
+    position: absolute;
+    top: 0px;
+}    
+
+div.field-label {
+    text-align: left;
+    left: 0px;    
+}
+
+div.field-input {
+    right: 24px;    
+    text-align: right;
+}
+
+div.field-info {
+    right: 0px;
+    width: 20px;
+}
 
 #piece_title {
     text-align: center;
@@ -66,14 +74,15 @@ form {
 }
 
 textarea#germ_string {
-    height: 40px;
+    height: 50px;
     width: 250px;
 }
 
 #germ_midi_player_wrapper {    
     padding-left: 0px;
     padding-right: 20px;
-    margin-bottom: -20px;
+    margin-bottom: -5px;
+    text-align: center;
 }
 
 object.midi_player {
@@ -223,6 +232,7 @@ form#compose_form fieldset.self_similarity_settings_fieldset {
 
 div.info {    
     line-height: 1.2em;
+    text-align: left;
     position: relative;
     margin: 2px;    
     /* right padding is 26 to allow for the X image, which is 16 pixels */

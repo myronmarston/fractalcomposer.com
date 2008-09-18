@@ -16,27 +16,18 @@
     <%= content_after_info_icon %>
 <% else -%>
     <span id="<%= show_id %>"<%= icon_style %>>
-      <a href="#" onclick="$('<%= info_id %>').show(); $('<%= show_id %>').hide(); return false;">
-        <%= image_tag('info_blue.png', 
-              :alt => "View info about #{lowercase_title}",
-              :title => "View info about #{lowercase_title}",
-              :class => 'field_info',
-              :id => "#{id}_show_info_image") %>
-      </a>
+      <%= link_to_function(image_tag('info_blue.png', 
+        :alt => "View info about #{lowercase_title}",
+        :title => "View info about #{lowercase_title}",
+        :class => 'field_info',
+        :id => "#{id}_show_info_image"), "launchLightwindow_autoSize('#{info_id}', '#{title}')") %>      
       <%= content_after_info_icon %>
    </span>
     <div<%= info_wrap_div_class%>>
-      <div id="<%= info_id %>" class="info" style="display: none">
-        <a href="#" onclick="$('<%= info_id %>').hide();$('<%= show_id %>').show(); return false;">
-          <%= image_tag('cross_blue.png', 
-                :alt => "Close #{lowercase_title} info",
-                :title => "Close #{lowercase_title} info",
-                :class => 'hide_info',
-                :id => "#{id}_hide_info_image") %>
-        </a>
-        <span class="info_title"><%= title %></span>
-        <br />
-        <%= info_html %>      
+      <div id="<%= info_id %>" style="display: none">                        
+        <div class="info">
+            <%= info_html %>  
+        </div>
       </div>    
     </div>
 <% end -%>

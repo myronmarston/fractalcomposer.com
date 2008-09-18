@@ -5,23 +5,15 @@ module ComposeHelper
   
   LIVE_VALIDATION_DELAY = 600 unless defined? LIVE_VALIDATON_DELAY
   
-  def field_label(text)
-    content_tag(:div, text, :class => 'field-label')    
-  end
-  
-  def field_input(&block)         
-    # technique taken from http://groups.google.com/group/rubyonrails-talk/browse_thread/thread/e911d16cdf90cace/422230f7d8674cc7?lnk=gst&q=helper+block#422230f7d8674cc7
-    content = capture(&block)
-    div = content_tag(:div, content, :class => 'field-input')
-    concat div, block.binding
-  end
-  
   def field_wrap(label, *options_for_info, &block)
     # technique taken from http://groups.google.com/group/rubyonrails-talk/browse_thread/thread/e911d16cdf90cace/422230f7d8674cc7?lnk=gst&q=helper+block#422230f7d8674cc7
     content = capture(&block)
-      
-    div = content_tag(:div, content + info(*options_for_info), :class => 'field-input')
-    wrap_div = content_tag(:div, field_label(label) + div, :class => 'field-wrap')
+     
+    # todo: wrap the info button in yet another div...
+    info_div = content_tag(:div, info(*options_for_info), :class => 'field-info')
+    content_div = content_tag(:div, content, :class => 'field-input')
+    label_div = content_tag(:div, label, :class => 'field-label')
+    wrap_div = content_tag(:div, label_div + content_div + info_div, :class => 'field-wrap')
        
     concat wrap_div, block.binding
   end

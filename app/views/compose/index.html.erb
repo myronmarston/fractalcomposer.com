@@ -60,6 +60,8 @@
       <%= render :partial => 'submit_to_library' %>
     </div>
   </div>
-
+  <div id="test_info" style="display: none">
+    <%= PageHtmlPart.get_html_part("info_germ") %>
+  </div>
   <%= javascript_tag("document.observe(\"dom:loaded\", function() { $('compose-parent-wrap').appendChild($('compose-wrap')); $('compose-loading').hide(); $('compose-wrap').show(); });") %>
 <% end -%>
