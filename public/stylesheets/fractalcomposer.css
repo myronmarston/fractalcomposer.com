@@ -9,15 +9,14 @@ div.germ-input-wrap {
 }
 
 div.field-wrap {
-    position: relative;
     min-height: 24px;
     border-top: 1px solid #9CC8F4;
+    clear: both;
 }
 
-div.field-label, div.field-input, div.field-info {
-    position: absolute;
-    top: 0px;
-}    
+div.field-input, div.field-info {
+    float: right;
+}   
 
 div.field-label {
     text-align: left;

@@ -5,15 +5,17 @@ module ComposeHelper
   
   LIVE_VALIDATION_DELAY = 600 unless defined? LIVE_VALIDATON_DELAY
   
-  def field_wrap(label, *options_for_info, &block)
+  def field_wrap(field_id, label, *live_validation_args, &block)
     # technique taken from http://groups.google.com/group/rubyonrails-talk/browse_thread/thread/e911d16cdf90cace/422230f7d8674cc7?lnk=gst&q=helper+block#422230f7d8674cc7
     content = capture(&block)
-     
-    # todo: wrap the info button in yet another div...
-    info_div = content_tag(:div, info(*options_for_info), :class => 'field-info')
-    content_div = content_tag(:div, content, :class => 'field-input')
-    label_div = content_tag(:div, label, :class => 'field-label')
-    wrap_div = content_tag(:div, label_div + content_div + info_div, :class => 'field-wrap')
+    
+    info_name = label.titleize.gsub(' ', '').underscore
+    
+    info_div = content_tag(:div, info(info_name, field_id), :class => 'field-info', :id => "#{field_id}-info")
+    content_div = content_tag(:div, content, :class => 'field-input') 
+    label_div = content_tag(:div, label, :class => 'field-label', :id => "#{field_id}-label") #+ '<div class="LV_validation_message LV_invalid">Must be an integer or fraction between -1 and 1.</div>'
+    live_validation = live_validation_args.size > 0 ? get_live_validation_js(*live_validation_args) : ''
+    wrap_div = content_tag(:div, info_div + content_div + label_div + live_validation, :class => 'field-wrap', :id => "#{field_id}-wrap")
        
     concat wrap_div, block.binding
   end

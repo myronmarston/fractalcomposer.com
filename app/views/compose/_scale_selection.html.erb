@@ -1,7 +1,7 @@
 <% if (scale) -%>
   <% set_scale_key_prefix_instance_variables(input_prefix || '') -%>
   
-  <% field_wrap('Scale Type', 'scale_type', @scale_id, '<br />') do %>
+  <% field_wrap(@scale_id, 'Scale Type') do %>
     <%= select_tag @scale_name, options_for_select(@scale_names, scale.java_class), :id => @scale_id %>
     <%= get_scale_or_key_observe_field(@scale_id, @scale_id, @key_id, @scale_spinner_id, generate_update_germ_js, input_prefix, id_to_serialize) %>
   <% end %>

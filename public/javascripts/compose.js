@@ -67,8 +67,7 @@ function performAdvancedOptionsToggle() {
 }
                                       
 function create_live_validation_field(id, delay, panel_div_id, voice_or_section_id, description, override_checkbox_id, validations) {    
-  var input_element = ( panel_div_id == '' ? LW$(id) : $(id) )
-  var validator = create_live_validation_field_basic(input_element, delay, validations);
+  var validator = create_live_validation_field_basic(id, delay, validations);
        
   var field_hash = $H({ 
       id : id,      
@@ -107,15 +106,6 @@ function check_field_validity_for_generate_piece() {
   return check_field_validity(function(f) {
     return f.get('validate_on_generate_piece');          
   });
-}
-
-function LW$(id) {
-  var lw_element = $('lightwindow_contents');
-  if (lw_element == null) return $(id);
-  
-  var elements = lw_element.getElementsBySelector('#' + id);
-  if (elements.size() == 0) return $(id);
-  return elements[0];
 }
 
 function check_field_validity_for_submit_to_library() {  

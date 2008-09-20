@@ -1,10 +1,9 @@
   <div class="piece_settings_wrap">    
     <%= render :partial => 'scale_selection', :locals => {:scale => @fractal_piece.getScale, :input_prefix => '', :id_to_serialize => nil, :generate_update_germ_js => true} %>    
         
-    <% field_wrap('Time Signature', 'time_signature', nil, '<br />') do %>
+    <% field_wrap('time_signature', 'Time Signature', 'time_signature', true, 'piece_settings', nil, 'Time Signature', nil, 
+          "{type: Validate.Presence, args: {} }, {type: Validate.Format, args: { pattern: /#{com.myronmarston.music.settings.TimeSignature::REGEX_PATTERN_STRING}/, failureMessage: 'Must be a positive fraction with a power of 2 in the denominator.' } }") do %>
       <%= text_field_tag :time_signature, @fractal_piece.getTimeSignature, :size => 4, :class => 'textbox' %>
-      <%= get_live_validation_js('time_signature', true, 'piece_settings', nil, 'Time Signature', nil, 
-          "{type: Validate.Presence, args: {} }, {type: Validate.Format, args: { pattern: /#{com.myronmarston.music.settings.TimeSignature::REGEX_PATTERN_STRING}/, failureMessage: 'Must be a positive fraction with a power of 2 in the denominator.' } }") %>
       <% remote_time_sig_js = remote_function(
           :url => { :action => :set_time_signature_xhr },          
           :with  => "'time_signature=' + encodeURIComponent(value)" + observe_field_with_js_for_field_that_effects_germ,
@@ -14,14 +13,13 @@
       <%= observe_field :time_signature, :function => remote_time_sig_js %>    
     <% end %>
     
-    <% field_wrap('Tempo', 'tempo', nil, '<br />') do %>
-      <%= text_field_tag :tempo, @fractal_piece.getTempo, :size => 4, :class => 'textbox' %>
-      <%= get_live_validation_js('tempo', true, 'piece_settings', nil, 'Tempo', nil,
-          "{type: Validate.Presence, args: {}}, {type: Validate.Numericality, args: { onlyInteger: true, minimum: #{com.myronmarston.music.Tempo::MIN_TEMPO_BPM}, maximum: #{com.myronmarston.music.Tempo::MAX_TEMPO_BPM}, notANumberMessage: 'Must be an integer!' }}") %>    
+    <% field_wrap('tempo', 'Tempo', 'tempo', true, 'piece_settings', nil, 'Tempo', nil,
+          "{type: Validate.Presence, args: {}}, {type: Validate.Numericality, args: { onlyInteger: true, minimum: #{com.myronmarston.music.Tempo::MIN_TEMPO_BPM}, maximum: #{com.myronmarston.music.Tempo::MAX_TEMPO_BPM}, notANumberMessage: 'Must be an integer!' }}") do %>
+      <%= text_field_tag :tempo, @fractal_piece.getTempo, :size => 4, :class => 'textbox' %>      
     <% end %>
     
     <div class="germ-input-wrap">
-    <% field_wrap('Germ', 'germ') do %>      
+    <% field_wrap('germ', 'Germ') do %>      
       <div><!--This div is present to prevent a bug when expanding the germ info, where the text area loses its content-->
         <%= text_area_tag :germ_string, h(session[:germ_string]), :size => '25x3', :class => 'textbox' %>
         <%= observe_field :germ_string, 
@@ -38,11 +36,11 @@
         <%= render :partial => 'germ_midi_and_image', :locals => {:play_immediately => false} %> 
     </div>    
        
-    <% field_wrap('Generate Layered Intro', 'generate_layered_intro', nil, '<br />') do %>
+    <% field_wrap('generate_layered_intro', 'Generate Layered Intro') do %>
         <%= check_box_tag :generate_layered_intro, 1, @fractal_piece.getGenerateLayeredIntro %>
     <% end %>
     
-    <% field_wrap('Generate Layered Outro', 'generate_layered_outro') do %>
+    <% field_wrap('generate_layered_outro', 'Generate Layered Outro') do %>
         <%= check_box_tag :generate_layered_outro, 1, @fractal_piece.getGenerateLayeredOutro %>
     <% end %>
   </div>

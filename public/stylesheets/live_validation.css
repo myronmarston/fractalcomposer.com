@@ -1,27 +1,18 @@
 .LV_validation_message{
     font-weight:bold;
-    /*margin:0 0 0 5px;*/
 }
 
-/*.LV_valid {
-    color:#A3E357;
-}*/
-	
 .LV_invalid {
     color:#FF0000; 
-    line-height: 1.1em;        
+    line-height: 1.1em;
+    margin-left: 5px;    
 }
 
-/* Commented this out because most fields are already filled in, and they don't start with a green
-   border.  For the sake of consistency, we will just not show a border at all for valid fields.
-.LV_valid_field,
-input.LV_valid_field:hover, 
-input.LV_valid_field:active,
-textarea.LV_valid_field:hover, 
-textarea.LV_valid_field:active {
-    border: 1px solid #A3E357;
-}*/
-    
+#compose_form .LV_invalid {
+    float: right;
+    margin-left: 0px;
+}
+
 .LV_invalid_field, 
 input.LV_invalid_field:hover, 
 input.LV_invalid_field:active,

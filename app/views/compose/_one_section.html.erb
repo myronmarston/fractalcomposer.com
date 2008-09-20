@@ -7,7 +7,7 @@
 -%>
 <% render :layout => 'one_voice_or_section_wrapper' do -%>        
             
-      <% field_wrap('Override Scale', 'override_scale', scale_check_box_id) do %>
+      <% field_wrap(scale_check_box_id, 'Override Scale') do %>
         <%= check_box_tag scale_check_box_name, 
             1, @voice_or_section.getOverridePieceScale, 
             :id => scale_check_box_id, 
