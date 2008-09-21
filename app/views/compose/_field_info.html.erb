@@ -2,8 +2,7 @@
     # if we don't pass an id, just use the name.
     # this allows us to only pass a name for fields which only occur once, like tempo,
     # but also pass an id for fields which occur multiple times, like octave adjustment
-    id ||= name
-    info_html = PageHtmlPart.get_html_part("info_#{name.gsub(/-/, '_')}") 
+    id ||= name    
     show_id = "show_#{id}_info"
     info_id = "#{id}_info"
     content_after_info_icon ||= ""      
@@ -12,22 +11,18 @@
     icon_style = (icon_style.nil? || icon_style == '' ? '' : " style=\"#{icon_style}\"") 
     info_wrap_div_class = (info_wrap_div_class.nil? || info_wrap_div_class == '' ? '' : " class=\"#{info_wrap_div_class}\"")
 -%>
-<% if info_html == '' -%>
-    <%= content_after_info_icon %>
-<% else -%>
-    <span id="<%= show_id %>"<%= icon_style %>>
-      <%= link_to_function(image_tag('info_blue.png', 
-        :alt => "View info about #{lowercase_title}",
-        :title => "View info about #{lowercase_title}",
-        :class => 'field_info',
-        :id => "#{id}_show_info_image"), "launchLightwindow_autoSize('#{info_id}', '#{title}')") %>      
-      <%= content_after_info_icon %>
-   </span>
-    <div<%= info_wrap_div_class%>>
-      <div id="<%= info_id %>" style="display: none">                        
-        <div class="info">
-            <%= info_html %>  
-        </div>
-      </div>    
+<span id="<%= show_id %>"<%= icon_style %>>
+  <%= link_to_function(image_tag('info_blue.png', 
+    :alt => "View info about #{lowercase_title}",
+    :title => "View info about #{lowercase_title}",
+    :class => 'field_info',
+    :id => "#{id}_show_info_image"), "launchLightwindow_autoHeight('#{info_id}', '#{title}', 500)") %>            
+</span>
+
+<div<%= info_wrap_div_class%>>
+  <div id="<%= info_id %>" style="display: none">                        
+    <div id="<%= info_id %>_inner_wrap" class="info">
+        <%= render :partial => "info_partials/#{name.gsub(/-/, '_')}" %>
     </div>
-<% end -%>
+  </div>    
+</div>

@@ -172,6 +172,15 @@ function launchLightwindow_autoSize(href, title) {
     });            
 }
 
+function launchLightwindow_autoHeight(href, title, width) {      
+    myLightWindow.activateWindow({
+      href: href,
+      title: title,
+      type: 'inline',
+      width: width
+    });            
+}
+
 function launchLightwindow(href, title, height, width) {   
 //    germ_midi_player = $('germ_midi_player_wrapper')
 //    if (germ_midi_player != null) germ_midi_player.hide();

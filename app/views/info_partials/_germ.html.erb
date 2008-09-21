@@ -1,0 +1,45 @@
+<p>
+  Specifies the short melody from which the piece is generated. 
+  You can think of it as the “shape” of the fractal. 
+  The germ should be a series of notes, seperated by spaces.
+</p>
+
+<p>
+  Each note must have the following:
+</p>
+
+<ul>
+    <li>
+      <a href="http://en.wikipedia.org/wiki/Pitch_class">Pitch Class</a>: A letter name (A-G), 
+      optionally followed by an accidental (bb, b, # or x).
+    </li>
+    <li>
+      Octave: A number from 0 to 9 specifying which octave this note is in. The 
+      <a href="http://en.wikipedia.org/wiki/Scientific_pitch_notation">Acoustical 
+      Society of America’s octave designation system</a> is used. Each octave runs 
+      from C to B. C4 to B4 is the octave from middle C to the B above middle C.
+    </li>
+</ul>
+
+<p>
+  In addition, you can optionally include the following:
+</p>
+
+<ul>
+    <li>
+      Rhythmic Duration: A fraction indicating how long the note should last. 
+      For example, 1/4 indicates a quarter note, 3/8 a dotted quarter note and 
+      1/12 indicates one note of an eighth note triplet. If no duration is given, 
+      the duration of the previous note is used. The first note will be a quarter 
+      note if no duration is given.
+    </li>
+    <li>
+      Volume: One of <span class="caps">PPP</span>, PP, P, MP, MF, F, FF or 
+      <span class="caps">FFF</span>. If none is given, the volume of the previous 
+      note is used. The first note will be MF if no volume is given.
+    </li>
+</ul>
+
+<p>
+  If you include a rhythmic duration or volume, use a comma to seperate it from the pitch information.
+</p>

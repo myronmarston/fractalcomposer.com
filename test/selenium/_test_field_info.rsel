@@ -1,19 +1,19 @@
+lightwindow_test_id = 'lightwindow_contents'
 show_image_id = "#{id_prefix}_show_info_image"
-hide_image_id = "#{id_prefix}_hide_info_image"
-info_id = "#{id_prefix}_info"
+info_id = "#{id_prefix}_info_inner_wrap"
+info_div_xpath = "//div[@id='#{lightwindow_test_id}']/div[@id='#{info_id}']"
 
 verify_visible show_image_id
-verify_not_visible hide_image_id
+verify_not_visible lightwindow_test_id
 verify_not_visible info_id
+verify_element_not_present info_div_xpath
 
 click show_image_id
 
-verify_not_visible show_image_id
-verify_visible hide_image_id
-verify_visible info_id
+wait_for_visible lightwindow_test_id
+wait_for_visible info_div_xpath
 
-click hide_image_id
-
+click 'lightwindow_title_bar_close_link'
 verify_visible show_image_id
-verify_not_visible hide_image_id
-verify_not_visible info_id
+verify_not_visible lightwindow_test_id
+verify_not_visible info_div_xpath
