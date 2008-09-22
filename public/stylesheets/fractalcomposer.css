@@ -4,14 +4,10 @@
    TODO: change the mouse icon over buttons to indicate they can be pressed
  *************************************************************/
 
-div.germ-input-wrap {
-    min-height: 60px;
-}
-
-div.field-wrap {
-    min-height: 24px;
+div.field-wrap {    
     border-top: 1px solid #9CC8F4;
     clear: both;
+    padding: 2px;
 }
 
 div.field-input, div.field-info {
@@ -20,17 +16,19 @@ div.field-input, div.field-info {
 
 div.field-label {
     text-align: left;
-    left: 0px;    
 }
 
-div.field-input {
-    right: 24px;    
+div.field-input {    
     text-align: right;
 }
 
-div.field-info {
-    right: 0px;
-    width: 20px;
+div.field-input input[type='checkbox'] {
+  margin-top: 5px;
+}
+
+div.field-info {    
+    padding-top: 3px;
+    margin-left: 4px;
 }
 
 #piece_title {
@@ -55,11 +53,11 @@ img.icon {
     padding: 0px;
 }
 
-img.field_info {
+/*img.field_info {
     position: relative;
     top: 2px;
     z-index: 999; /* must be on top to allow clicking */
-}
+}*/
 
 span.spinner_wrap {
     display: inline;
@@ -75,6 +73,8 @@ form {
 textarea#germ_string {
     height: 50px;
     width: 250px;
+    margin-top: 2px;
+    margin-bottom: 4px;
 }
 
 #germ_midi_player_wrapper {    
