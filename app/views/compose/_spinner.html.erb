@@ -5,12 +5,13 @@
     right_px ||= nil
     bottom_px ||= nil # make sure bottom_px is defined    
     
-    style_str =  (bottom_px ? "bottom: #{bottom_px}px;" : "")    
-    style_str << (left_px ? "left: #{left_px}px;" : "")    
-    style_str << (right_px ? "right: #{right_px}px;" : "")    
+    style_str =  (bottom_px ? "bottom: #{bottom_px}px;" : '')    
+    style_str << (left_px ? "left: #{left_px}px;" : '')    
+    style_str << (right_px ? "right: #{right_px}px;" : '')    
     
-    style = (style_str != '' ? " style=\"#{style_str}\"" : "")    
+    attr = (style_str != '' ? " style=\"#{style_str}\"" : '')    
+    attr << (div_id ? " id=\"#{div_id}_wrap\"" : '')
 %>
-<span class="spinner_wrap"<%= style %>>
+<span class="spinner_wrap"<%= attr %>>
     <%= image_tag 'indicator.gif', options_hash %>
 </span>

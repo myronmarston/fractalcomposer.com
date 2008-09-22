@@ -3,25 +3,25 @@
 -%>
 
 <% octave_id = "#{settings_input_id_prefix}_octave_adjustment" -%>
-<% field_wrap(octave_id, 'Octave Adjustment', octave_id, true, panel_div_id, @voice_or_section_id, "Octave Adjustment (#{@current_item_description})", override_checkbox_id,
+<% field_wrap(octave_id, 'Octave Adjustment', '', octave_id, true, panel_div_id, @voice_or_section_id, "Octave Adjustment (#{@current_item_description})", override_checkbox_id,
       "{type: Validate.Presence, args: {}}, {type: Validate.Numericality, args: { onlyInteger: true, minimum: -4, maximum: 4, notANumberMessage: 'Must be an integer!' }}") do %>  
   <%= text_field_tag "#{settings_input_name_prefix}[octave_adjustment]", settings.getOctaveAdjustment, :size => 2, :id => octave_id, :class => 'textbox' %>  
 <% end %>
 
 <% speed_id = "#{settings_input_id_prefix}_speed_scale_factor" -%>
-<% field_wrap(speed_id, 'Rhythm Scale Factor', speed_id, true, panel_div_id, @voice_or_section_id, "Rhythm Scale Factor (#{@current_item_description})", override_checkbox_id,
+<% field_wrap(speed_id, 'Rhythm Scale Factor', '', speed_id, true, panel_div_id, @voice_or_section_id, "Rhythm Scale Factor (#{@current_item_description})", override_checkbox_id,
       "{type: Validate.Presence, args: {}}, {type: Validate.Format, args: { pattern: /#{com.myronmarston.util.Fraction::POSITIVE_FRACTION_REGEX_STRING}/, failureMessage: 'Must be a positive integer or fraction.' }}") do %>  
   <%= text_field_tag "#{settings_input_name_prefix}[speed_scale_factor]", settings.getSpeedScaleFactor, :size => 2, :id => speed_id, :class => 'textbox' %>  
 <% end %>
 
 <% volume_id = "#{settings_input_id_prefix}_volume_adjustment" -%>
-<% field_wrap(volume_id, 'Volume Adjustment', volume_id, true, panel_div_id, @voice_or_section_id, "Volume Adjustment (#{@current_item_description})", override_checkbox_id,
+<% field_wrap(volume_id, 'Volume Adjustment', '', volume_id, true, panel_div_id, @voice_or_section_id, "Volume Adjustment (#{@current_item_description})", override_checkbox_id,
       "{type: Validate.Presence, args: {}}, {type: validateVolumeAdjustmentFraction, args: { pattern: /#{com.myronmarston.util.Fraction::FRACTION_REGEX_STRING}/}}") do %>
   <%= text_field_tag "#{settings_input_name_prefix}[volume_adjustment]", settings.getVolumeAdjustment, :size => 2, :id => volume_id, :class => 'textbox' %>
 <% end %>
 
 <% offset_id = "#{settings_input_id_prefix}_scale_step_offset" -%>
-<% field_wrap(offset_id, 'Scale Step Offset', offset_id, true, panel_div_id, @voice_or_section_id, "Scale Step Offset (#{@current_item_description})", override_checkbox_id,
+<% field_wrap(offset_id, 'Scale Step Offset', '', offset_id, true, panel_div_id, @voice_or_section_id, "Scale Step Offset (#{@current_item_description})", override_checkbox_id,
       "{type: Validate.Presence, args: {}}, {type: Validate.Numericality, args: { onlyInteger: true, minimum: -11, maximum: 11, notANumberMessage: 'Must be an integer!' }}") do %>
   <%= text_field_tag "#{settings_input_name_prefix}[scale_step_offset]", settings.getScaleStepOffset, :size => 2, :id => offset_id, :class => 'textbox' %>
 <% end %>

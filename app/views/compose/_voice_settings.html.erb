@@ -13,7 +13,7 @@
                        :panel_div_id => panel_div_id} %>
 
 <% iterations_id = "#{input_id_prefix_sss}_self_similarity_iterations" %>
-<% field_wrap(iterations_id, 'Self-Similarity Iterations', iterations_id, true, panel_div_id, @voice_or_section_id, "Self-Similarity Iterations (#{@current_item_description})", override_checkbox_id,
+<% field_wrap(iterations_id, 'Self-Similarity Iterations', '', iterations_id, true, panel_div_id, @voice_or_section_id, "Self-Similarity Iterations (#{@current_item_description})", override_checkbox_id,
       "{type: Validate.Presence, args: {}}, {type: Validate.Numericality, args: { onlyInteger: true, minimum: 1, maximum: 9, notANumberMessage: 'Must be an integer!' }}") do %>  
   <%= text_field_tag "#{input_name_prefix_sss}[self_similarity_iterations]", self_similarity_settings.getSelfSimilarityIterations, :size => 2, :id => iterations_id, :class => 'textbox' %>
 <% end %>

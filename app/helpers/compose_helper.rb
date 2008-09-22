@@ -5,18 +5,18 @@ module ComposeHelper
   
   LIVE_VALIDATION_DELAY = 600 unless defined? LIVE_VALIDATON_DELAY
   
-  def field_wrap(field_id, label, *live_validation_args, &block)
+  def field_wrap(field_id, label, after_input_content, *live_validation_args, &block)
     # technique taken from http://groups.google.com/group/rubyonrails-talk/browse_thread/thread/e911d16cdf90cace/422230f7d8674cc7?lnk=gst&q=helper+block#422230f7d8674cc7
     content = capture(&block)
     
     info_name = label.titleize.gsub(' ', '').underscore
-    
+        
     info_div = content_tag(:div, info(info_name, field_id), :class => 'field-info', :id => "#{field_id}-info")
     content_div = content_tag(:div, content, :class => 'field-input') 
     label_div = content_tag(:div, label, :class => 'field-label', :id => "#{field_id}-label") #+ '<div class="LV_validation_message LV_invalid">Must be an integer or fraction between -1 and 1.</div>'
     live_validation = live_validation_args.size > 0 ? get_live_validation_js(*live_validation_args) : ''
-    wrap_div = content_tag(:div, info_div + content_div + label_div + live_validation, :class => 'field-wrap', :id => "#{field_id}-wrap")
-       
+    wrap_div = content_tag(:div, info_div + content_div + after_input_content + label_div + live_validation, :class => 'field-wrap', :id => "#{field_id}-wrap")        
+    
     concat wrap_div, block.binding
   end
   
@@ -72,7 +72,7 @@ module ComposeHelper
     END_OF_STRING
   end    
   
-  def get_scale_or_key_observe_field(id_of_field_to_observe, scale_id, key_id, scale_spinner_id, generate_update_germ_js, input_prefix, id_to_serialize)                
+ def get_scale_or_key_observe_field(id_of_field_to_observe, scale_id, key_id, scale_spinner_id, input_prefix, id_to_serialize)                
     if id_to_serialize
       with = "Form.serialize($('#{id_to_serialize}')) + "
     else
@@ -80,32 +80,13 @@ module ComposeHelper
              "'&key=' + encodeURIComponent($('#{key_id}').value) + "    
     end
                
-    with+= "'&generate_update_germ_js=#{generate_update_germ_js}" +
-           "&input_prefix=#{input_prefix}'"           
+    with += "'&input_prefix=#{input_prefix}'"           
     before = "$('#{scale_spinner_id}').show();"
     complete = "$('#{scale_spinner_id}').hide();"
-    
-    if generate_update_germ_js
-      with     += observe_field_with_js_for_field_that_effects_germ
-      before   += observe_field_before_js_for_field_that_effects_germ
-      complete += observe_field_complete_js_for_field_that_effects_germ
-    end    
-    
+        
     observe_field id_of_field_to_observe, :url => { :action => :scale_selected_xhr }, :with  => with, :before  => before, :complete  => complete
   end    
-  
-  def observe_field_before_js_for_field_that_effects_germ
-    " if ($('germ_midi_player') != null) { $('germ_spinner').show(); $('germ_midi_player_wrapper').hide(); }"
-  end
-  
-  def observe_field_complete_js_for_field_that_effects_germ
-    " $('germ_spinner').hide(); $('germ_midi_player_wrapper').show();"        
-  end
-  
-  def observe_field_with_js_for_field_that_effects_germ
-    " + '&update_germ=' + ($('germ_midi_player') != null)"
-  end
-  
+    
   def get_override_checkbox_onclick_javascript(checkbox_id, loading_div_id, content_div_id, action, with)
                    
     remote_func_js = remote_function(

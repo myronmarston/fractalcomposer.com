@@ -4,13 +4,25 @@
    TODO: change the mouse icon over buttons to indicate they can be pressed
  *************************************************************/
 
+#germ_listen_link, #germ_listen_spinner_wrap {
+    clear: right;    
+}
+
+#germ_listen_link {
+    margin-top: -44px;
+}
+
+#germ_listen_spinner_wrap {
+    margin-top: -22px;
+}
+
 div.field-wrap {    
     border-top: 1px solid #9CC8F4;
     clear: both;
     padding: 2px;
 }
 
-div.field-input, div.field-info {
+div.field-input, div.field-info, #germ_listen_link, #germ_listen_spinner_wrap {
     float: right;
 }   
 

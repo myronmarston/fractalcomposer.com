@@ -1,11 +1,11 @@
 <% if (scale) -%>
   <% set_scale_key_prefix_instance_variables(input_prefix || '') -%>
   
-  <% field_wrap(@scale_id, 'Scale Type') do %>
+  <% field_wrap(@scale_id, 'Scale Type', '') do %>
     <%= select_tag @scale_name, options_for_select(@scale_names, scale.java_class), :id => @scale_id %>
-    <%= get_scale_or_key_observe_field(@scale_id, @scale_id, @key_id, @scale_spinner_id, generate_update_germ_js, input_prefix, id_to_serialize) %>
+    <%= get_scale_or_key_observe_field(@scale_id, @scale_id, @key_id, @scale_spinner_id, input_prefix, id_to_serialize) %>
   <% end %>
       
-  <%= render :partial => 'key_name_selection', :locals => {:scale => scale, :input_prefix => input_prefix, :generate_update_germ_js => generate_update_germ_js} %>      
+  <%= render :partial => 'key_name_selection', :locals => {:scale => scale, :input_prefix => input_prefix} %>      
   <%= render :partial => 'spinner', :locals => {:div_id => @scale_spinner_id, :display => 'none', :bottom_px => -2} %>      
 <% end -%>

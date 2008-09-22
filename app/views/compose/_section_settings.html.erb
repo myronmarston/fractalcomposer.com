@@ -7,11 +7,11 @@
 <div class="voice_or_section_settings">
     <%= hidden_field_tag "#{section_settings_input_name_prefix}[ignore]", 'ensure have hash', :id => "#{section_settings_input_id_prefix}_ignore" %>
 
-    <% field_wrap(inversion_id, 'Apply Inversion') do %>
+    <% field_wrap(inversion_id, 'Apply Inversion', '') do %>
         <%= check_box_tag "#{section_settings_input_name_prefix}[apply_inversion]", 1, settings.getApplyInversion, :id => inversion_id %>
     <% end %>
         
-    <% field_wrap(retrograde_id, 'Apply Retrograde') do %>
+    <% field_wrap(retrograde_id, 'Apply Retrograde', '') do %>
         <%= check_box_tag "#{section_settings_input_name_prefix}[apply_retrograde]", 1, settings.getApplyRetrograde, :id => retrograde_id %>
     <% end %>
     

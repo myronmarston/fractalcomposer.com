@@ -54,18 +54,20 @@ class ComposeController < ApplicationController
     case part_type
       when 'voice', 'section'
         index = params[:index].safe_to_i
-        part = get_voice_or_section(part_type.pluralize, index)
+        @output_manager = get_voice_or_section(part_type.pluralize, index).createOutputManager
         @div_id_prefix = "#{part_type}_#{index}"
       when 'voice_section'
         voice_index = params[:voice_index].safe_to_i
         section_index = params[:section_index].safe_to_i
-        part = @fractal_piece.getVoices.getByUniqueIndex(voice_index).getVoiceSections.getByOtherTypeUniqueIndex(section_index)
+        @output_manager = @fractal_piece.getVoices.getByUniqueIndex(voice_index).getVoiceSections.getByOtherTypeUniqueIndex(section_index).createOutputManager
         @div_id_prefix = "voice_section_voice_#{voice_index}_section_#{section_index}"
+      when 'germ'
+        @output_manager = @fractal_piece.createGermOutputManager
+        @div_id_prefix = 'germ'
       else
         raise "The part type (#{part_type}) is invalid."
     end
-    
-    @output_manager = part.createOutputManager
+        
     local_dir = ComposeController.get_local_filename(get_temp_directory_for_session)
     @output_manager.saveMidiFile("#{local_dir}/#{@div_id_prefix}.mid")
     @output_manager.saveGuidoFile("#{local_dir}/#{@div_id_prefix}.gmn")    
@@ -74,26 +76,11 @@ class ComposeController < ApplicationController
   end
     
   def scale_selected_xhr
-    @input_prefix = params[:input_prefix]
-    @generate_update_germ_js = (params[:generate_update_germ_js] == 'true')
-    @update_germ = (params[:update_germ] == 'true')    
-    update_fractal_piece
-    save_germ_files(false, @update_germ)
+    @input_prefix = params[:input_prefix]    
+    update_fractal_piece    
     respond_to { |format| format.js }    
   end
   
-  def set_time_signature_xhr
-    @update_germ = (params[:update_germ] == 'true')
-    update_fractal_piece
-    save_germ_files(false, @update_germ)
-    respond_to { |format| format.js }
-  end
-  
-  def set_germ_xhr        
-    update_germ(true, params[:germ_string])    
-    respond_to { |format| format.js } 
-  end
-
   def get_voice_sections_xhr      
     @voice_or_section_div_id = params[:voice_or_section_div_id]
     @voices_or_sections_label = params[:voices_or_sections]    

@@ -1,2 +1,0 @@
-page.replace_html 'germ_midi_player_wrapper', 
-  :partial => 'germ_midi_and_image' #, :locals => {:play_immediately => true}

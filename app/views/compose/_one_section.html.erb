@@ -7,7 +7,7 @@
 -%>
 <% render :layout => 'one_voice_or_section_wrapper' do -%>        
             
-      <% field_wrap(scale_check_box_id, 'Override Scale') do %>
+      <% field_wrap(scale_check_box_id, 'Override Scale', '') do %>
         <%= check_box_tag scale_check_box_name, 
             1, @voice_or_section.getOverridePieceScale, 
             :id => scale_check_box_id, 
@@ -27,8 +27,7 @@
               <%= render :partial => 'scale_selection', 
                          :locals => {:scale => @voice_or_section.getScale, 
                                      :input_prefix => @voice_or_section_input_name_prefix,
-                                     :id_to_serialize => get_one_voice_or_section_id,
-                                     :generate_update_germ_js => false} %>            
+                                     :id_to_serialize => get_one_voice_or_section_id} %>            
           <% end -%>
       </div>    
       <%= render :partial => 'section_settings', 
