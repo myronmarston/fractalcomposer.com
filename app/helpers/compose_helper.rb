@@ -253,6 +253,13 @@ module ComposeHelper
   end
     
   def listen_to_part_link(part_description, serialize_id, id_prefix, part_type, other_params)                
+    validation_function = case part_type
+      when 'germ' then 'check_field_validity_for_germ'
+      when 'voice_section' then 'check_field_validity_for_voice_section'
+      when /^(voice|section)$/ then "function() {return check_field_validity_for_voice_or_section('#{serialize_id}')}"
+      else raise "Unexpected type: #{part_type}"
+    end   
+    
     spinner_id = "#{id_prefix}_listen_spinner"
     html = render(:partial => 'spinner', :locals => {:display => 'none', :div_id => spinner_id, :bottom_px => 1}) 
     id = "#{id_prefix}_listen_link"
@@ -269,6 +276,7 @@ module ComposeHelper
     js_function = <<-EOS
       function() {
         launchListeningPopupAjax(
+          #{validation_function},
           '#{url_for(:action => 'listen_to_part_xhr')}', 
           '#{spinner_id}', 
           '#{part_description}', 

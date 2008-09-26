@@ -104,13 +104,21 @@ function update_submit_form_result(new_content) {
 
 function check_field_validity_for_voice_or_section(voice_or_section_id) {
   return check_field_validity(function(f) {
-    return f.get('owning_voice_or_section_id') == voice_or_section_id;          
-  });
+    return f.get('owning_voice_or_section_id') === voice_or_section_id;          
+  });  
+}
+
+function check_field_validity_for_voice_section() {
+  // TODO: there should be a lot more fields we can eliminate,
+  //       but we need to find the way to get the 'owning' voice or section
+  return check_field_validity(function(f) {
+    return f.get('owning_panel_id') !== 'piece_settings' && f.get('validate_on_generate_piece');          
+  });  
 }
 
 function check_field_validity_for_germ() {
   return check_field_validity(function(f) {
-    return f.get('owning_panel_id') == 'piece_settings';          
+    return f.get('owning_panel_id') === 'piece_settings';          
   });
 }
 
@@ -194,10 +202,6 @@ function launchLightwindow_autoHeight(href, title, width) {
 }
 
 function launchLightwindow(href, title, height, width) {   
-//    germ_midi_player = $('germ_midi_player_wrapper')
-//    if (germ_midi_player != null) germ_midi_player.hide();
-// TODO: find a way to show the germ midi player when light window is closed
-    
     myLightWindow.activateWindow({
       href: href,
       title: title,
@@ -207,22 +211,20 @@ function launchLightwindow(href, title, height, width) {
     });            
 }
 
-function launchListeningPopupAjax(ajax_url, spinner_id, title, serialize_id, other_params) {
-    $(spinner_id).show();
-    new Ajax.Request(ajax_url, 
-      {asynchronous:true, 
-       evalScripts:true, 
-       onComplete:function(request){
-           $(spinner_id).hide(); 
-           launchLightwindow('#hidden_content_for_lightwindow', title, 500, 770);
-       }, 
-       parameters:Form.serialize($(serialize_id)) + other_params});         
+function launchListeningPopupAjax(validation_function, ajax_url, spinner_id, title, serialize_id, other_params) {    
+    if (validation_function()) {
+      $(spinner_id).show();
+      new Ajax.Request(ajax_url, 
+        {asynchronous:true, 
+         evalScripts:true, 
+         onComplete:function(request){
+             $(spinner_id).hide(); 
+             launchLightwindow('#hidden_content_for_lightwindow', title, 500, 770);
+         }, 
+         parameters:Form.serialize($(serialize_id)) + other_params});         
+    } 
 }
 
 function generatePiece(spinner_id, ajax_url) {
-    $(spinner_id).show();
-    if (check_field_validity_for_generate_piece()) {
-      launchListeningPopupAjax(ajax_url, spinner_id, 'Your Generated Piece', 'compose_form', '')          
-    }
-    $(spinner_id).hide();
+    launchListeningPopupAjax(check_field_validity_for_generate_piece, ajax_url, spinner_id, 'Your Fractal Piece', 'compose_form', '');
 }
