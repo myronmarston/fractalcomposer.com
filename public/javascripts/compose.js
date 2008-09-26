@@ -102,6 +102,18 @@ function update_submit_form_result(new_content) {
     LW$('submit_to_library_result_wrap').update(new_content);
 }
 
+function check_field_validity_for_voice_or_section(voice_or_section_id) {
+  return check_field_validity(function(f) {
+    return f.get('owning_voice_or_section_id') == voice_or_section_id;          
+  });
+}
+
+function check_field_validity_for_germ() {
+  return check_field_validity(function(f) {
+    return f.get('owning_panel_id') == 'piece_settings';          
+  });
+}
+
 function check_field_validity_for_generate_piece() {
   return check_field_validity(function(f) {
     return f.get('validate_on_generate_piece');          
