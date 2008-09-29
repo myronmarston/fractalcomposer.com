@@ -190,10 +190,10 @@ class ComposeController < ApplicationController
     puts "add_previously_submitted_piece_to_session end: #{session[:previously_submitted_pieces].inspect}"
   end
   
-  def update_germ(save_files, germ_string) 
-    session[:germ_string] = germ_string
+  def update_germ(save_files, germ) 
+    session[:germ] = germ
     begin
-      @fractal_piece.setGermString(germ_string)
+      @fractal_piece.setGermString(germ)
       save_germ_files(true, true) if save_files
       session[:germ_error_message] = nil
     rescue NoteStringParseException => ex      
@@ -217,7 +217,7 @@ class ComposeController < ApplicationController
     @fractal_piece.setGenerateLayeredIntro(params.has_key?(:generate_layered_intro))
     @fractal_piece.setGenerateLayeredOutro(params.has_key?(:generate_layered_outro))
     
-    update_germ(false, params[:germ_string]) if params.has_key?(:germ_string)
+    update_germ(false, params[:germ]) if params.has_key?(:germ)
 
     set_string_value(params, :time_signature) {|val| @fractal_piece.setTimeSignature(TimeSignature.new(val))}
     set_int_value(params, :tempo) {|val| @fractal_piece.setTempo(val)}
@@ -446,8 +446,8 @@ class ComposeController < ApplicationController
     
     if @fractal_piece.getGerm.size > 0      
       # we have a valid germ; set our instance variables if the files exist
-      if (session[:germ_string].nil?)
-        update_germ(false, params[:germ_string] || @fractal_piece.getGermString)
+      if (session[:germ].nil?)
+        update_germ(false, params[:germ] || @fractal_piece.getGermString)
       end
       
       @germ_midi_filename = get_germ_midi_filename      

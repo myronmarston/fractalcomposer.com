@@ -82,7 +82,7 @@ form {
   padding: 0px 0px;
 }
 
-textarea#germ_string {
+textarea#germ {
     height: 50px;
     width: 250px;
     margin-top: 2px;
@@ -137,7 +137,7 @@ div#start_over_button_wrap {
     right: 20px;
 }
 
-#germ_string_error {
+#germ_error {
     color: #f00; 
     line-height: 1.2em;
 }

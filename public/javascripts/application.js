@@ -11,10 +11,15 @@ function LW$(id) {
 }
 
 function create_live_validation_field_basic(id, delay, validations) {    
-  insert_after_element = LW$(id + '-label');
+  var insert_after_element = LW$(id + '-label');
   if (insert_after_element == null) insert_after_element = LW$(id);
   
-  var validator = new LiveValidation(LW$(id), {validMessage: '', wait: delay, insertAfterWhatNode: insert_after_element});
+  var options = {validMessage: '', wait: delay, insertAfterWhatNode: insert_after_element};
+  if (id.match(/germ/)) {      
+      options['onlyOnBlur'] = true;
+  }
+  
+  var validator = new LiveValidation(LW$(id), options);
   
   validations.each (function(validation) {
     validator.add(validation.type, validation.args);    
