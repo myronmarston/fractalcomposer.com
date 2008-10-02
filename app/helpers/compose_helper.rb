@@ -183,15 +183,11 @@ module ComposeHelper
                        :info_wrap_div_class => info_wrap_div_class}
   end
   
-  def get_guido_image(guido_filename, id, image_type = :full)
+  def get_guido_image_url(guido_filename)
     orig_px_per_cm = 48.0
     zoom = 0.81 # values less than 0.81 sometimes lead to no ledger lines
     px_per_cm = orig_px_per_cm * zoom
-    width = case image_type
-      when :germ: 416.0
-      when :full: 700.0
-      else raise "Unrecognized image type: #{image_type}"
-    end
+    width = 700
     
     image_url =  'http://clef.cs.ubc.ca/scripts/salieri/gifserv.pl?'
     image_url << "defpw=#{((width / px_per_cm) * 10).to_i / 10.0}cm;"
@@ -221,7 +217,7 @@ module ComposeHelper
       image_url << 'gmnurl=' + CGI::escape(ComposeHelper.get_full_url_filename(guido_filename, request) + '?' + Time.now.to_i.to_s) + ';'
     end
        
-    render :partial => 'guido_image', :locals => { :id => id, :image_url => image_url }
+    return image_url    
   end
   
   def get_generate_piece_button_js(piece_spinner_id)

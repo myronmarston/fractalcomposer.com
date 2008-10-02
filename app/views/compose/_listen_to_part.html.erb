@@ -1,7 +1,4 @@
 <%
-    show_midi = (show_midi.nil? ? true : show_midi)
-    show_image = (show_image.nil? ? true : show_image) 
-    
     if @last_generated_piece
         midi_filename = @last_generated_piece.generated_midi_file
         guido_filename = @last_generated_piece.generated_guido_file
@@ -11,16 +8,37 @@
     else
       raise 'Either @last_generated_piece or @output_manager must have a value.'
     end
+    
+    # Midi player markup taken from:
+    # http://joliclic.free.fr/html/object-tag/en/object-audio.html#mid
+
+    play_immediately = (play_immediately.nil? ? false : play_immediately)
+    autoplay = (play_immediately ? 'true' : 'false')
+    autostart = (play_immediately ? '1' : '0')
+
+    midi_filename = get_url_filename(midi_filename)
+    midi_filename = "#{midi_filename}?#{File.mtime(get_local_filename(midi_filename)).to_i.to_s}"
+    
+    midi_div_id = "#{div_id_prefix}_midi_player"
+    guido_image_id = "#{div_id_prefix}_notation_image"
+    guido_image_url = get_guido_image_url(guido_filename)
+    loading_div_id = "#{guido_image_id}_loading"
 %>
 
-<% if show_midi -%>
-  <%= render :partial => 'midi_player', 
-             :locals => {:midi_filename => get_url_filename(midi_filename), 
-                         :div_id => "#{div_id_prefix}_midi_player"} %>
-  <br />
-<% end -%>
-<% if show_image %>
-    <div>
-        <%= get_guido_image(guido_filename, "#{div_id_prefix}_notation_image") %>    
-    </div>
-<% end -%>
+<object class="midi_player" id="<%= midi_div_id %>" type="audio/x-midi" data="<%= midi_filename %>" width="200" height="20">
+  <param name="src" value="<%= midi_filename %>" />
+  <param name="autoplay" value="<%= autoplay %>" />
+  <param name="autoStart" value="<%= autostart  %>" />
+    <a href="<%= midi_filename %>">Listen to <%= div_id_prefix.gsub(/_/, ' ') %></a>
+</object>   
+<div>
+  <div id="<%= loading_div_id %>">
+    <h2 class="notation-loading">
+      Loading Notation&hellip;
+      <%= render :partial => 'spinner', :locals => {:display => 'inline', :bottom_px => -4} %>
+    </h2> 
+  </div>
+
+  <%= image_tag(guido_image_url, :alt => 'Music Notation', :id => guido_image_id, :style => 'display: none') %>  
+  <%= javascript_tag("Event.observe(LW$('#{guido_image_id}'), 'load', function() {LW$(\'#{guido_image_id}\').appear(); LW$(\'#{loading_div_id}\').remove()})") %>
+</div>

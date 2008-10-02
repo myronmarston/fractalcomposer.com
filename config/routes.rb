@@ -31,9 +31,8 @@ ActionController::Routing::Routes.draw do |map|
   # this gives us a create_index_url
   #map.create_index 'create/', :controller => 'create', :action => 'index'
   
-  map.root :controller => 'static_page', :name => 'home'
-  map.about 'about/', :controller => 'static_page', :name => 'about'
-  map.examples 'examples/', :controller => 'static_page', :name => 'examples'
+  map.root :controller => 'static_page', :page => 'home'
+  map.connect ':page/', :controller => 'static_page', :requirements => { :page => /(#{STATIC_PAGES.join('|')})/i }
   
   map.connect 'library/', :controller => 'library', :action => 'index'  
   map.connect 'library/:id', :controller => 'library', :action => 'view_piece'  

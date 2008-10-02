@@ -1,7 +1,13 @@
 class StaticPageController < ApplicationController  
+  PAGES_WITH_HOME = STATIC_PAGES + ['home'] unless defined? PAGES_WITH_HOME
   
   def index
-    render :text => PageHtmlPart.get_html_part(params[:name]), :layout => 'application'
+    page = params[:page].downcase
+    if PAGES_WITH_HOME.include? page
+      render :action => page
+    else
+      render :nothing => true, :status => 404 
+    end        
   end
   
 end

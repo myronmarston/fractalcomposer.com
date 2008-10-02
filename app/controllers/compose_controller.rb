@@ -476,6 +476,7 @@ class ComposeController < ApplicationController
   def set_scale_names
     @scale_names = Hash.new    
     Scale::SCALE_TYPES.keySet.each do |type|    
+      #TODO: jruby 1.1.4-type.to_s.gsub(/class /, '')
       @scale_names[type.getSimpleName.titleize] = type
     end  
   end
