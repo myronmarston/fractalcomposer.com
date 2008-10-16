@@ -3,7 +3,7 @@ class LibraryController < ApplicationController
   before_filter :setup_negative_captcha, :only => [:view_piece, :add_comment]
   
   def index
-    
+    @user_submissions = UserSubmission.find(:all, :conditions => 'processing_completed IS NOT NULL', :order => 'updated_at DESC')
   end
   
   def view_piece

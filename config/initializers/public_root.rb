@@ -7,10 +7,8 @@ PUBLIC_ROOT = if defined?($servlet_context)
  
 PUBLIC_ROOT_WITHOUT_TRAILING_SLASH = PUBLIC_ROOT.chomp(File::SEPARATOR).chomp(File::ALT_SEPARATOR)
 
-user_generated_files_path = File.join(PUBLIC_ROOT, 'user_generated_files')
-unless File.exist?(user_generated_files_path)
-  # make a symlink to the user generated files path... 
-  puts "creating symbolic link for #{user_generated_files_path}"  
-  `ln -s /var/www/user_generated_files #{user_generated_files_path}`    
-  raise 'The user_generated_files symlink was not created as expected.' unless File.exist?(user_generated_files_path)  
+LOCAL_ROOT = if ENV["RAILS_ENV"] == 'production'
+  '/var/www'
+else
+  PUBLIC_ROOT
 end

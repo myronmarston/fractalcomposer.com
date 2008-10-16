@@ -157,12 +157,7 @@ module ComposeHelper
   def get_one_voice_or_section_id
     "#{@voices_or_sections_label.singularize}_#{@voice_or_section.getUniqueIndex}"      
   end
-  
-  def get_style_for_germ_midi_player_wrapper
-    return '' if @germ_midi_filename || @germ_guido_filename || session[:germ_error_message]
-    "style=\"display: none;\""
-  end
-  
+    
   def get_live_validation_js(id, validate_now, panel_div_id, voice_or_section_id, description, override_checkbox_id, validations)                  
     js = <<-EOS
       var #{get_live_validation_var_name(id)} = create_live_validation_field('#{id}', #{LIVE_VALIDATION_DELAY}, '#{panel_div_id}', '#{voice_or_section_id}', '#{description}', '#{override_checkbox_id}', [#{validations}]);

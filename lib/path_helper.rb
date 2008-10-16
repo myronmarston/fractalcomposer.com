@@ -1,7 +1,7 @@
 module PathHelper
   def get_url_filename(filename)
     return '' if filename.nil?
-    filename.sub(PUBLIC_ROOT_WITHOUT_TRAILING_SLASH, '')
+    filename.sub(LOCAL_ROOT, '')
   end
   
   def get_full_url_filename(filename, request)
@@ -11,8 +11,8 @@ module PathHelper
   def get_local_filename(filename)
     return '' if filename.nil?
     
-    return filename if filename.start_with? PUBLIC_ROOT_WITHOUT_TRAILING_SLASH 
-    File.join(PUBLIC_ROOT, filename)      
+    return filename if filename.start_with? LOCAL_ROOT    
+    File.join(LOCAL_ROOT, filename)      
   end    
   
   def sanitize_filename(filename)

@@ -1,10 +1,7 @@
-<%
-  user_submissions = UserSubmission.find(:all, :limit => 10, :order => 'created_at DESC')
-%>
 <div class="static-page-wrap">
-  <%= user_submissions.size %> most recent submissions:
+  <%= @user_submissions.size %> most recent submissions:
   <ol>
-  <% user_submissions.each do |user_submission| -%>
+  <% @user_submissions.each do |user_submission| -%>
     <li><%= link_to("#{user_submission.title} by #{user_submission.name}", :action => 'view_piece', :id => user_submission) %></li>  
   <% end -%>
   </ol>

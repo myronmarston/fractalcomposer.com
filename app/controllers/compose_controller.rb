@@ -38,16 +38,9 @@ class ComposeController < ApplicationController
   before_filter :set_instrument_names, :only => [ :index, :add_voice_or_section_xhr, :clear_session_xhr ]
   before_filter :set_scale_names, :only => [ :index, :get_section_overriden_scale_xhr, :clear_session_xhr ]
     
-  def index   
-    # todo: if the user refreshes without tabbing off of the germ string, the text box contains
-    # additional characters not found in the germ    
+  def index     
   end
-  
-  def set_show_advanced_options_xhr
-    session[:show_advanced_options] = (params[:show_advanced_options] != 'false')
-    render :nothing => true
-  end
-  
+    
   def listen_to_part_xhr
     update_fractal_piece
     part_type = params[:part_type]
@@ -94,11 +87,13 @@ class ComposeController < ApplicationController
     @voices_or_sections_label = 'sections'
     @voice_or_section = get_voice_or_section(@voices_or_sections_label, params[:unique_index])
     @scale_content_wrap_id = params[:scale_content_wrap_id]
+    
     # override the settings, first turning it to false if it's not already false.
     # this is necessary because we don't make an ajax call when the override is set 
     # to false, and the settings copy the scale when it is
     # set from false to true.  So, we want to make sure it is false before setting
     # it to true.
+    
     @voice_or_section.setOverridePieceScale(false)    
     @voice_or_section.setOverridePieceScale(true)  
     respond_to { |format| format.js } 
@@ -139,6 +134,7 @@ class ComposeController < ApplicationController
   end
     
   def generate_piece_xhr        
+    # TODO: can this be combined with listen_to_part_xhr
     update_fractal_piece         
     save_piece_files unless get_last_generated_piece_fractal_piece_xml == current_piece_xml
     respond_to { |format| format.js }     
@@ -155,7 +151,6 @@ class ComposeController < ApplicationController
     reset_session
     @fractal_piece = get_new_fractal_piece     
     #TODO: this doesn't seem to clear everything out, such as last generated piece
-    clear_germ_files
     respond_to { |format| format.js } 
   end
   
@@ -190,18 +185,6 @@ class ComposeController < ApplicationController
     puts "add_previously_submitted_piece_to_session end: #{session[:previously_submitted_pieces].inspect}"
   end
   
-  def update_germ(save_files, germ) 
-    session[:germ] = germ
-    begin
-      @fractal_piece.setGermString(germ)
-      save_germ_files(true, true) if save_files
-      session[:germ_error_message] = nil
-    rescue NoteStringParseException => ex      
-      session[:germ_error_message] = ex.message.sub(/[^:]*: /, '')      
-      clear_germ_files
-    end
-  end  
-  
   def update_scale(object_to_update_scale_on, hash)
     if hash.has_key?(:scale) && hash.has_key?(:key)
       # set the scale to an instance variable so that we can access it from a partial...
@@ -217,8 +200,7 @@ class ComposeController < ApplicationController
     @fractal_piece.setGenerateLayeredIntro(params.has_key?(:generate_layered_intro))
     @fractal_piece.setGenerateLayeredOutro(params.has_key?(:generate_layered_outro))
     
-    update_germ(false, params[:germ]) if params.has_key?(:germ)
-
+    set_string_value(params, :germ) {|val| @fractal_piece.setGermString(val)}
     set_string_value(params, :time_signature) {|val| @fractal_piece.setTimeSignature(TimeSignature.new(val))}
     set_int_value(params, :tempo) {|val| @fractal_piece.setTempo(val)}
                 
@@ -304,26 +286,7 @@ class ComposeController < ApplicationController
       update_section_settings(voice_section.getSectionSettings, voice_section_hash[:section_settings]) if override_section_settings
     end
   end
-  
-  def clear_germ_files
-    delete_germ_files_for_session
-    @germ_midi_filename = nil
-    @germ_guido_filename = nil    
-  end
-  
-  def save_germ_files(save_midi, save_image)
-    begin      
-      @germ_midi_filename = get_germ_midi_filename
-      @germ_guido_filename = get_germ_guido_filename    
-      output_manager = @fractal_piece.createGermOutputManager    
-      output_manager.saveMidiFile(ComposeController.get_local_filename(@germ_midi_filename)) if save_midi
-      output_manager.saveGuidoFile(ComposeController.get_local_filename(@germ_guido_filename)) if save_image
-    rescue GermIsEmptyException => ex
-      logger.info "The germ could not be saved because the germ is empty."
-      clear_germ_files
-    end
-  end
-  
+      
   def save_piece_files
     begin
       @last_generated_piece = GeneratedPiece.new
@@ -385,25 +348,7 @@ class ComposeController < ApplicationController
       end
     end
   end
-  
-  def delete_germ_files_for_session
-    temp_dir = session[:session_temp_dir]
-    if temp_dir        
-      if File.exist?(ComposeController.get_local_filename(temp_dir))
-        FileUtils.rm [ComposeController.get_local_filename(get_germ_midi_filename), 
-                      ComposeController.get_local_filename(get_germ_guido_filename)], :force => true
-      end
-    end
-  end
-  
-  def get_germ_midi_filename
-    "#{get_temp_directory_for_session}/germ.mid"
-  end
-  
-  def get_germ_guido_filename
-    "#{get_temp_directory_for_session}/germ.gmn"
-  end  
-  
+      
   def get_voice_or_section(voices_or_sections_label, unique_index)    
     @fractal_piece.send("get#{voices_or_sections_label.titleize}").getByUniqueIndex(unique_index.safe_to_i)    
   end
@@ -422,16 +367,16 @@ class ComposeController < ApplicationController
   
   def load_fractal_piece_from_session        
     begin
-      # first, check to see if the user is trying to work with an existing user submitted piece...
-      if params.has_key?(:user_submission_id)
-        begin
-          user_sub = UserSubmission.find(params[:user_submission_id])
-          piece_xml = user_sub.generated_piece.fractal_piece
-          add_previously_submitted_piece_to_session(user_sub.generated_piece_id)
-        rescue ActiveRecord::RecordNotFound      
-          # bad id parameter, just ignore and we'll default to using the piece in the session or create a new one
-        end        
-      end
+#      # first, check to see if the user is trying to work with an existing user submitted piece...
+#      if params.has_key?(:user_submission_id)
+#        begin
+#          user_sub = UserSubmission.find(params[:user_submission_id])
+#          piece_xml = user_sub.generated_piece.fractal_piece
+#          add_previously_submitted_piece_to_session(user_sub.generated_piece_id)
+#        rescue ActiveRecord::RecordNotFound      
+#          # bad id parameter, just ignore and we'll default to using the piece in the session or create a new one
+#        end        
+#      end
       
       piece_xml ||= session[:fractal_piece] if session[:fractal_piece]
       
@@ -442,21 +387,7 @@ class ComposeController < ApplicationController
       logger.error("An error occurred while loading the fractal piece from the session: #{ex.message}")
     end
     
-    @fractal_piece ||= get_new_fractal_piece
-    
-    if @fractal_piece.getGerm.size > 0      
-      # we have a valid germ; set our instance variables if the files exist
-      if (session[:germ].nil?)
-        update_germ(false, params[:germ] || @fractal_piece.getGermString)
-      end
-      
-      @germ_midi_filename = get_germ_midi_filename      
-      @germ_midi_filename = nil unless File.exists?(ComposeController.get_local_filename(@germ_midi_filename))      
-      
-      @germ_guido_filename = get_germ_guido_filename      
-      @germ_guido_filename = nil unless File.exists?(ComposeController.get_local_filename(@germ_guido_filename))      
-    end
-
+    @fractal_piece ||= get_new_fractal_piece    
   end
 
   def store_fractal_piece_in_session           
@@ -470,14 +401,14 @@ class ComposeController < ApplicationController
   end
   
   def set_instrument_names
-    @instrument_names = Instrument::AVAILABLE_INSTRUMENTS
+    @instrument_names = Instrument::AVAILABLE_INSTRUMENTS.collect {|i| i.titleize}
   end
   
   def set_scale_names
     @scale_names = Hash.new    
     Scale::SCALE_TYPES.keySet.each do |type|    
-      #TODO: jruby 1.1.4-type.to_s.gsub(/class /, '')
-      @scale_names[type.getSimpleName.titleize] = type
+      #TODO: jruby 1.1.4: type.to_s.gsub(/class /, '')
+      @scale_names[type.getSimpleName.titleize] = type.to_s.gsub(/class /, '')#type
     end  
   end
     

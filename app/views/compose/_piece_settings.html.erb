@@ -14,7 +14,7 @@
     <div class="germ-input-wrap">      
       <% field_wrap('germ', 'Germ', listen_to_part_link('Your Germ', 'piece_settings', 'germ', 'germ', nil), 'germ', true, 'piece_settings', nil, 'Germ', nil,
             "{type: Validate.Presence, args: {} }, {type: Validate.Format, args: { pattern: /#{com.myronmarston.music.NoteList::REGEX_STRING}/i, failureMessage: 'Not a valid germ.  Click the help button for info about this.' } }") do %>
-          <%= text_area_tag :germ, h(session[:germ_string]), :size => '25x3', :class => 'textbox' %>                        
+          <%= text_area_tag :germ, @fractal_piece.getGermString, :size => '25x3', :class => 'textbox' %>                        
       <% end %>
     </div>    
        
