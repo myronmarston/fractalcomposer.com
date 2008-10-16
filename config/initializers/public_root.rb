@@ -11,6 +11,6 @@ user_generated_files_path = File.join(PUBLIC_ROOT, 'user_generated_files')
 unless File.exist?(user_generated_files_path)
   # make a symlink to the user generated files path... 
   puts "creating symbolic link for #{user_generated_files_path}"  
-  `ln -s /fractal_composer_user_generated_files #{user_generated_files_path}`    
+  `ln -s /var/www/user_generated_files #{user_generated_files_path}`    
   raise 'The user_generated_files symlink was not created as expected.' unless File.exist?(user_generated_files_path)  
 end

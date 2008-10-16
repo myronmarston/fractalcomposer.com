@@ -341,9 +341,18 @@ div.ne_corner_wrap {
     margin-bottom: -5px;
 }
 
-.comment-comment {    
-  font-family: "Trebuchet MS", Tahoma, arial, Sans-serif;   
-  color: #2361BA;  
+.comment-comment, .static-page-wrap {    
+  font-family: "Trebuchet MS", Tahoma, arial, Sans-serif;      
+}
+
+.static-page-wrap {    
+  font-size: 130%;
+  line-height: 1.3em;
+  margin: 0px 25px 15px 25px;
+}
+
+.comment-comment {
+  color: #2361BA; 
 }
 
 .comment-date {
@@ -473,5 +482,11 @@ div.tab_panel_body, #main ul.tablist {
 div.tab_panel_body p {
   margin-top: 0px;
   padding-top: 10px;
+}
+
+span.beta {
+  font-size: 16px; 
+  letter-spacing: 0px;
+  color: #FB9233;
 }
  

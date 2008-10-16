@@ -11,7 +11,7 @@ Warbler::Config.new do |config|
   config.includes = FileList["sun-web.xml"] 
 
   # Additional files/directories to exclude
-  # config.excludes = FileList["lib/tasks/*"]
+  config.excludes = FileList["public/user_generated_files"]
 
   # Additional Java .jar files to include.  Note that if .jar files are placed
   # in lib (and not otherwise excluded) then they need not be mentioned here.
