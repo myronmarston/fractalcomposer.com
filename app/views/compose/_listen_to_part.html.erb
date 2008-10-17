@@ -16,9 +16,9 @@
     autoplay = (play_immediately ? 'true' : 'false')
     autostart = (play_immediately ? '1' : '0')
 
-    midi_filename = get_url_filename(midi_filename)
-    midi_filename = "#{midi_filename}?#{File.mtime(get_local_filename(midi_filename)).to_i.to_s}"
-    
+    file_timestamp = File.mtime(get_local_filename(midi_filename)).to_i.to_s
+    midi_filename = get_full_url_filename("#{midi_filename}?#{file_timestamp}", request)
+        
     midi_div_id = "#{div_id_prefix}_midi_player"
     guido_image_id = "#{div_id_prefix}_notation_image"
     guido_image_url = get_guido_image_url(guido_filename)
