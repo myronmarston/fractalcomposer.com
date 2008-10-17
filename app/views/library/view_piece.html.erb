@@ -20,11 +20,11 @@
 
     <br/>
     <b>The Germ</b>: 
-    <br/><%= render :partial => 'mp3_player', :locals => {:mp3_file => @user_submission.germ_mp3_file} %>  
+    <br/><%= render :partial => 'shared/mp3_player', :locals => {:mp3_file => @user_submission.germ_mp3_file} %>  
     <br/><%= image_tag(@user_submission.germ_image_file) %>
 
     <br/><b>The Piece</b>: 
-    <br/><%= render :partial => 'mp3_player', :locals => {:mp3_file => @user_submission.piece_mp3_file} %>  
+    <br/><%= render :partial => 'shared/mp3_player', :locals => {:mp3_file => @user_submission.piece_mp3_file} %>  
     <br/>
     Think you can improve this piece?  <%= link_to('Experiment with it', :controller => 'compose', :action => 'index', :user_submission_id => @user_submission) %>
     <br />

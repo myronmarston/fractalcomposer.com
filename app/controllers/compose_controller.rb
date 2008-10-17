@@ -370,7 +370,6 @@ class ComposeController < ApplicationController
       # first, check to see if the user is trying to work with an existing user submitted piece...
       if params.has_key?(:user_submission_id)
         begin
-          #TODO: this doesn't seem to get the scale right...
           user_sub = UserSubmission.find(params[:user_submission_id])
           piece_xml = user_sub.generated_piece.fractal_piece
           add_previously_submitted_piece_to_session(user_sub.generated_piece_id)
@@ -408,8 +407,7 @@ class ComposeController < ApplicationController
   def set_scale_names
     @scale_names = Hash.new    
     Scale::SCALE_TYPES.keySet.each do |type|    
-      #TODO: jruby 1.1.4: type.to_s.gsub(/class /, '')
-      @scale_names[type.getSimpleName.titleize] = type.to_s.gsub(/class /, '')#type
+      @scale_names[type.getSimpleName.titleize] = type.to_s.gsub(/class /, '')
     end  
   end
     
