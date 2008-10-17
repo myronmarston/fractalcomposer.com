@@ -11,5 +11,53 @@
       In the spring of 2008, while <a href="http://myronmarston.blogspot.com">I was living in China</a>, I
       had some ideas to improve the Fractal Composer music-generation algorithm.  I also thought it would
       be interesting to see what music others could compose if it reached a wider audience...and fractalcomposer.com was born.
-    </p>    
+    </p>  
+    
+    <p>
+      Fractal Composer generates music using the principles of 
+      <a href="http://en.wikipedia.org/wiki/Self-similarity">self-similarity</a>, which are
+      commonly found in <a href="http://en.wikipedia.org/wiki/Fractal">fractals</a>.  
+      <em>Self-similarity</em> is found whenever a piece of an object has the same basic shape
+      as the entire object.  A common example of this is the koch curve:
+      <%= image_tag('/images/koch_curve.gif', :class => 'centered') %>
+    </p>
+    
+    <p>
+      Fractal Composer generates music using this same principle.  It begins with a short
+      phrase of music called the "germ", from which the entire piece grows.  You can think of
+      the germ as the "shape" of the piece.  <em>Every</em> note of the entire piece will
+      be derived directly from the germ, by applying musical transformations and operations
+      to it.
+    </p>
+    
+    <p>
+      This will be much clearer with an example, so we'll walk through how Fractal Composer
+      works using this example germ:      
+      <%= music_example('/examples/simple_example/germ') %>
+      The germ has multiple attributes that we can apply self-similarity to.
+    </p>
+              
+    <%= music_example('/examples/simple_example/pitch_self_similarity', 'First, we can apply it to the pitch:') %>        
+    <%= music_example('/examples/simple_example/rhythm_self_similarity', 'We can also apply self-similarity to the rhythm:') %>
+    <%= music_example('/examples/simple_example/volume_self_similarity', 'We can apply it to the volume:') %>
+    <%= music_example('/examples/simple_example/pitch_rhythm_volume_self_similarity', 'Or, we can apply it to all three attributes:') %>
+
+    <p>
+      So far we've created self-similarity in a single voice.  We can scale the rhythm
+      and place the germ at multiple octaves to create self-similarity across multiple voices:
+    </p>
+    <%= music_example('/examples/simple_example/multi_voice_self_similarity') %> 
+
+    <p>
+      If we combine these techniques, we can create an entire piece of music:
+    </p> 
+    <%= music_example('/examples/simple_example/whole_piece') %> 
+
+    <p>
+      An infinite variety of generated music is possible.  It doesn't always sound good, but I 
+      find that it nearly always sounds interesting.  Intrigued?  Go 
+      <%= link_to('compose your own piece', :controller => :compose) %>, 
+      <%= link_to('listen to some more examples', :controller => :static_page, :page => :examples) %>, or 
+      <%= link_to('see some of the pieces others have composed', :controller => :library) %>.
+    </p>  
 </div>

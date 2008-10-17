@@ -1,0 +1,5 @@
+<div class="music-example centered">
+    <%= text ||= '' %>
+    <%= render :partial => 'shared/mp3_player', :locals => { :mp3_file => "#{file}.mp3" } %>
+    <%= image_tag("#{file}.png", :class => 'centered') %>
+</div>

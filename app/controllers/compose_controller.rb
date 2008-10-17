@@ -367,16 +367,17 @@ class ComposeController < ApplicationController
   
   def load_fractal_piece_from_session        
     begin
-#      # first, check to see if the user is trying to work with an existing user submitted piece...
-#      if params.has_key?(:user_submission_id)
-#        begin
-#          user_sub = UserSubmission.find(params[:user_submission_id])
-#          piece_xml = user_sub.generated_piece.fractal_piece
-#          add_previously_submitted_piece_to_session(user_sub.generated_piece_id)
-#        rescue ActiveRecord::RecordNotFound      
-#          # bad id parameter, just ignore and we'll default to using the piece in the session or create a new one
-#        end        
-#      end
+      # first, check to see if the user is trying to work with an existing user submitted piece...
+      if params.has_key?(:user_submission_id)
+        begin
+          #TODO: this doesn't seem to get the scale right...
+          user_sub = UserSubmission.find(params[:user_submission_id])
+          piece_xml = user_sub.generated_piece.fractal_piece
+          add_previously_submitted_piece_to_session(user_sub.generated_piece_id)
+        rescue ActiveRecord::RecordNotFound      
+          # bad id parameter, just ignore and we'll default to using the piece in the session or create a new one
+        end        
+      end
       
       piece_xml ||= session[:fractal_piece] if session[:fractal_piece]
       

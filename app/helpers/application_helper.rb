@@ -48,5 +48,9 @@ module ApplicationHelper
       {:name => 'Acknowledgements', :options => {:controller => 'static_page', :page => 'acknowledgements'}, :is_current => Proc.new {|opt| current_page? opt}}      
     ]
   end
+  
+  def music_example(file, text = '')
+    render :partial => 'shared/music_example', :locals => { :file => file, :text => text }
+  end
 
 end
