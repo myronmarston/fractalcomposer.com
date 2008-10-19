@@ -51,6 +51,23 @@ class ExceptionNotifier < ActionMailer::Base
                   :rails_root => rails_root, :data => data,
                   :sections => sections })
   end
+  
+  def processor_exception_notification(exception, model)
+    content_type "text/plain"
+
+    subject    "#{email_prefix} Background Thread Exception (#{exception.class}) #{exception.message.inspect}"
+
+    recipients exception_recipients
+    from       sender_address
+    
+    data = {}
+    
+    body       data.merge({ :exception => exception,
+                  :backtrace => sanitize_backtrace(exception.backtrace),
+                  :rails_root => rails_root, 
+                  :model => model,
+                  :sections => ['backtrace']})
+  end
 
   private
 

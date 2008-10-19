@@ -1,0 +1,6 @@
+--- 
+  :address: smtp.gmail.com
+  :port: 587
+  :user_name: myron@fractalcomposer.com 
+  :password: 3.141592654
+  :authentication: :plain

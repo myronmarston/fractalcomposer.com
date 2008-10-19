@@ -8,7 +8,7 @@ class LibraryController < ApplicationController
   
   def view_piece
     if @user_submission      
-      if @user_submission.processing_completed.nil?        
+      unless @user_submission.processed?
         UserSubmissionProcessor.start_processor_if_necessary
         render :action => 'still_processing' 
       else
@@ -17,8 +17,7 @@ class LibraryController < ApplicationController
         @valid = (@comment ? @comment.valid? : true) # true is the default so we don't get error messages
         @comment ||= Comment.new                       
       end      
-    else
-      #TODO: test the status code
+    else      
       render :action => 'piece_not_found', :status => 404          
     end              
     

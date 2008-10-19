@@ -1,0 +1,10 @@
+A <%= @exception.class %> occurred in a background thread:
+
+  <%= @exception.message %>
+  <%= @backtrace.first %>
+
+<%= @sections.map { |section| render_section(section) }.join %>
+<% if @model -%>
+  <%= render :partial => 'title', :locals => { :title => 'Model' } %>
+  <%= inspect_model_object(@model) %>
+<% end -%>

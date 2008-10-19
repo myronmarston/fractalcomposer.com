@@ -17,6 +17,8 @@ class UserSubmission < ActiveRecord::Base
       
   generate_validations
   validates_email_format_of :email
+  
+  #TODO: remove the url validation, but make sure that XSS can't happen....
   validates_http_url :website 
   attr_accessor :is_website_tester  
   
@@ -77,7 +79,22 @@ class UserSubmission < ActiveRecord::Base
     UserSubmissionUniquePageView.page_view(self, ip_address)               
   end
   
+  def processed?
+    self.processing_completed &&      
+      user_submission_file_exists?(self.germ_image_file) && 
+      user_submission_file_exists?(self.germ_mp3_file) && 
+      user_submission_file_exists?(self.piece_image_file) && 
+      user_submission_file_exists?(self.piece_mp3_file) && 
+      user_submission_file_exists?(self.piece_pdf_file)
+  end
+  
   private
+  
+  def user_submission_file_exists?(filename)
+    filename = filename.to_s
+    filename = UserSubmission.get_local_filename(filename)
+    return File.exist?(filename)
+  end
   
   def process_save_file(extension, field)
     filename = get_base_filename + extension

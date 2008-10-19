@@ -1,4 +1,4 @@
-<div id="library-piece-wrap">
+<div id="library-piece-wrap" class="static-page-wrap">
   <div id="piece_title">
     <h3>
         <%= user_submission_title_by_name %>
@@ -25,9 +25,6 @@
 
     <br/><b>The Piece</b>: 
     <br/><%= render :partial => 'shared/mp3_player', :locals => {:mp3_file => @user_submission.piece_mp3_file} %>  
-    <br/>
-    Think you can improve this piece?  <%= link_to('Experiment with it', :controller => 'compose', :action => 'index', :user_submission_id => @user_submission) %>
-    <br />
     <%= link_to_function('Show Notation', 'return false;', :id => 'show-piece-image-link', :style => 'display: none') %>      
     <div id="piece-image-wrap">    
       <%= link_to_function('Hide Notation', 'return false;', :id => 'hide-piece-image-link', :style => 'display: none') %>          
@@ -36,9 +33,13 @@
     <%= javascript_tag(
       "Event.observe('hide-piece-image-link', 'click', function() { $('piece-image-wrap', 'hide-piece-image-link').invoke('hide'); $('show-piece-image-link').show(); });\n" +
       "Event.observe('show-piece-image-link', 'click', function() { $('piece-image-wrap', 'hide-piece-image-link').invoke('show'); $('show-piece-image-link').hide(); });\n" + 
-      "$('hide-piece-image-link', 'show-piece-image-link').invoke('show'); $('piece-image-wrap').hide();"
+      "$('hide-piece-image-link').show();"
     ) %>     
 
+  </div>
+  
+  <div style="text-align: center">
+    Think you can improve this piece?  <%= link_to('Experiment with it!', :controller => 'compose', :action => 'index', :user_submission_id => @user_submission) %>
   </div>
   <% is_valid_preview_comment = @comment.is_preview? && @valid %>
   <h3 id="comments-heading" class="section-heading"<%= (@user_submission.comments.size > 0 || is_valid_preview_comment ? '' : "style=\"display: none\"") %>>Comments</h3>

@@ -1,6 +1,6 @@
   <% url_hash = {:action => 'add_comment', :id => @user_submission} %>
   <% form_remote_tag :url => url_hash,
-                     :html => {:action => url_for(url_hash), :id => 'comment_form'},
+                     :html => {:action => url_for(url_hash), :id => 'comment_form', :class => 'rounded-corners'},
                      :before => "$('new_comment_spinner').show()",
                      :complete => "$('new_comment_spinner').hide()" do %> 
     <div id="comment-form-inner-wrap">

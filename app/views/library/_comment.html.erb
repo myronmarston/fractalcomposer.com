@@ -1,7 +1,7 @@
 <%
     div_id = comment.html_div_id
 %>
-<div class="comment-<%= (@odd_or_even_comment ||= nil) || cycle('odd', 'even') %>" id="<%= div_id %>">
+<div class="comment-<%= (@odd_or_even_comment ||= nil) || cycle('odd', 'even') %> rounded-corners" id="<%= div_id %>">
     <div class="comment-inner-wrap">
         <span class="comment-author-name">
             <b><%= link_to_unless(comment.website.nil? || comment.website == '',

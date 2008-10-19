@@ -20,4 +20,4 @@ config.action_view.cache_template_loading            = true
 
 require 'FractalComposer.jar'
 import com.myronmarston.music.MidiSoundbank
-MidiSoundbank.load(java.io.File.new('/usr/local/lib/midi_soundbanks/personal-copy.sf2'))
+MidiSoundbank.load(java.io.File.new('/usr/local/lib/midi_soundbanks/synthgms.sf2'))

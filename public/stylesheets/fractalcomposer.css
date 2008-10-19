@@ -351,6 +351,16 @@ div.ne_corner_wrap {
   margin: 0px 25px 15px 25px;
 }
 
+.rounded-corners {
+    -webkit-border-radius: 10px;    /* for Safari */
+    -moz-border-radius: 10px;       /* for Firefox */
+}
+
+
+#library-piece-wrap {
+    margin: 0px;
+}
+
 .comment-comment {
   color: #2361BA; 
 }

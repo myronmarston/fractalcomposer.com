@@ -3,12 +3,12 @@ PUBLIC_ROOT = if defined?($servlet_context)
    $servlet_context.getRealPath('/')
  else
    RAILS_ROOT + '/public'
- end
+ end unless defined? PUBLIC_ROOT
  
-PUBLIC_ROOT_WITHOUT_TRAILING_SLASH = PUBLIC_ROOT.chomp(File::SEPARATOR).chomp(File::ALT_SEPARATOR)
+PUBLIC_ROOT_WITHOUT_TRAILING_SLASH = PUBLIC_ROOT.chomp(File::SEPARATOR).chomp(File::ALT_SEPARATOR) unless defined? PUBLIC_ROOT_WITHOUT_TRAILING_SLASH
 
 LOCAL_ROOT = if ENV["RAILS_ENV"] == 'production'
-  '/var/www'
+  '/var/fractalcomposer'
 else
   PUBLIC_ROOT
-end
+end unless defined? LOCAL_ROOT
