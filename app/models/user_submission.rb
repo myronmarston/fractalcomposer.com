@@ -80,12 +80,22 @@ class UserSubmission < ActiveRecord::Base
   end
   
   def processed?
-    self.processing_completed &&      
-      user_submission_file_exists?(self.germ_image_file) && 
-      user_submission_file_exists?(self.germ_mp3_file) && 
+    processed = self.processing_completed                 &&      
+      user_submission_file_exists?(self.germ_image_file)  && 
+      user_submission_file_exists?(self.germ_mp3_file)    && 
       user_submission_file_exists?(self.piece_image_file) && 
-      user_submission_file_exists?(self.piece_mp3_file) && 
+      user_submission_file_exists?(self.piece_mp3_file)   && 
       user_submission_file_exists?(self.piece_pdf_file)
+    
+    unless processed
+      # the user submission processor only processes records with 'NULL' for processing_completed,
+      # so make sure it's null, and make sure the processor is started...
+    
+      self.update_attribute(:processing_completed, nil)
+      UserSubmissionProcessor.start_processor_if_necessary
+    end
+    
+    return processed
   end
   
   private
@@ -93,7 +103,7 @@ class UserSubmission < ActiveRecord::Base
   def user_submission_file_exists?(filename)
     filename = filename.to_s
     filename = UserSubmission.get_local_filename(filename)
-    return File.exist?(filename)
+    return File.exist?(filename) && File.file?(filename)
   end
   
   def process_save_file(extension, field)

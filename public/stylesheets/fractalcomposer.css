@@ -43,7 +43,7 @@ div.field-info {
     margin-left: 4px;
 }
 
-#piece_title {
+#main .piece_title {
     text-align: center;
 }
 
@@ -105,7 +105,7 @@ form#compose_form input.button {
     margin: 10px 20px;
 }
 
-.textbox, .comment-even, .comment-odd, #comment_errors, #comment_form {
+.textbox, .comment-even, .comment-odd, #comment_errors, #main .comment_form {
     border: 1px solid #9CC8F4;
 }
 
@@ -322,21 +322,21 @@ div.ne_corner_wrap {
     right: 40px
 }
 
-#piece_content {
+#main .piece_content {
     margin: 20px;
     text-align: center;
 }
 
-#comment-form-inner-wrap {
+#main .comment-form-inner-wrap {
     padding: 1px 20px 20px 20px;
     line-height: 0.5em;
 }
 
-#comment-form-inner-wrap div {
+#main .comment-form-inner-wrap div {
     margin-top: 20px;
 }
 
-#library-piece-wrap h3.section-heading {
+#main .library-piece-wrap h3.section-heading {
     margin-left: 40px;
     margin-bottom: -5px;
 }
@@ -351,13 +351,20 @@ div.ne_corner_wrap {
   margin: 0px 25px 15px 25px;
 }
 
-.rounded-corners {
+.rounded-corners, .tab_panel_body, .button, form#compose_form fieldset {
     -webkit-border-radius: 10px;    /* for Safari */
     -moz-border-radius: 10px;       /* for Firefox */
 }
 
+.rounded-tabs {
+    -webkit-border-top-left-radius: 10px;     /* for Safari */
+    -webkit-border-top-right-radius: 10px;    /* for Safari */
+    -moz-border-radius-topleft: 10px;        /* for Firefox */
+    -moz-border-radius-topright: 10px;       /* for Firefox */
+}
 
-#library-piece-wrap {
+
+#main .library-piece-wrap {
     margin: 0px;
 }
 
@@ -389,6 +396,7 @@ div.ne_corner_wrap {
 #comment_errors {
     margin: 10px;
     padding: 10px;    
+    line-height: 1.2em;
 }
 
 input.comment-form-button {
@@ -420,13 +428,12 @@ http://css.maxdesign.com.au/listamatic/horizontal08.htm
 
 .tablist
 {
-border-bottom: 1px solid #ccc;
 margin: 0;
 padding-bottom: 23px;
 padding-left: 10px;
 }
 
-.tablist ul, .tablist li
+#main .tablist ul, #main .tablist li
 {
 display: inline;
 list-style-type: none;
@@ -434,7 +441,7 @@ margin: 0;
 padding: 0;
 }
 
-.tablist a:link, .tablist a:visited
+#main .tablist a:link, #main .tablist a:visited
 {
 border: 1px solid #BBB;
 background: #DDD; /*transparent*/
@@ -451,7 +458,7 @@ color: #3B5E0B;
 height: 18px;
 }
 
-.tablist a:link.current, .tablist a:visited.current
+#main .tablist a:link.current, #main .tablist a:visited.current
 {
 border-bottom: 1px solid transparent;/*#F4F8FD;*/
 color: #f00;
@@ -464,11 +471,16 @@ background-color: #E5EFF9;
 
 div.tab_panel_body {
     /* margin-top: -1px; to make the border overlap with the border of the tabs */
-    border-left: 1px solid #CCCCCC;
+    /*border-left: 1px solid #CCCCCC;
     border-bottom: 1px solid #CCCCCC;
-    border-right: 1px solid #CCCCCC;  
-    background-color: #E5EFF9;
+    border-right: 1px solid #CCCCCC;*/
+    border: 1px solid #CCCCCC;
+    background-color: transparent;
     position: relative; /* so we can use absolute positioning on inner elements */
+}
+
+#compose_form_wrap div.tab_panel_body {
+    background-color: #E5EFF9;
 }
 
 div.tab_panel_body fieldset, div.tab_panel_body div.info, #submit_to_library_result {

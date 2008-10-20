@@ -21,8 +21,8 @@ module LibraryHelper
     end
     
     star_or_stars = (num == 1 ? 'star' : 'stars')
-    id = "rate_link_#{num}"
-    url_hash = { :action => :rate, :id => @user_submission, :rating => num }
+    id = "rate_link_#{num}_#{@user_submission.id}"
+    url_hash = { :controller => :library, :action => :rate, :id => @user_submission, :rating => num }
     link = link_to(num.to_s, url_hash,
         {:id => id,
          :class => "#{num_spelled_out}-#{star_or_stars}", 
@@ -30,7 +30,7 @@ module LibraryHelper
          :onclick => 'return false;'
         })
     
-    js = "Event.observe('#{id}', 'click', function() {#{remote_function(:url => url_hash, :before => "$('star_rating_spinner').show()", :complete => "$('star_rating_spinner').hide()")};})"
+    js = "Event.observe('#{id}', 'click', function() {#{remote_function(:url => url_hash, :before => "$('star_rating_spinner_#{@user_submission.id}').show()", :complete => "$('star_rating_spinner_#{@user_submission.id}').hide()")};})"
     
     <<-EOS
     <li>
@@ -45,7 +45,7 @@ module LibraryHelper
   end
   
   def comment_form_button_js(id)
-    javascript_tag("Event.observe('#{id}', 'click', function() { $('clicked_button').value = $('#{id}').value; });")
+    javascript_tag("Event.observe('#{id}', 'click', function() { $('clicked_button_#{@user_submission.id}').value = $('#{id}').value; });")
   end
   
 end

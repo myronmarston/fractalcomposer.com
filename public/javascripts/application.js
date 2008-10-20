@@ -1,6 +1,13 @@
 // Place your application-specific JavaScript functions and classes here
 // This file is automatically included by javascript_include_tag :defaults
 
+function switch_tab(tab_id, all_tab_ids) {
+    all_tab_ids.each (function(id) {
+        $(id).hide();
+    });
+    $(tab_id).show();    
+}
+
 function LW$(id) {
   var lw_element = $('lightwindow_contents');
   if (lw_element == null) return $(id);
@@ -26,11 +33,4 @@ function create_live_validation_field_basic(id, delay, validations) {
   });  
        
   return validator;
-}
-
-function create_rounded_corners(id) {
-  // the border is set for when javascript is disabled, but we want to disable
-  // it and replace it with the rico rounded corner with border.
-  $(id).setStyle({border: 'none'});
-  Rico.Corner.round($(id), {bgColor: '#ffffff', border: '#9cc8f4;'});
 }

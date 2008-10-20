@@ -292,18 +292,28 @@ module ComposeHelper
   end
   
   def get_tab_click_handler(from_panel_div_id, to_panel_div_id, tab_link_id)     
-    js = <<-EOS    
-    function() {
-      if (check_field_validity(function(f) { 
-            return f.get('owning_panel_id') == '#{from_panel_div_id}'; 
-      })) {
-          switch_tab('#{to_panel_div_id}', ['piece_settings', 'voices', 'sections']);
-          #{get_additional_tab_javascript(from_panel_div_id)}
-      } 
+    # yes, this is a hack...
+    js = if (params[:action] == 'examples')
+      <<-EOS          
+      function() {
+        switch_tab('#{to_panel_div_id}', ['example_1', 'example_2']);    
+        return false;    
+      }
+      EOS
+    else   
+      <<-EOS    
+      function() {
+        if (check_field_validity(function(f) { 
+              return f.get('owning_panel_id') == '#{from_panel_div_id}'; 
+        })) {
+            switch_tab('#{to_panel_div_id}', ['piece_settings', 'voices', 'sections']);
+            #{get_additional_tab_javascript(from_panel_div_id)}
+        } 
 
-      return false;    
-    }
-    EOS
+        return false;    
+      }
+      EOS
+    end
     
     javascript_tag("Event.observe('#{tab_link_id}', 'click', #{js})")
   end    

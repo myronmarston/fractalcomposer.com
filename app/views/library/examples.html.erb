@@ -1,0 +1,21 @@
+<%
+  div_ids = ['example_1', 'example_2']
+  div_names = @examples.map(&:title)
+  index_of_piece_to_show = div_ids.index(params[:tab]) || 0
+-%>
+<div>      
+  <% div_ids.each_with_index do |label, index| -%>
+      <div id="<%= label %>" style="display:<%= if index == index_of_piece_to_show then 'block' else 'none' end %>;">        
+        <%= render :partial => 'compose/tabpanel_list',
+                   :locals => {
+                      :div_ids => div_ids,                      
+                      :div_names => div_names,
+                      :div_current => label } %>
+        <div class="tab_panel_body">
+          <% @user_submission = @examples[index] %>
+          
+          <%= render :partial => 'piece' %>
+        </div>
+      </div>
+  <% end -%>  
+</div>  

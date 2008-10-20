@@ -4,10 +4,11 @@
     div_id = div_ids[i]
     link_id = "#{div_current}_#{div_id}_tab_link"
     is_current_div = (div_current == div_id)
-    class_str = (is_current_div ? ' class="current"' : '')
+    extra_class = (is_current_div ? ' current' : '')
+    tab_param = (div_id == div_current ? nil : div_id)
 -%>
   <li>
-      <a id="<%= link_id %>"<%= class_str %> href="#" onclick="return false;">
+      <a id="<%= link_id %>" class="rounded-tabs<%= extra_class %>" href="<%= url_for(:overwrite_params => {:tab => tab_param}) %> " onclick="return false;">
           <%= div_names[i] %>
       </a>
       <%= get_tab_click_handler(div_current, div_id, link_id) unless is_current_div %>

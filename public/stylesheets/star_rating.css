@@ -7,7 +7,7 @@
 .star-rating .current-rating{
   background: url(/images/star_rating.gif) left -1000px repeat-x;
 }
-#star-rating-wrap .star-rating{
+#main .star-rating-wrap .star-rating{
   position:relative;
   width:150px;
   height:30px;

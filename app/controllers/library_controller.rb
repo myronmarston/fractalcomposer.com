@@ -1,27 +1,35 @@
 class LibraryController < ApplicationController
+  EXAMPLE_IDS = [1, 2] unless defined? EXAMPLE_IDS
   before_filter :load_user_submission
-  before_filter :setup_negative_captcha, :only => [:view_piece, :add_comment]
+  before_filter :setup_negative_captcha, :only => [:view_piece, :add_comment, :examples]
   
   def index
     @user_submissions = UserSubmission.find(:all, :conditions => 'processing_completed IS NOT NULL', :order => 'updated_at DESC')
   end
   
-  def view_piece
+  def examples
+    @examples = UserSubmission.find(:all, :order => 'id', :conditions => { :id => EXAMPLE_IDS } )
+    @examples.each {|e| UserSubmissionProcessor.start_processor_if_necessary unless e.processed?}
+    @comment = flash[:comment]
+    @valid = (@comment ? @comment.valid? : true) # true is the default so we don't get error messages
+    @comment ||= Comment.new                               
+  end
+  
+  def view_piece        
     if @user_submission      
-      unless @user_submission.processed?
-        UserSubmissionProcessor.start_processor_if_necessary
-        render :action => 'still_processing' 
-      else
-        @user_submission.page_view(request.remote_ip)
-        @comment = flash[:comment]
-        @valid = (@comment ? @comment.valid? : true) # true is the default so we don't get error messages
-        @comment ||= Comment.new                       
-      end      
+        if EXAMPLE_IDS.include?(@user_submission.id)
+          example_index = EXAMPLE_IDS.index(@user_submission.id) + 1
+          tab = example_index == 1 ? nil : "example_#{example_index}"
+          redirect_to :action => :examples, :tab => tab
+        else
+          @user_submission.page_view(request.remote_ip)
+          @comment = flash[:comment]
+          @valid = (@comment ? @comment.valid? : true) # true is the default so we don't get error messages
+          @comment ||= Comment.new                                             
+        end        
     else      
       render :action => 'piece_not_found', :status => 404          
-    end              
-    
-    # just render the view_piece template...
+    end                  
   end
   
   def rate    

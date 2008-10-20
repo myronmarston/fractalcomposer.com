@@ -1,1 +1,1 @@
-page.replace 'star-rating-wrap', :partial => 'star_rating'
+page.replace "star-rating-wrap_#{@user_submission.id}", :partial => 'star_rating'

@@ -9,7 +9,7 @@
 
 NEGATIVE_CAPTCHA_SECRET = '2c361596b4a1b6541d28a44ddeab3d7a6f1239664ff678363c32656b4c7e970de89cace1acdd88a7a226503b84ce865e5cdf5e6b6e552e7033e368531fc73e03' unless defined? NEGATIVE_CAPTCHA_SECRET
 
-STATIC_PAGES = %w{about examples acknowledgements} unless defined? STATIC_PAGES
+STATIC_PAGES = %w{about acknowledgements} unless defined? STATIC_PAGES
 
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')

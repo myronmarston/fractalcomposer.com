@@ -42,9 +42,9 @@ module ApplicationHelper
     [
       {:name => 'Home', :options => {:controller => 'static_page', :page => 'home'}, :is_current => Proc.new {|opt| current_page? opt}},
       {:name => 'About', :options => {:controller => 'static_page', :page => 'about'}, :is_current => Proc.new {|opt| current_page? opt}},      
-      {:name => 'Examples', :options => {:controller => 'static_page', :page => 'examples'}, :is_current => Proc.new {|opt| current_page? opt}},
+      {:name => 'Examples', :options => {:controller => 'library', :action => 'examples'}, :is_current => Proc.new {|opt| opt[:controller] == params[:controller] && params[:action].to_s == 'examples' }},
       {:name => 'Compose', :options => {:controller => 'compose'}, :is_current => Proc.new {|opt| opt[:controller] == params[:controller]}},
-      {:name => 'Library', :options => {:controller => 'library'}, :is_current => Proc.new {|opt| opt[:controller] == params[:controller]}},
+      {:name => 'Library', :options => {:controller => 'library'}, :is_current => Proc.new {|opt| opt[:controller] == params[:controller] && params[:action].to_s != 'examples' }},
       {:name => 'Acknowledgements', :options => {:controller => 'static_page', :page => 'acknowledgements'}, :is_current => Proc.new {|opt| current_page? opt}}      
     ]
   end

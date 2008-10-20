@@ -48,11 +48,6 @@ function validateVolumeAdjustmentFraction(valueToValidate, args) {
     return true;
 }
 
-function switch_tab(tab_id) {
-    $('piece_settings', 'voices', 'sections').invoke('hide');
-    $(tab_id).show();    
-}
-
 function performAdvancedOptionsToggle() {    
     var elements = [$('piece_settings_voices_tab_link'), $('piece_settings_sections_tab_link')];
     if ($('advanced_options_toggle').getValue() == null) {      

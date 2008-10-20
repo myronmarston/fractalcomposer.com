@@ -1,9 +1,10 @@
+  <% new_comment_spinner_id = "new_comment_spinner_#{@user_submission.id}" %>
   <% url_hash = {:action => 'add_comment', :id => @user_submission} %>
   <% form_remote_tag :url => url_hash,
-                     :html => {:action => url_for(url_hash), :id => 'comment_form', :class => 'rounded-corners'},
-                     :before => "$('new_comment_spinner').show()",
-                     :complete => "$('new_comment_spinner').hide()" do %> 
-    <div id="comment-form-inner-wrap">
+                     :html => {:action => url_for(url_hash), :id => "comment_form_#{@user_submission.id}", :class => 'rounded-corners comment_form'},
+                     :before => "$('#{new_comment_spinner_id}').show()",
+                     :complete => "$('#{new_comment_spinner_id}').hide()" do %> 
+    <div class="comment-form-inner-wrap">
 
       <% unless @valid -%>  
           <div id="comment_errors">
@@ -14,62 +15,57 @@
       <% end -%>
 
       <div>
-        <%= negative_captcha(@captcha) %>      	  		
-        <label for="name">
+        <%= negative_captcha(@captcha, "_#{@user_submission.id}") %>      	  		
+        <label for="name_<%= @user_submission.id %>">
           <strong>Name</strong> (required)         
         </label>
-        <%= negative_text_field_tag @captcha, :name, @comment.name, :size => 35, :maxlength => 80, :class => 'textbox' %>              
+        <%= negative_text_field_tag @captcha, :name, @comment.name, :size => 35, :maxlength => 80, :class => 'textbox', :id_suffix => "_#{@user_submission.id}" %>
       </div>
 
       <div>
-        <label for="email">
+        <label for="email_<%= @user_submission.id %>">
           <strong>Email</strong> (required, but will not be displayed)         
         </label>
-        <%= negative_text_field_tag @captcha, :email, @comment.email, :size => 35, :class => 'textbox' %>              
+        <%= negative_text_field_tag @captcha, :email, @comment.email, :size => 35, :class => 'textbox', :id_suffix => "_#{@user_submission.id}" %>              
       </div>
 
       <div>
-        <label for="website">
+        <label for="website_<%= @user_submission.id %>">
           <strong>Website</strong> (optional)
         </label>
-        <%= negative_text_field_tag @captcha, :website, @comment.website, :size => 35, :class => 'textbox' %>      
+        <%= negative_text_field_tag @captcha, :website, @comment.website, :size => 35, :class => 'textbox', :id_suffix => "_#{@user_submission.id}" %>      
       </div>
 
       <div>
-        <label for="comment">
+        <label for="comment_<%= @user_submission.id %>">
           <strong>Comment</strong> (required)        
         </label>            
-        <%
-        #
-      %>
-        <%= negative_text_area_tag @captcha, :comment, @comment.comment, :rows => 10, :cols => 71, :class => 'textbox' %>        
+        
+        <%= negative_text_area_tag @captcha, :comment, @comment.comment, :rows => 10, :cols => 71, :class => 'textbox', :id_suffix => "_#{@user_submission.id}" %>        
         <br />
         <br />You can use some HTML tags, such as <%= 'none' %>.      
       </div>
 
       <div>
-        <%= hidden_field_tag 'clicked_button', '' %>
+        <%= hidden_field_tag 'clicked_button', '', :id => "clicked_button_#{@user_submission.id}" %>
         
         <%= submit_tag "Post Comment", 
             :class => 'button comment-form-button', 
-            :id => 'post_comment_button' %>        
+            :id => "post_comment_button_#{@user_submission.id}" %>        
 
         <%= submit_tag "Preview", 
             :class => 'button comment-form-button', 
-            :id => 'preview_button' %>        
+            :id => "preview_button_#{@user_submission.id}" %>        
 
-        <%= render :file => 'compose/_spinner', :use_full_path => true, :locals => {:display => 'none', :div_id => 'new_comment_spinner'} %>                
+        <%= render :file => 'compose/_spinner', :use_full_path => true, :locals => {:display => 'none', :div_id => new_comment_spinner_id } %>                
     </div>
   </div>
 <% end %>
 
 <%= javascript_tag(
-  # for some reason, the rounded corners javascript prevents any javascript that comes before it from working,
-  # so put everything else after it...
-  "create_rounded_corners('comment_form');" +    
-  "create_live_validation_field_basic('#{@captcha.fields[:name]}', #{ComposeHelper::LIVE_VALIDATION_DELAY}, [{type: Validate.Presence, args: {} }]);" +
-  "create_live_validation_field_basic('#{@captcha.fields[:email]}', #{ComposeHelper::LIVE_VALIDATION_DELAY}, [{type: Validate.Presence, args: {} }, {type: Validate.Email, args: {} }]);" +
-  "create_live_validation_field_basic('#{@captcha.fields[:comment]}', #{ComposeHelper::LIVE_VALIDATION_DELAY}, [{type: Validate.Presence, args: {} }]);"
+  "create_live_validation_field_basic('#{@captcha.fields[:name]}_#{@user_submission.id}', #{ComposeHelper::LIVE_VALIDATION_DELAY}, [{type: Validate.Presence, args: {} }]);" +
+  "create_live_validation_field_basic('#{@captcha.fields[:email]}_#{@user_submission.id}', #{ComposeHelper::LIVE_VALIDATION_DELAY}, [{type: Validate.Presence, args: {} }, {type: Validate.Email, args: {} }]);" +
+  "create_live_validation_field_basic('#{@captcha.fields[:comment]}_#{@user_submission.id}', #{ComposeHelper::LIVE_VALIDATION_DELAY}, [{type: Validate.Presence, args: {} }]);"
 ) %>            
-<%= comment_form_button_js('post_comment_button') %>
-<%= comment_form_button_js('preview_button') %>
+<%= comment_form_button_js("post_comment_button_#{@user_submission.id}") %>
+<%= comment_form_button_js("preview_button_#{@user_submission.id}") %>

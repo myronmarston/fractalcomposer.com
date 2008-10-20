@@ -1,19 +1,20 @@
+preview_comment_dom_id = "preview_comment_#{@user_submission.id}"
 if @comment.is_preview? && @valid
-  page.replace_html('preview_comment', :partial => 'comment', :locals => {:comment => @comment})    
+  page.replace_html(preview_comment_dom_id, :partial => 'comment', :locals => {:comment => @comment})    
   #todo: figure out the proper visual effect
-  page.visual_effect(:appear, 'preview_comment')
+  page.visual_effect(:appear, preview_comment_dom_id)
 else
-  page.replace_html('preview_comment', '')
+  page.replace_html(preview_comment_dom_id, '')
 end
 
 if !@comment.is_preview? && @valid  
-  page.insert_html(:before, 'preview_comment', :partial => 'comment', :locals => {:comment => @comment})
+  page.insert_html(:before, preview_comment_dom_id, :partial => 'comment', :locals => {:comment => @comment})
   #todo: visual effect here, too...
   page.visual_effect(:appear, @comment.html_div_id)
-  page.show 'comments-heading'
+  page.show "comments-heading_#{@user_submission.id}"
     
   # clear the comment before we render the comment form...
   @comment = Comment.new
 end
 
-page.replace('comment_form', :partial => 'comment_form')
+page.replace("comment_form_#{@user_submission.id}", :partial => 'comment_form')
