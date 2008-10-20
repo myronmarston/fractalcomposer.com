@@ -11,6 +11,8 @@ Warbler::Config.new do |config|
   config.includes = FileList["sun-web.xml"] 
 
   # Additional files/directories to exclude
+  # excluded because the production server has its own user_generated_files directory
+  # that we don't want to stomp when we deploy.
   config.excludes = FileList["public/user_generated_files"]
 
   # Additional Java .jar files to include.  Note that if .jar files are placed
@@ -33,7 +35,7 @@ Warbler::Config.new do |config|
   # The Rails gems are included by default unless the vendor/rails directory is present.
   # config.gems += ["activerecord-jdbcmysql-adapter", "jruby-openssl"]
   # config.gems << "tzinfo"
-  config.gems = ["activerecord-jdbc-adapter", "ActiveRecord-JDBC", "dr_nic_magic_models"]
+  config.gems = ["activerecord-jdbc-adapter", "ActiveRecord-JDBC", "dr_nic_magic_models", "jruby-openssl"]
   # Uncomment this if you don't want to package rails gem.
   # config.gems -= ["rails"]
 
