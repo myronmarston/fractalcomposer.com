@@ -28,15 +28,22 @@
 
     <br/><b>The Piece</b>: 
     <br/><%= render :partial => 'shared/mp3_player', :locals => {:mp3_file => @user_submission.piece_mp3_file} %>  
-    <%= link_to_function('Show Notation', 'return false;', :id => "show-piece-image-link_#{@user_submission.id}", :style => 'display: none') %>      
+    <%
+        # We handle both cases with and without javascript here.
+        # Without javascript, we want to show the notation image, and hide the show/hide links...so this is the initial state.
+        # With javascript, we want to hide the notation image, and show the "show notation" link.
+    %>
+    <%= link_to_function('Show Notation', 'return false;', :id => "show-piece-image-link_#{@user_submission.id}", :style => 'display: none' ) %>      
     <div id="piece-image-wrap_<%= @user_submission.id %>">    
       <%= link_to_function('Hide Notation', 'return false;', :id => "hide-piece-image-link_#{@user_submission.id}", :style => 'display: none') %>          
       <%= image_tag(@user_submission.piece_image_file) %>
     </div>
     <%= javascript_tag(
-      "Event.observe('hide-piece-image-link_#{@user_submission.id}', 'click', function() { $('piece-image-wrap_#{@user_submission.id}', 'hide-piece-image-link_#{@user_submission.id}').invoke('hide'); $('show-piece-image-link_#{@user_submission.id}').show(); });\n" +
-      "Event.observe('show-piece-image-link_#{@user_submission.id}', 'click', function() { $('piece-image-wrap_#{@user_submission.id}', 'hide-piece-image-link_#{@user_submission.id}').invoke('show'); $('show-piece-image-link_#{@user_submission.id}').hide(); });\n" + 
-      "$('hide-piece-image-link_#{@user_submission.id}').show();"
+      "Event.observe('hide-piece-image-link_#{@user_submission.id}', 'click', function() { $('piece-image-wrap_#{@user_submission.id}').hide(); $('show-piece-image-link_#{@user_submission.id}').show(); });\n" +
+      "Event.observe('show-piece-image-link_#{@user_submission.id}', 'click', function() { $('piece-image-wrap_#{@user_submission.id}').show(); $('show-piece-image-link_#{@user_submission.id}').hide(); });\n" +
+      "$('piece-image-wrap_#{@user_submission.id}').hide();" +
+      "$('hide-piece-image-link_#{@user_submission.id}').show();" +
+      "$('show-piece-image-link_#{@user_submission.id}').show();"
     ) %>     
 
   </div>
