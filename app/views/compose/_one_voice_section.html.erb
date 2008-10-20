@@ -12,8 +12,7 @@
 -%>
   
 <% render :layout => 'togglable_fieldset_wrapper', 
-          :locals => {:link_text => description, 
-                      :fieldset_class => 'relative_positioned',
+          :locals => {:link_text => description,                       
                       :id_prefix => @voice_section_input_id_prefix,
                       :before_yield_identifier => listen_button_identifier,
                       :show_fieldset_initially => false } do %>   

@@ -4,24 +4,24 @@
     input_name_prefix_sss = "#{voice_settings_input_name_prefix}[self_similarity_settings]"
     input_id_prefix_sss = sanatize_input_id(input_name_prefix_sss)
 -%>
-<div class="voice_or_section_settings" style="position: relative">
+<div class="voice_or_section_settings">
 
 <%= render :partial => 'voice_or_section_common_settings', 
            :locals => {:settings_input_name_prefix => voice_settings_input_name_prefix,
                        :settings => settings,
                        :override_checkbox_id => override_checkbox_id,
-                       :panel_div_id => panel_div_id} %>
+                       :panel_div_id => panel_div_id } %>
 
-<% iterations_id = "#{input_id_prefix_sss}_self_similarity_iterations" %>
-<% field_wrap(iterations_id, 'Self-Similarity Iterations', '', iterations_id, true, panel_div_id, @voice_or_section_id, "Self-Similarity Iterations (#{@current_item_description})", override_checkbox_id,
-      "{type: Validate.Presence, args: {}}, {type: Validate.Numericality, args: { onlyInteger: true, minimum: 1, maximum: 9, notANumberMessage: 'Must be an integer!' }}") do %>  
-  <%= text_field_tag "#{input_name_prefix_sss}[self_similarity_iterations]", self_similarity_settings.getSelfSimilarityIterations, :size => 2, :id => iterations_id, :class => 'textbox' %>
-<% end %>
+<%# iterations_id = "#{input_id_prefix_sss}_self_similarity_iterations" %>
+<%# field_wrap(iterations_id, 'Self-Similarity Iterations', '', iterations_id, true, panel_div_id, @voice_or_section_id, "Self-Similarity Iterations (#{@current_item_description})", override_checkbox_id,
+  #    "{type: Validate.Presence, args: {}}, {type: Validate.Numericality, args: { onlyInteger: true, minimum: 1, maximum: 9, notANumberMessage: 'Must be an integer!' }}") do %>  
+  <%#= text_field_tag "#{input_name_prefix_sss}[self_similarity_iterations]", self_similarity_settings.getSelfSimilarityIterations, :size => 2, :id => iterations_id, :class => 'textbox' %>
+<%# end %>
 
 <fieldset class="self_similarity_settings_fieldset">
     <legend>Apply Self-Similarity To</legend>
     <div class="fieldset_content">
-        <%= info('self-similarity', input_id_prefix_sss, nil, 'position: absolute; right: -17px; top: -14px') %>
+        <%= info('self-similarity', input_id_prefix_sss, nil, 'float: right; margin-top: -6px; margin-right: -16px;') %>
         <br /><!--This br is present to make sure this fieldset is tall enough-->
         <%= hidden_field_tag "#{input_name_prefix_sss}[ignore]", 'ensure have hash', :id => "#{input_id_prefix_sss}_ignore" %>
         <div class="self_similarity_settings_field_1">

@@ -2,7 +2,8 @@
   <% render :layout => 'togglable_fieldset_wrapper', 
           :locals => {:link_text => "#{settings_type.titleize} Settings", 
                       :id_prefix => "#{@voice_section_input_id_prefix}_#{settings_type.downcase}_settings", 
-                      :show_fieldset_initially => true } do %> 
+                      :show_fieldset_initially => true,
+                      :fieldset_class => 'voice_section_overriden_settings' } do %> 
 
       <%= render :partial => "#{settings_type.downcase}_settings",
                  :locals => {:settings => settings, 

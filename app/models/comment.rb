@@ -90,7 +90,7 @@ class Comment < ActiveRecord::Base
   end 
   
   def html_div_id
-    self.is_preview? ? "comment_preview" : "comment_#{self.id}"
+    self.is_preview? ? "posted_comment_preview" : "posted_comment_#{self.id}"
   end
   
   def hpricoted_comment
