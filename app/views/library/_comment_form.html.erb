@@ -7,7 +7,7 @@
     <div class="comment-form-inner-wrap">
 
       <% unless @valid -%>  
-          <div id="comment_errors">
+          <div id="comment_errors" class="rounded-corners">
             <h3>There was a problem with your comment.</h3>
             <p>Please review the following errors:</p>
             <%= error_messages_for(:comment) %>   

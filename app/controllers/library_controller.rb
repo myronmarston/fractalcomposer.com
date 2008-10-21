@@ -20,6 +20,7 @@ class LibraryController < ApplicationController
         if EXAMPLE_IDS.include?(@user_submission.id)
           example_index = EXAMPLE_IDS.index(@user_submission.id) + 1
           tab = example_index == 1 ? nil : "example_#{example_index}"
+          flash.keep
           redirect_to :action => :examples, :tab => tab
         else
           @user_submission.page_view(request.remote_ip)
