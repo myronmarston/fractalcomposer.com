@@ -97,7 +97,7 @@ class UserSubmission < ActiveRecord::Base
     
     return processed
   end
-  
+    
   private
   
   def user_submission_file_exists?(filename)

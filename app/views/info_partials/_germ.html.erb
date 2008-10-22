@@ -21,7 +21,7 @@
       Society of America’s octave designation system</a> is used. Each octave runs 
       from C to B. C4 to B4 is the octave from middle C to the B above middle C.
     </li>
-    <li>
+    <li>    
       Duration Fraction (optional): A fraction indicating how long the note should last. 
       For example, 1/4 indicates a quarter note, 3/8 a dotted quarter note and 
       1/12 indicates one note of an eighth note triplet. If no duration is given, 
@@ -34,3 +34,11 @@
       note is used. The first note will be MF if no volume is given.
     </li>
 </ul>
+
+<p>
+  Still confused?  It may be easier to <%= link_to_remote(
+        "use someone else's germ", 
+        :url => {:action => 'get_random_germ_xhr'},
+        :success => "$('germ').value = request.transport.responseText; myLightWindow.deactivate()"
+    ) %> and then modify it to create your own.
+</p>

@@ -74,6 +74,13 @@ class ComposeController < ApplicationController
     respond_to { |format| format.js }    
   end
   
+  def get_random_germ_xhr
+    @fractal_piece.setGermString(GeneratedPiece.random_germ)
+    respond_to do |format| 
+      format.js { render :text => @fractal_piece.getGermString  }
+    end
+  end
+  
   def get_voice_sections_xhr      
     @voice_or_section_div_id = params[:voice_or_section_div_id]
     @voices_or_sections_label = params[:voices_or_sections]    
