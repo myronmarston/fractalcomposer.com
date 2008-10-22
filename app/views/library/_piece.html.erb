@@ -1,7 +1,11 @@
 <% 
     @generating_feed ||= false
+    div_style = @generating_feed ? 'style="text-align: center"' : ''
+    # it's a little hackish, but all partials on this page
+    # must be rendered with the full file name (xxxx.html.erb) in order
+    # for it to work in the rss feed.
 -%>
-<div class="static-page-wrap library-piece-wrap">
+<div class="static-page-wrap library-piece-wrap"<%= div_style %>>
 <% unless @user_submission.processed? -%>
   <%= render :partial => 'still_processing' %>
 <% else -%>
@@ -28,19 +32,23 @@
 
     <br/>
     <b>The Germ</b>: 
-    <br/><%= render :partial => 'shared/mp3_player', :locals => {:mp3_file => @user_submission.germ_mp3_file} %>  
+    <br/><%= render :partial => 'shared/mp3_player.html.erb', :locals => {:mp3_file => @user_submission.germ_mp3_file} %>  
     <br/><%= image_tag(@user_submission.germ_image_file) %>
 
     <br/><b>The Piece</b>: 
-    <br/><%= render :partial => 'shared/mp3_player', :locals => {:mp3_file => @user_submission.piece_mp3_file} %>  
+    <br/><%= render :partial => 'shared/mp3_player.html.erb', :locals => {:mp3_file => @user_submission.piece_mp3_file} %>  
     <%
         # We handle both cases with and without javascript here.
         # Without javascript, we want to show the notation image, and hide the show/hide links...so this is the initial state.
         # With javascript, we want to hide the notation image, and show the "show notation" link.
     %>
-    <%= link_to_function('Show Notation', 'return false;', :id => "show-piece-image-link_#{@user_submission.id}", :style => 'display: none' ) %>      
+    <%= link_to_function('Show Notation', 'return false;', 
+          :id => "show-piece-image-link_#{@user_submission.id}", 
+          :style => 'display: none' ) unless @generating_feed %>      
     <div id="piece-image-wrap_<%= @user_submission.id %>">    
-      <%= link_to_function('Hide Notation', 'return false;', :id => "hide-piece-image-link_#{@user_submission.id}", :style => 'display: none') %>          
+      <%= link_to_function('Hide Notation', 'return false;', 
+          :id => "hide-piece-image-link_#{@user_submission.id}", 
+          :style => 'display: none' ) unless @generating_feed %>          
       <%= image_tag(@user_submission.piece_image_file) %>
     </div>
     <% unless @generating_feed %>
@@ -72,6 +80,6 @@
     <%= render :partial => 'comment_form' %>
   <% end -%>
 
-  <%= render :partial => 'creative_commons_license' %>
+  <%= render :partial => 'creative_commons_license.html.erb' %>
 <% end -%>
 </div>

@@ -12,7 +12,6 @@
     <%= stylesheet_link_tag 'lightwindow' %>
     <%= stylesheet_link_tag 'star_rating' %>  
     <%= auto_discovery_link_tag(:rss,  { :controller => 'library', :action => 'index', :format => 'rss' }) %>      
-    <%= auto_discovery_link_tag(:atom, { :controller => 'library', :action => 'index', :format => 'atom' }) %>      
     <%= yield :additional_head_includes %>    
 </head>
 

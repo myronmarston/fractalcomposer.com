@@ -4,7 +4,23 @@ class LibraryController < ApplicationController
   before_filter :setup_negative_captcha, :only => [:view_piece, :add_comment, :examples]
   
   def index
-    @user_submissions = UserSubmission.find(:all, :conditions => 'processing_completed IS NOT NULL', :order => 'updated_at DESC')
+    @user_submissions = UserSubmission.find(:all, :conditions => 'processing_completed IS NOT NULL', :order => 'updated_at DESC')        
+  end
+  
+  def feed
+    @user_submissions = UserSubmission.find(:all, 
+      :conditions => 'processing_completed IS NOT NULL', 
+      :order => 'updated_at DESC',
+      :limit => 20)    
+
+    # filter out unprocessed pieces...    
+    @user_submissions = @user_submissions.select { |u| u.processed? }    
+
+    @generating_feed = true
+
+    respond_to do |format| 
+      format.rss
+    end    
   end
   
   def examples

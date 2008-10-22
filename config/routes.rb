@@ -35,7 +35,7 @@ ActionController::Routing::Routes.draw do |map|
   map.connect ':page/', :controller => 'static_page', :requirements => { :page => /(#{STATIC_PAGES.join('|')})/i }
 
   map.connect 'examples/', :controller => 'library', :action => 'examples'  
-  map.connect 'library/feed.:format', :controller => 'library', :action => 'index', :conditions => { :method => :get }, :requirements => { :format => /atom|rss/ }
+  map.connect 'library/feed.:format', :controller => 'library', :action => 'feed', :conditions => { :method => :get }, :requirements => { :format => /rss/ }
   map.connect 'library/', :controller => 'library', :action => 'index'  
   map.connect 'library/:id', :controller => 'library', :action => 'view_piece'  
   
