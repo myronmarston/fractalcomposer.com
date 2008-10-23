@@ -52,5 +52,22 @@ module ApplicationHelper
   def music_example(file, text = '')
     render :partial => 'shared/music_example', :locals => { :file => file, :text => text }
   end
+  
+  def ie_message
+    if request.user_agent =~ /msie/i
+      <<-EOS      
+        <p>
+          It appears that you are using Microsoft's Internet Explorer.  IE is not a standards-compliant
+          browser and is not yet fully supported by this website.  Please download and use
+          <a href="http://www.mozilla.com/en-US/firefox/">Firefox</a>, 
+          <a href="http://www.apple.com/safari/">Safari</a>,
+          <a href="http://www.google.com/chrome">Chrome</a> or 
+          <a href="http://www.opera.com/">Opera</a>.
+
+          You can continue, but things will not look good :(.
+        </p>
+      EOS
+    end    
+  end
 
 end
