@@ -11,6 +11,8 @@ NEGATIVE_CAPTCHA_SECRET = '2c361596b4a1b6541d28a44ddeab3d7a6f1239664ff678363c326
 
 STATIC_PAGES = %w{about acknowledgements} unless defined? STATIC_PAGES
 
+LICENSE_URL = 'http://creativecommons.org/licenses/by-sa/3.0/' unless defined? LICENSE_URL
+
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
 
@@ -85,3 +87,4 @@ ExceptionNotifier.email_prefix = "[fractalcomposer Error] "
 
 require 'dr_nic_magic_models'
 require 'string_extensions'
+require 'lib/atom_feed_helper'

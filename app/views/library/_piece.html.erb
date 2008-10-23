@@ -1,6 +1,8 @@
 <% 
+    # this partial needs to generate full URLs so that they can be used in the feeds
+    
     @generating_feed ||= false
-    div_style = @generating_feed ? 'style="text-align: center"' : ''
+    div_style = @generating_feed ? ' style="text-align: center"' : ''
     # it's a little hackish, but all partials on this page
     # must be rendered with the full file name (xxxx.html.erb) in order
     # for it to work in the rss feed.
@@ -18,7 +20,7 @@
     </h3>  
     Composed & Generated on <%= @user_submission.created_at.strftime("%A, %B %d, %Y at %I:%M %p") %>
     <br />
-    <%= link_to('MP3', @user_submission.piece_mp3_file) %> | <%= link_to('PDF', @user_submission.piece_pdf_file) %>
+    <%= link_to('MP3', get_full_url_filename(@user_submission.piece_mp3_file, request)) %> | <%= link_to('PDF', get_full_url_filename(@user_submission.piece_pdf_file, request)) %>
   </div>
 
   <div class="piece_content">  
@@ -33,7 +35,7 @@
     <br/>
     <b>The Germ</b>: 
     <br/><%= render :partial => 'shared/mp3_player.html.erb', :locals => {:mp3_file => @user_submission.germ_mp3_file} %>  
-    <br/><%= image_tag(@user_submission.germ_image_file) %>
+    <br/><%= image_tag(get_full_url_filename(@user_submission.germ_image_file, request)) %>
 
     <br/><b>The Piece</b>: 
     <br/><%= render :partial => 'shared/mp3_player.html.erb', :locals => {:mp3_file => @user_submission.piece_mp3_file} %>  
@@ -49,7 +51,7 @@
       <%= link_to_function('Hide Notation', 'return false;', 
           :id => "hide-piece-image-link_#{@user_submission.id}", 
           :style => 'display: none' ) unless @generating_feed %>          
-      <%= image_tag(@user_submission.piece_image_file) %>
+      <%= image_tag(get_full_url_filename(@user_submission.piece_image_file, request)) %>
     </div>
     <% unless @generating_feed %>
       <%= javascript_tag(
@@ -64,7 +66,7 @@
   </div>
   
   <div style="text-align: center">
-    Think you can improve this piece?  <%= link_to('Experiment with it!', :controller => 'compose', :action => 'index', :user_submission_id => @user_submission) %>
+    Think you can improve this piece?  <%= link_to('Experiment with it!', :controller => 'compose', :action => 'index', :user_submission_id => @user_submission, :path_only => false) %>
   </div>
   
   <% unless @generating_feed %>

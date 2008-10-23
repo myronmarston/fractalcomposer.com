@@ -18,8 +18,8 @@ class LibraryController < ApplicationController
 
     @generating_feed = true
 
-    respond_to do |format| 
-      format.rss
+    respond_to do |format|     
+      format.atom
     end    
   end
   

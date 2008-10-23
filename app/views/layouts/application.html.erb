@@ -11,7 +11,7 @@
     <%= stylesheet_link_tag 'live_validation' %>  
     <%= stylesheet_link_tag 'lightwindow' %>
     <%= stylesheet_link_tag 'star_rating' %>  
-    <%= auto_discovery_link_tag(:rss,  { :controller => 'library', :action => 'index', :format => 'rss' }) %>      
+    <%= auto_discovery_link_tag(:atom,  'http://feeds.feedburner.com/fractalcomposer') %>      
     <%= yield :additional_head_includes %>    
 </head>
 
@@ -43,25 +43,10 @@
 		<div id="main">											
                     <%= yield %>
 		</div>		
-		<!--	
+			
 		<div id="sidebar">			
-			<h2>Search Box</h2>	
-			<form action="#" class="searchform">
-				<p>
-				<input name="search_query" class="textbox" type="text" />
-				<input name="search" class="button" value="Search" type="submit" />
-				</p>			
-			</form>	
-					
-			<h2>Sidebar Menu</h2>
-			<ul class="sidemenu">				
-				<li><a href="index.html">Home</a></li>
-				<li><a href="#TemplateInfo">Template Info</a></li>
-				<li><a href="#SampleTags">Sample Tags</a></li>
-				<li><a href="http://www.styleshout.com/">More Free Templates</a></li>	
-				<li><a href="http://www.4templates.com/?aff=ealigam">Premium Templates</a></li>	
-			</ul>										
-		</div>-->
+                    <div class="feed-button rounded-corners"><a href="http://feeds.feedburner.com/fractalcomposer">Subscribe</a></div>
+		</div>
 				
 	<!-- content-wrap ends here -->	
 	</div>

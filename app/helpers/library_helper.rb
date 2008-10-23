@@ -1,4 +1,5 @@
 module LibraryHelper
+  include ActionView::Helpers::FCAtomFeedHelper
   
   def user_submission_title_by_name    
     "&#8220;#{h @user_submission.title}&#8221; by #{link_to_if(@user_submission.website && @user_submission.website != '', h(@user_submission.name), h(@user_submission.website))}"
@@ -46,6 +47,15 @@ module LibraryHelper
   
   def comment_form_button_js(id)
     javascript_tag("Event.observe('#{id}', 'click', function() { $('clicked_button_#{@user_submission.id}').value = $('#{id}').value; });")
+  end
+  
+  def entry_mp3_enclosure(entry, mp3_file)
+    entry.link(
+        :rel => 'enclosure', 
+        :type => 'audio/mpeg', 
+        :length => File.size(get_local_filename(mp3_file)), 
+        :href => get_full_url_filename(mp3_file, request)
+    )       
   end
   
 end

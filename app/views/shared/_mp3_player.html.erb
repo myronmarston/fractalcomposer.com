@@ -1,5 +1,12 @@
-<object type="application/x-shockwave-flash" data="/files/flash/player_mp3_maxi.swf" width="200" height="20" class="centered">
-    <param name="movie" value="/files/flash/player_mp3_maxi.swf" />
-    <param name="bgcolor" value="#FFFFFF" />
-    <param name="FlashVars" value="mp3=<%= mp3_file %>&amp;volume=150&amp;showstop=1&amp;showvolume=1&amp;skin=/images/mp3-player-skin.jpg" />
-</object>
+<%
+    flash_file = get_full_url_filename('/files/flash/player_mp3_maxi.swf', request)
+    skin_file = get_full_url_filename('/images/mp3-player-skin.jpg', request)
+    full_mp3_file = get_full_url_filename(mp3_file, request)
+%>
+<% unless @generating_feed -%>
+  <object type="application/x-shockwave-flash" data="<%= flash_file %>" width="200" height="20" class="centered">
+      <param name="movie" value="<%= flash_file %>" />
+      <param name="bgcolor" value="#FFFFFF" />
+      <param name="FlashVars" value="mp3=<%= full_mp3_file %>&amp;volume=150&amp;showstop=1&amp;showvolume=1&amp;skin=<%= skin_file %>" />
+  </object>
+<% end -%>

@@ -4,12 +4,12 @@ Warbler::Config.new do |config|
   # config.staging_dir = "tmp/war"
 
   # Application directories to be included in the webapp.
-  config.dirs = %w(app config lib log vendor tmp)
+  config.dirs = %w(app config db lib log script vendor tmp)
 
   # Additional files/directories to include, above those in config.dirs
   # config.includes = FileList["db"]
-  config.includes = FileList["sun-web.xml"] 
-
+  config.includes = FileList["sun-web.xml", "Rakefile"] 
+  
   # Additional files/directories to exclude
   # excluded because the production server has its own user_generated_files directory
   # that we don't want to stomp when we deploy.

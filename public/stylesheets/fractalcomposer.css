@@ -4,6 +4,28 @@
    TODO: change the mouse icon over buttons to indicate they can be pressed
  *************************************************************/
 
+.feed-button {
+  background:#306BC1 url(/images/button-bg.jpg) repeat-x scroll 0 0;  
+  height: 40px;
+  margin-right: 8px;
+}
+
+.feed-button a {
+  font-family: "trebuchet MS",Arial,Tahoma,Sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+  background: url("/images/feed-icon-28x28.png") no-repeat 8px 6px;
+  display: block;
+  height: 32px;
+  padding: 12px 63px 0px 63px;
+  text-decoration: none;
+}
+
+.feed-button a:hover {
+  background: url("../images/feed-icon-28x28.png") no-repeat 8px 6px;
+  color: white;
+} 
+
 #germ_listen_link, #germ_listen_spinner_wrap {
     clear: right;    
 }
