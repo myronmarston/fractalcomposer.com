@@ -10,13 +10,41 @@
     title = lowercase_title.gsub(/\b\w/) {|c| c.upcase}    
     icon_style = (icon_style.nil? || icon_style == '' ? '' : " style=\"#{icon_style}\"") 
     info_wrap_div_class = (info_wrap_div_class.nil? || info_wrap_div_class == '' ? '' : " class=\"#{info_wrap_div_class}\"")
+    
+    # this is a bit of a hack, but we'd have to change stuff in so many places otherwise...
+    width, height = *case name
+      when 'piece_settings' then [400, 120]
+      when 'scale_type' then [650, 280]
+      when 'key' then [400, 150]
+      when 'time_signature' then [600, 240]
+      when 'tempo' then [400, 100]
+      when 'germ' then [750, 650]
+      when 'generate_layered_intro' then [400, 150]
+      when 'generate_layered_outro' then [400, 150]
+      when 'voices' then [600, 200]
+      when 'instrument' then [500, 160]
+      when 'octave_adjustment' then [400, 130]
+      when 'rhythm_scale_factor' then [600, 170]
+      when 'volume_adjustment' then [600, 210]
+      when 'scale_step_offset' then [600, 210]
+      when 'self-similarity' then [700, 290]
+      when 'voice_sections' then [500, 130]
+      when 'rest' then [350, 100]
+      when 'override_voice_settings' then [350, 100]
+      when 'override_section_settings' then [350, 100]
+      when 'sections' then [600, 180]
+      when 'override_scale' then [500, 130]
+      when 'apply_inversion' then [600, 410]
+      when 'apply_retrograde' then [600, 410]
+      else [600, 200]
+    end
 -%>
 <span id="<%= show_id %>"<%= icon_style %>>
   <%= link_to_function(image_tag('info_blue.png', 
     :alt => "View info about #{lowercase_title}",
     :title => "View info about #{lowercase_title}",
     :class => 'field_info',
-    :id => "#{id}_show_info_image"), "launchLightwindow_autoHeight('#{info_id}', '#{title}', 500)") %>            
+    :id => "#{id}_show_info_image"), "launchLightwindow('#{info_id}', '#{title}', #{height}, #{width})") %>            
 </span>
 
 <div<%= info_wrap_div_class%>>

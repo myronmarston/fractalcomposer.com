@@ -1,11 +1,15 @@
 <p>
-  Specifies the short melody from which the piece is generated. 
-  You can think of it as the “shape” of the fractal. 
-  The germ should be a series of notes, seperated by spaces.
+  Specifies the short melody or <a href="http://en.wikipedia.org/wiki/Motif_(music)" target="_blank">motif</a> 
+  from which the composition is generated. You can think of it as the "shape" of the fractal. 
+  The syntax for the germ is easiest to demonstrate with an example.  Some of the parameters are optional.
+  The first form below is the full form, explicitly specifying everything; the second form uses defaults and 
+  produces the same germ.
 </p>
 
+<%= music_example('/examples/info/germ', 'F4,1/4,MF  G4,1/8,F  A4,1/8,MF  F4,1/4,MF <br /> F4  G4,1/8,F  A4,MF  F4,1/4') %>
+
 <p>
-  Each note should be of the following form:
+  The germ should be a series of notes seperated by spaces, each with the following form:
 </p>
 <p>
   &lt;pitch class&gt;&lt;octave&gt;,&lt;duration fraction&gt;,&lt;volume&gt;

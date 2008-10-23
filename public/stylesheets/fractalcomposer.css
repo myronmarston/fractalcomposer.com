@@ -19,11 +19,12 @@
   height: 32px;
   padding: 12px 63px 0px 63px;
   text-decoration: none;
+  color: white;
 }
 
 .feed-button a:hover {
-  background: url("../images/feed-icon-28x28.png") no-repeat 8px 6px;
-  color: white;
+  background: url("/images/feed-icon-28x28.png") no-repeat 8px 6px;
+  color: #FB9233;
 } 
 
 #germ_listen_link, #germ_listen_spinner_wrap {
@@ -273,8 +274,7 @@ div.info {
     text-align: left;
     position: relative;
     margin: 2px;    
-    /* right padding is 26 to allow for the X image, which is 16 pixels */
-    padding: 10px 26px 10px 20px;    
+    padding: 10px;
 }
 
 .info_wrap_spacer {
