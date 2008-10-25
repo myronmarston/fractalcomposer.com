@@ -4,12 +4,27 @@ class LibraryController < ApplicationController
   before_filter :setup_negative_captcha, :only => [:view_piece, :add_comment, :examples]
   
   def index
-    @user_submissions = UserSubmission.find(:all, :conditions => 'processing_completed IS NOT NULL', :order => 'updated_at DESC')        
+    @user_submissions = UserSubmission.find(:all, 
+      :conditions => "processing_completed IS NOT NULL AND id NOT IN (#{EXAMPLE_IDS.join(', ')})", 
+      :order => 'updated_at DESC',
+      :limit => 20)        
+  end
+  
+  def generated_pieces
+    @generated_pieces = GeneratedPiece.find(:all,
+      :order => 'updated_at DESC',
+      :limit => 20)
+    
+    @generating_feed = true
+
+    respond_to do |format|     
+      format.atom
+    end    
   end
   
   def feed
     @user_submissions = UserSubmission.find(:all, 
-      :conditions => 'processing_completed IS NOT NULL', 
+      :conditions => "processing_completed IS NOT NULL AND id NOT IN (#{EXAMPLE_IDS.join(', ')})", 
       :order => 'updated_at DESC',
       :limit => 20)    
 

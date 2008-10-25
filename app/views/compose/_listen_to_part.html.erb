@@ -1,4 +1,7 @@
 <%
+    @generating_feed ||= false
+    image_style = @generating_feed ? '' : 'display: none'
+
     if @last_generated_piece
         midi_filename = @last_generated_piece.generated_midi_file
         guido_filename = @last_generated_piece.generated_guido_file
@@ -32,13 +35,15 @@
     <a href="<%= midi_filename %>">Listen to <%= div_id_prefix.gsub(/_/, ' ') %></a>
 </object>   
 <div>
-  <div id="<%= loading_div_id %>">
-    <h2 class="notation-loading">
-      Loading Notation&hellip;
-      <%= render :partial => 'spinner', :locals => {:display => 'inline', :bottom_px => -4} %>
-    </h2> 
-  </div>
+  <% unless @generating_feed -%>
+    <div id="<%= loading_div_id %>">
+      <h2 class="notation-loading">
+        Loading Notation&hellip;
+        <%= render :partial => 'spinner', :locals => {:display => 'inline', :bottom_px => -4} %>
+      </h2> 
+    </div>
+  <% end -%>
 
-  <%= image_tag(guido_image_url, :alt => 'Music Notation', :id => guido_image_id, :style => 'display: none') %>  
-  <%= javascript_tag("Event.observe(LW$('#{guido_image_id}'), 'load', function() {LW$(\'#{guido_image_id}\').appear(); LW$(\'#{loading_div_id}\').remove()})") %>
+  <%= image_tag(guido_image_url, :alt => 'Music Notation', :id => guido_image_id, :style => image_style) %>  
+  <%= javascript_tag("Event.observe(LW$('#{guido_image_id}'), 'load', function() {LW$(\'#{guido_image_id}\').appear(); LW$(\'#{loading_div_id}\').remove()})") unless @generating_feed %>
 </div>

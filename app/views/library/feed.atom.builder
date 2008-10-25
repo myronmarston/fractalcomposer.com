@@ -1,8 +1,7 @@
-fc_atom_feed(:schema_date => Date.civil(2008, 10, 20), :root_url => 'http://fractalcomposer.com/', :url => 'http://fractalcomposer.com/library/feed.atom' ) do |feed|
+fc_atom_feed(:schema_date => Date.civil(2008, 10, 20), :root_url => root_url ) do |feed|
    feed.title("Fractal Composer User Submission Library")
    feed.updated(@user_submissions.size == 0 ? DateTime.now : @user_submissions.first.created_at)   
    
-   # for some reason feed.author do... doesn't work properly, so call xml directly
    feed.author do |author|
       author.name 'Myron Marston'
       author.email 'myron@fractalcomposer.com'

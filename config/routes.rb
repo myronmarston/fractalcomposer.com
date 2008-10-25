@@ -33,6 +33,9 @@ ActionController::Routing::Routes.draw do |map|
   
   map.root :controller => 'static_page', :page => 'home'
   map.connect ':page/', :controller => 'static_page', :requirements => { :page => /(#{STATIC_PAGES.join('|')})/i }
+  
+  # secret route for generated pieces...
+  map.connect 'd285c1bdb79927bec0d049ea17027c204c6c94d03322d985bc255bdb337e1465052f0dda7174f4d8bd5c6f62dcc347c7698c7cbbafbe305110600afb0bf58e58/generated_pieces.:format', :controller => 'library', :action => 'generated_pieces', :conditions => { :method => :get }, :requirements => { :format => /atom/ }
 
   map.connect 'examples/', :controller => 'library', :action => 'examples'  
   map.connect 'library/feed.:format', :controller => 'library', :action => 'feed', :conditions => { :method => :get }, :requirements => { :format => /atom/ }

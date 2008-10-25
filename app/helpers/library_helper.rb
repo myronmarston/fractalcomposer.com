@@ -58,4 +58,17 @@ module LibraryHelper
     )       
   end
   
+  def entry_midi_enclosure(entry, midi_file)
+    entry.link(
+        :rel => 'enclosure', 
+        :type => 'audio/mid', 
+        :length => File.size(get_local_filename(midi_file)), 
+        :href => get_full_url_filename(midi_file, request)
+    )       
+  end
+  
+  def generated_piece_germ_by_ip
+    "#{@generated_piece.germ} by #{@generated_piece.user_ip_address}"  
+  end
+  
 end
