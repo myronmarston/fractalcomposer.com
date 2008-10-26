@@ -7,7 +7,13 @@ class LibraryController < ApplicationController
     @user_submissions = UserSubmission.find(:all, 
       :conditions => "processing_completed IS NOT NULL AND id NOT IN (#{EXAMPLE_IDS.join(', ')})", 
       :order => 'updated_at DESC',
-      :limit => 20)        
+      :limit => 20)  
+    
+    respond_to do |format|     
+      # google feed catcher keeps trying to get this with ?format=rss since I subscribed once will testing...
+      format.html # use index view...
+      format.rss { redirect_to 'http://feeds.feedburner.com/fractalcomposer' }      
+    end    
   end
   
   def generated_pieces
