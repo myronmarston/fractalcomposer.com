@@ -490,14 +490,16 @@ lightwindow.prototype = {
 			overlay.setStyle({
 				backgroundImage: 'url('+this.options.overlay.presetImage+')',
 				backgroundRepeat: 'repeat',
-				height: this.pageDimensions.height+'px'
+				height: this.pageDimensions.height+'px',
+                position: 'fixed'
 			});			
 		} else {
 			overlay.setStyle({
 				opacity: this.options.overlay.opacity,
 				backgroundImage: 'url('+this.options.overlay.image+')',
 				backgroundRepeat: 'repeat',
-				height: this.pageDimensions.height+'px'
+				height: this.pageDimensions.height+'px',
+                position: 'fixed'
 			});
 		}
 		
