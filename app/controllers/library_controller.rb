@@ -6,7 +6,7 @@ class LibraryController < ApplicationController
   def index
     @user_submissions = UserSubmission.find(:all, 
       :conditions => "processing_completed IS NOT NULL AND id NOT IN (#{EXAMPLE_IDS.join(', ')})", 
-      :order => 'updated_at DESC',
+      :order => 'created_at DESC',
       :limit => 20)  
     
     respond_to do |format|     
