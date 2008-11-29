@@ -35,7 +35,7 @@ Warbler::Config.new do |config|
   # The Rails gems are included by default unless the vendor/rails directory is present.
   # config.gems += ["activerecord-jdbcmysql-adapter", "jruby-openssl"]
   # config.gems << "tzinfo"
-  config.gems = ["activerecord-jdbc-adapter", "ActiveRecord-JDBC", "dr_nic_magic_models", "jruby-openssl"]
+  config.gems = ["activerecord-jdbc-adapter", "ActiveRecord-JDBC", "dr_nic_magic_models", "jruby-openssl", "mislav-will_paginate"]
   # Uncomment this if you don't want to package rails gem.
   # config.gems -= ["rails"]
 

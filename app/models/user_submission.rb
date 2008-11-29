@@ -12,6 +12,8 @@ class UserSubmission < ActiveRecord::Base
   
   GENERATED_IMAGE_WIDTH = 450 unless defined? GENERATED_IMAGE_WIDTH
   
+  acts_as_indexed :fields => [ :name, :title, :description, :comment_names, :comment_contents ]
+
   acts_as_rated :rater_class => 'IpAddress', :rating_range => 1..5  
   acts_as_commentable    
       
@@ -21,7 +23,15 @@ class UserSubmission < ActiveRecord::Base
   #TODO: remove the url validation, but make sure that XSS can't happen....
   validates_http_url :website 
   attr_accessor :is_website_tester  
-  
+
+  def comment_names
+    @comment_names ||= self.comments.map(&:name).join('    ');
+  end
+
+  def comment_contents
+    @comment_contents ||= self.comments.map(&:comment).join('    ');
+  end
+
   def before_validation
     return if self.is_website_tester
     return if self.website.nil? || self.website == '' 

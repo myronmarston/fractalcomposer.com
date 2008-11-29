@@ -10,7 +10,7 @@
     <%= stylesheet_link_tag 'fractalcomposer' %>
     <%= stylesheet_link_tag 'live_validation' %>  
     <%= stylesheet_link_tag 'lightwindow' %>
-    <%= stylesheet_link_tag 'star_rating' %>  
+    <%= stylesheet_link_tag 'star_rating' %>
     <%= auto_discovery_link_tag(:atom,  'http://feeds.feedburner.com/fractalcomposer') %>      
     <%= yield :additional_head_includes %>    
 </head>
@@ -45,9 +45,19 @@
                     <%= yield %>
 		</div>		
 			
-		<div id="sidebar">			
-                    <div class="feed-button rounded-corners"><a href="http://feeds.feedburner.com/fractalcomposer">Subscribe</a></div>
-		</div>
+		<div id="sidebar">	
+          <% form_tag({:controller => 'library', :action => 'search'}, :method => 'get', :class => 'searchform') do -%>
+              <p>
+                <%= text_field_tag(:query, params[:query], :class => 'textbox') %>
+                <input class="button" type="submit" value="Search" />
+              </p>
+          <% end -%>
+          <br />
+          <div class="feed-button rounded-corners">
+            <a href="http://feeds.feedburner.com/fractalcomposer">Subscribe</a>
+          </div>
+          <br />
+        </div>
 				
 	<!-- content-wrap ends here -->	
 	</div>

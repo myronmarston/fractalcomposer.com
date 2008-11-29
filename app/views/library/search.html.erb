@@ -1,0 +1,23 @@
+<div class="static-page-wrap">
+  <p>
+    Search results for <strong><%= h @query %></strong>:
+  </p>
+
+  <div>
+    <p>
+      <%= page_entries_info @search_results, :entry_name => 'fractal piece' %>
+    </p>
+    <ol>
+      <% @search_results.each do |user_submission| -%>
+          <li>
+            <%= link_to("#{highlight(h(user_submission.title), @query)} by #{highlight(h(user_submission.name), @query)}", :action => 'view_piece', :id => user_submission) %>
+            <% @search_excerpts = search_excerpts(user_submission) -%>
+            <%= "<br />#{@search_excerpts.join('<br />')}" unless @search_excerpts.blank? %>
+          </li>
+      <% end -%>
+    </ol>
+    <div class="pagination">
+      <%= will_paginate @search_results %>
+    </div>
+  </div>
+</div>

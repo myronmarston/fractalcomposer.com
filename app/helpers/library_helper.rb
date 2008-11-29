@@ -70,5 +70,28 @@ module LibraryHelper
   def generated_piece_germ_by_ip
     "#{@generated_piece.germ} by #{@generated_piece.user_ip_address}"  
   end
+
+  def search_excerpts(user_submission)
+    query_regex = /#{Regexp.escape(@query)}/i
+    excerpts = []
+
+    add_excerpt(excerpts, user_submission.description, @query, query_regex, false)
+    
+    user_submission.comments.each do |comment|
+      add_excerpt(excerpts, "#{comment.name} said: #{comment.comment}", @query, query_regex)
+    end
+
+    return excerpts
+  end
+
+  private
+
+  def add_excerpt(excerpts, text, query, query_regex, only_if_query_match = true)
+    if text =~ query_regex
+      excerpts << highlight(excerpt(text, query), query)
+    elsif !only_if_query_match && !text.blank?
+      excerpts << truncate(text, 100)
+    end
+  end
   
 end

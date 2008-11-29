@@ -1,5 +1,6 @@
 class LibraryController < ApplicationController
   EXAMPLE_IDS = [1, 2] unless defined? EXAMPLE_IDS
+  SEARCH_PER_PAGE = 10 unless defined? SEARCH_PER_PAGE
   before_filter :load_user_submission
   before_filter :setup_negative_captcha, :only => [:view_piece, :add_comment, :examples]
   
@@ -14,6 +15,24 @@ class LibraryController < ApplicationController
       format.html # use index view...
       format.rss { redirect_to 'http://feeds.feedburner.com/fractalcomposer' }      
     end    
+  end
+
+  def search
+    @query = params[:query]
+    @page = params[:page] || 1
+
+    if @page.to_i < 1
+      redirect_to :overwrite_params => { :page => nil }
+      return
+    end
+
+    @search_results = UserSubmission.paginate_search(@query, :page => @page, :per_page => SEARCH_PER_PAGE)
+
+    if @search_results.blank? && @page.to_i > 1
+      @page = @search_results.total_entries <= SEARCH_PER_PAGE ? nil : 1 + @search_results.total_entries / SEARCH_PER_PAGE
+      redirect_to :overwrite_params => { :page => @page }
+      return
+    end
   end
   
   def generated_pieces

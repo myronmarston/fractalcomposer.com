@@ -2,7 +2,9 @@
   <%= @user_submissions.size %> most recent submissions:
   <ol>
   <% @user_submissions.each do |user_submission| -%>
-    <li><%= link_to("#{user_submission.title} by #{user_submission.name}", :action => 'view_piece', :id => user_submission) %></li>  
+    <li>
+      <%= link_to("#{user_submission.title} by #{user_submission.name}", :action => 'view_piece', :id => user_submission) %>
+    </li>
   <% end -%>
   </ol>
 </div>

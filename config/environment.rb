@@ -85,6 +85,7 @@ ExceptionNotifier.exception_recipients = %w(myron@fractalcomposer.com myron.mars
 ExceptionNotifier.sender_address = %("FractalComposer.com Exception Notifier" <exception.notifier@fractalcomposer.com>)
 ExceptionNotifier.email_prefix = "[fractalcomposer Error] "
 
+require 'will_paginate'
 require 'dr_nic_magic_models'
 require 'string_extensions'
 require 'lib/atom_feed_helper'
