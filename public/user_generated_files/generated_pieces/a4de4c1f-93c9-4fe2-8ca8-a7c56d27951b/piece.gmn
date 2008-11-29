@@ -1,0 +1,5 @@
+{
+[\instr<"Piano 1", "MIDI 0"> \key<0> \meter<"C"> \clef<"g2+8"> \tempo<"Andante","1/4=90"> _/1 _/1 \intens<"mf"> a2/8 e3/8 a2/8 e3/8 a2/8 e3/8 a2/8 e3/8 a2/8 e3/8 e3/8 c4/8 a2/8 e3/8 e3/8 c4/8 a2/8 d2/8 d2/8 g1/8 a2/8 d2/8 d2/8 g1/8 d2/8 a2/8 a2/8 e3/8 d2/8 a2/8 a2/8 e3/8 e3/8 a2/8 a2/8 d2/8 e3/8 a2/8 a2/8 d2/8 a2/8 e3/8 a2/8 e3/8 a2/8 e3/8 a2/8 e3/8 _/1 _/1],
+[\instr<"Piano 1", "MIDI 0"> \key<0> \meter<"C"> \clef<"g2"> _/1 \intens<"mf"> a1/4 e2/4 a1/4 e2/4 a1/4 e2/4 a1/4 e2/4 a1/4 e2/4 a1/4 e2/4 a1/4 d1/4 a1/4 d1/4 d1/4 a1/4 d1/4 a1/4 e2/4 a1/4 e2/4 a1/4 a1/4 e2/4 a1/4 e2/4 a1/4 e2/4 a1/4 e2/4 _/1],
+[\instr<"Piano 1", "MIDI 0"> \key<0> \meter<"C"> \clef<"g2-8"> \intens<"mf"> a0/2 e1/2 a0/2 e1/2 a0/2 e1/2 a0/2 e1/2 a0/2 d0/2 d0/2 a0/2 e1/2 a0/2 a0/2 e1/2 a0/2 e1/2 a0/2 e1/2]
+}

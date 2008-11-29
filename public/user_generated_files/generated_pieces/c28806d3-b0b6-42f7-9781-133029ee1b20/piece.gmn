@@ -1,0 +1,7 @@
+{
+[\instr<"Piano 1", "MIDI 0"> \key<0> \meter<"C"> \clef<"g2+15"> \tempo<"Andante","1/4=90"> \intens<"mf"> g4/8 d4/8 d4/8 a3/8 g4/8 d4/8 d4/8 a3/8 g4/8 c5/8 c5/8 f5/8 g4/8 c5/8 c5/8 f5/8 c5/8 g4/8 g4/8 d4/8 c5/8 g4/8 g4/8 d4/8 d4/8 g4/8 g4/8 c5/8 d4/8 g4/8 g4/8 c5/8],
+[\instr<"Oboe", "MIDI 68"> \key<0> \meter<"C"> \clef<"g2+15"> \intens<"mf"> g3/4 d3/4 g3/4 d3/4 g3/4 c4/4 g3/4 c4/4 c4/4 g3/4 c4/4 g3/4 d3/4 g3/4 d3/4 g3/4],
+[\instr<"Marimba", "MIDI 12"> \key<0> \meter<"C"> \clef<"g2+8"> \intens<"mf"> g2/2 d2/2 g2/2 c3/2 c3/2 g2/2 d2/2 g2/2],
+[\instr<"MutedTrumpet", "MIDI 59"> \key<0> \meter<"C"> \clef<"g2"> \intens<"mf"> g1/4 d1/4 g1/4 d1/4 g1/4 c2/4 g1/4 c2/4 c2/4 g1/4 c2/4 g1/4 d1/4 g1/4 d1/4 g1/4],
+[\instr<"Cello", "MIDI 42"> \key<0> \meter<"C"> \clef<"g2-8"> \intens<"mf"> g0/4 d0/4 g0/4 d0/4 g0/4 c1/4 g0/4 c1/4 c1/4 g0/4 c1/4 g0/4 d0/4 g0/4 d0/4 g0/4]
+}

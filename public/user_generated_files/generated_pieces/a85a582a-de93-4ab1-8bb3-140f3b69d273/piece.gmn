@@ -1,0 +1,3 @@
+{
+[\instr<"Celesta", "MIDI 8"> \key<4> \meter<"3/4"> \clef<"g2"> \tempo<"Andante","1/4=100"> \intens<"mf"> e1/4 \accent(f#1/8) g#1/8 e1/4 e1/4 \accent(f#1/8) g#1/8 e1/4 \intens<"f"> f#1/8 g#1/16 a1/16 f#1/8 \intens<"mf"> g#1/8 \accent(a1/16) b1/16 g#1/8 e1/4 \accent(f#1/8) g#1/8 e1/4 e1/4 \accent(f#1/8) g#1/8 e1/4]
+}

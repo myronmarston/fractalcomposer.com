@@ -1,0 +1,3 @@
+{
+[\instr<"Vibraphone", "MIDI 11"> \key<4> \meter<"3/4"> \clef<"g2-8"> \tempo<"Andante","1/4=100"> \intens<"mf"> e1/4 \accent(f#1/8) g#1/8 e1/4 \intens<"f"> e1/4 f#1/8 g#1/8 e1/4 \intens<"mf"> e1/4 \accent(f#1/8) g#1/8 e1/4 e1/4 \accent(f#1/8) g#1/8 e1/4]
+}

@@ -1,0 +1,5 @@
+{
+[\instr<"Dulcimer", "MIDI 15"> \key<0> \meter<"C"> \clef<"g2+8"> \tempo<"Andante","1/4=90"> _/1 _/1 \intens<"mf"> g2/8 a2/8 g2/8 a2/8 g2/8 a2/8 g2/8 a2/8 g2/8 a2/8 a2/8 b2/8 g2/8 a2/8 a2/8 b2/8 g2/8 f2/8 f2/8 e&2/8 g2/8 f2/8 f2/8 e&2/8 f2/8 g2/8 g2/8 a2/8 f2/8 g2/8 g2/8 a2/8 a2/8 g2/8 g2/8 f2/8 a2/8 g2/8 g2/8 f2/8 g2/8 a2/8 g2/8 a2/8 g2/8 a2/8 g2/8 a2/8 _/1 _/1],
+[\instr<"Oboe", "MIDI 68"> \key<0> \meter<"C"> \clef<"g2"> _/1 \intens<"mf"> g1/4 a1/4 g1/4 a1/4 g1/4 a1/4 g1/4 a1/4 g1/4 a1/4 g1/4 a1/4 g1/4 f1/4 g1/4 f1/4 f1/4 g1/4 f1/4 g1/4 a1/4 g1/4 a1/4 g1/4 g1/4 a1/4 g1/4 a1/4 g1/4 a1/4 g1/4 a1/4 _/1],
+[\instr<"Piano 1", "MIDI 0"> \key<0> \meter<"C"> \clef<"g2-8"> \intens<"mf"> g0/2 a0/2 g0/2 a0/2 g0/2 a0/2 g0/2 a0/2 g0/2 f0/2 f0/2 g0/2 a0/2 g0/2 g0/2 a0/2 g0/2 a0/2 g0/2 a0/2]
+}

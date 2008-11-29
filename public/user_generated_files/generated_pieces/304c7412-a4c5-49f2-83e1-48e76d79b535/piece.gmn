@@ -1,0 +1,5 @@
+{
+[\instr<"ACOUSTIC GRAND PIANO", "MIDI 0"> \key<1> \meter<"C"> \clef<"g2+8"> \tempo<"Andante","1/4=90"> _*3/2 _*3/2 \intens<"mf"> g2/8 a2/8 d2/8 g2/8 a2/8 d2/8 g2/8 a2/8 d2/8 g2/8 a2/8 d2/8 g2/8 a2/8 d2/8 a2/8 b2/8 e2/8 d2/8 e2/8 a1/8 _*3/8 g2/8 e2/8 b2/8 e2/8 d2/8 a2/8 b2/8 a2/8 e3/8 _*3/8 b2/8 e2/8 g2/8 e2/8 a1/8 b1/8 g2/8 b1/8 d2/8 _*3/8 d2/8 a2/8 g2/8 a2/8 e3/8 d3/8 g2/8 d3/8 b2/8 _*3/8 g2/8 a2/8 d2/8 g2/8 a2/8 d2/8 g2/8 a2/8 d2/8 g2/8 a2/8 d2/8 _*3/2 _*3/2],
+[\instr<"BANJO", "MIDI 105"> \key<1> \meter<"C"> \clef<"g2"> _*3/2 \intens<"mf"> g1/4 a1/4 d1/4 g1/4 a1/4 d1/4 g1/4 a1/4 d1/4 g1/4 a1/4 d1/4 g1/4 a1/4 d1/4 g1/4 a1/4 d1/4 g1/4 e1/4 b1/4 g1/4 e1/4 b1/4 b1/4 e1/4 g1/4 b1/4 e1/4 g1/4 d1/4 a1/4 g1/4 d1/4 a1/4 g1/4 g1/4 a1/4 d1/4 g1/4 a1/4 d1/4 g1/4 a1/4 d1/4 g1/4 a1/4 d1/4 _*3/2],
+[\instr<"CLARINET", "MIDI 71"> \key<1> \meter<"C"> \clef<"g2-8"> \intens<"mf"> g0/2 a0/2 d0/2 g0/2 a0/2 d0/2 g0/2 a0/2 d0/2 g0/2 a0/2 d0/2 g0/2 e0/2 b0/2 b0/2 e0/2 g0/2 d0/2 a0/2 g0/2 g0/2 a0/2 d0/2 g0/2 a0/2 d0/2 g0/2 a0/2 d0/2]
+}

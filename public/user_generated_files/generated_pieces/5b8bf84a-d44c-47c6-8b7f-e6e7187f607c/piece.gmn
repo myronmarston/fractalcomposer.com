@@ -1,0 +1,5 @@
+{
+[\instr<"Acoustic Grand Piano", "MIDI 0"> \key<0> \meter<"C"> \clef<"g2+8"> \tempo<"Andante","1/4=90"> _*3/2 _*3/2 \intens<"mf"> g2/8 a2/8 b2/8 g2/8 a2/8 b2/8 g2/8 a2/8 b2/8 g2/8 a2/8 b2/8 g2/24 f2/24 e&2/24 f2/24 e&2/24 d&2/24 e&2/24 d&2/24 c&2/24 _/8 g2/8 a2/8 b2/8 g2/8 a2/8 b2/8 g2/8 a2/8 b2/8 g2/8 a2/8 b2/8 _*3/2 _*3/2],
+[\instr<"Acoustic Grand Piano", "MIDI 0"> \key<0> \meter<"C"> \clef<"g2"> _*3/2 \intens<"mf"> g1/4 a1/4 b1/4 g1/4 a1/4 b1/4 g1/4 a1/4 b1/4 g1/4 a1/4 b1/4 g1/12 f1/12 e&1/12 g1/12 f1/12 e&1/12 g1/4 a1/4 b1/4 g1/4 a1/4 b1/4 g1/4 a1/4 b1/4 g1/4 a1/4 b1/4 _*3/2],
+[\instr<"Acoustic Grand Piano", "MIDI 0"> \key<0> \meter<"C"> \clef<"g2-8"> \intens<"mf"> g0/2 a0/2 b0/2 g0/2 a0/2 b0/2 g0/2 a0/2 b0/2 g0/6 f0/6 e&0/6 g0/2 a0/2 b0/2 g0/2 a0/2 b0/2 g0/2 a0/2 b0/2]
+}

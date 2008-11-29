@@ -1,0 +1,5 @@
+{
+[\instr<"Celesta", "MIDI 8"> \key<4> \meter<"3/4"> \clef<"g2"> \tempo<"Andante","1/4=100"> \intens<"mf"> e2/8 \accent(f#2/16) g#2/16 e2/8 e2/8 \accent(f#2/16) g#2/16 e2/8 e2/8 \accent(f#2/16) g#2/16 e2/8 e2/8 \accent(f#2/16) g#2/16 e2/8 e2/8 \accent(d#2/16) c#2/16 e2/8 e2/8 \accent(d#2/16) c#2/16 e2/8 e2/8 \accent(d#2/16) c#2/16 e2/8 e2/8 \accent(d#2/16) c#2/16 e2/8 e2/8 c#2/16 \accent(d#2/16) e2/8 e2/8 c#2/16 \accent(d#2/16) e2/8 e2/8 c#2/16 \accent(d#2/16) e2/8 e2/8 c#2/16 \accent(d#2/16) e2/8 e2/8 g#2/16 \accent(f#2/16) e2/8 e2/8 g#2/16 \accent(f#2/16) e2/8 e2/8 g#2/16 \accent(f#2/16) e2/8 e2/8 g#2/16 \accent(f#2/16) e2/8],
+[\instr<"Vibraphone", "MIDI 11"> \key<4> \meter<"3/4"> \clef<"g2-8"> \intens<"mf"> e1/4 \accent(f#1/8) g#1/8 e1/4 e1/4 \accent(f#1/8) g#1/8 e1/4 e1/4 \accent(d#1/8) c#1/8 e1/4 e1/4 \accent(d#1/8) c#1/8 e1/4 e1/4 c#1/8 \accent(d#1/8) e1/4 e1/4 c#1/8 \accent(d#1/8) e1/4 e1/4 g#1/8 \accent(f#1/8) e1/4 e1/4 g#1/8 \accent(f#1/8) e1/4],
+[\instr<"Bright Piano", "MIDI 1"> \key<4> \meter<"3/4"> \clef<"f4"> \intens<"mf"> e0/2 \accent(f#0/4) g#0/4 e0/2 e0/2 \accent(d#0/4) c#0/4 e0/2 e0/2 c#0/4 \accent(d#0/4) e0/2 e0/2 g#0/4 \accent(f#0/4) e0/2]
+}
