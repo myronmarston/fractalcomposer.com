@@ -32,6 +32,10 @@ class UserSubmission < ActiveRecord::Base
     @comment_contents ||= self.comments.map(&:comment).join('    ');
   end
 
+  def formatted_created_at
+    created_at.to_datetime.to_s(:nice_datetime)
+  end
+
   def before_validation
     return if self.is_website_tester
     return if self.website.nil? || self.website == '' 

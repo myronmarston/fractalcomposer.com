@@ -4,6 +4,25 @@
    TODO: change the mouse icon over buttons to indicate they can be pressed
  *************************************************************/
 
+.library-list-data-column {
+    text-align: center;
+}
+
+
+table.library-list thead tr td {
+    font-weight: bold;
+    text-align: center;
+}
+
+table.library-list tfoot tr td,
+table.library-list thead tr td {
+    background-color: #E5F0FB;
+}
+
+table.library-list {
+    width: 460px;
+}
+
 .pagination {
   text-align: center;
   padding: .3em; 

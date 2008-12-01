@@ -1,10 +1,9 @@
 <div class="static-page-wrap">
-  <%= @user_submissions.size %> most recent submissions:
-  <ol>
-  <% @user_submissions.each do |user_submission| -%>
-    <li>
-      <%= link_to("#{user_submission.title} by #{user_submission.name}", :action => 'view_piece', :id => user_submission) %>
-    </li>
+  <p>
+    <%= @list_options[0][:user_submissions].total_entries %> pieces have been submitted to the library.  Browse the lists below, or use the search box on the sidebar to search the library for a specific piece.
+  </p>
+
+  <% @list_options.each do |options| -%>
+    <%= render :partial => 'user_submission_table', :locals => options %>
   <% end -%>
-  </ol>
 </div>

@@ -1,20 +1,70 @@
 class LibraryController < ApplicationController
   EXAMPLE_IDS = [1, 2] unless defined? EXAMPLE_IDS
-  SEARCH_PER_PAGE = 10 unless defined? SEARCH_PER_PAGE
+  LIST_CONDITIONS = "processing_completed IS NOT NULL AND id NOT IN (#{EXAMPLE_IDS.join(', ')})" unless defined? LIST_CONDITIONS
+  PER_PAGE = 10 unless defined? PER_PAGE
+  LIST_OPTIONS = [
+    {
+      :id => 'most_recent',
+      :order => '',
+      :columns => { 'Date' => :formatted_created_at },
+      :page_param => :most_recent_page,
+      :title_style => 'background-color: transparent; border: none'
+    },
+    {
+      :id => 'highest_rated',
+      :order => 'rating_avg DESC,',
+      :columns => { 'Votes' => :rating_count, 'Rating' => :rating_avg },
+      :additional_conditions => ' AND rating_count > 1',
+      :page_param => :highest_rated_page
+    },
+    {
+      :id => 'most_viewed',
+      :order => 'unique_page_views DESC,',
+      :columns => { '# of times viewed' => :unique_page_views },
+      :page_param => :most_viewed_page
+    },
+    {
+      :id => 'most_commented',
+      :order => 'comment_count DESC,',
+      :columns => { '# of comments' => :comment_count },
+      :page_param => :most_commented_page
+    },
+    {
+      :id => 'oldest_unrated',
+      :additional_conditions => ' AND COALESCE(rating_count, 0) = 0',
+      :order => 'created_at ASC,',
+      :columns => { 'Date' => :formatted_created_at },
+      :page_param => :oldest_unrated_page
+    }
+  ] unless defined? LIST_OPTIONS
+
   before_filter :load_user_submission
   before_filter :setup_negative_captcha, :only => [:view_piece, :add_comment, :examples]
   
   def index
-    @user_submissions = UserSubmission.find(:all, 
-      :conditions => "processing_completed IS NOT NULL AND id NOT IN (#{EXAMPLE_IDS.join(', ')})", 
-      :order => 'created_at DESC',
-      :limit => 20)  
-    
-    respond_to do |format|     
-      # google feed catcher keeps trying to get this with ?format=rss since I subscribed once will testing...
-      format.html # use index view...
-      format.rss { redirect_to 'http://feeds.feedburner.com/fractalcomposer' }      
-    end    
+    if request.xhr?
+      # AJAX requests come from the pagination...
+      matching_options = LIST_OPTIONS.select { |opt| opt[:id] == params[:list_type] }
+      if matching_options.blank?
+        head :not_found
+        return
+      end
+
+      @options = matching_options.first.dup
+      @options[:user_submissions] = get_user_submission_list(@options)
+      render :partial => 'user_submission_table', :locals => @options
+    else
+      @list_options = LIST_OPTIONS.dup
+      @list_options.each do |options|
+        options[:user_submissions] = get_user_submission_list(options)
+      end
+
+      respond_to do |format|
+        # google feed catcher keeps trying to get this with ?format=rss since I subscribed once will testing...
+        format.html # use index view...
+        format.rss { redirect_to 'http://feeds.feedburner.com/fractalcomposer' }
+      end
+    end
   end
 
   def search
@@ -26,10 +76,10 @@ class LibraryController < ApplicationController
       return
     end
 
-    @search_results = UserSubmission.paginate_search(@query, :page => @page, :per_page => SEARCH_PER_PAGE)
+    @search_results = UserSubmission.paginate_search(@query, :page => @page, :per_page => PER_PAGE)
 
     if @search_results.blank? && @page.to_i > 1
-      @page = @search_results.total_entries <= SEARCH_PER_PAGE ? nil : 1 + @search_results.total_entries / SEARCH_PER_PAGE
+      @page = @search_results.total_entries <= PER_PAGE ? nil : 1 + @search_results.total_entries / PER_PAGE
       redirect_to :overwrite_params => { :page => @page }
       return
     end
@@ -49,8 +99,8 @@ class LibraryController < ApplicationController
   
   def feed
     @user_submissions = UserSubmission.find(:all, 
-      :conditions => "processing_completed IS NOT NULL AND id NOT IN (#{EXAMPLE_IDS.join(', ')})", 
-      :order => 'updated_at DESC',
+      :conditions => LIST_CONDITIONS,
+      :order => 'created_at DESC',
       :limit => 20)    
 
     # filter out unprocessed pieces...    
@@ -154,6 +204,28 @@ class LibraryController < ApplicationController
       :spinner => request.remote_ip, 
       :fields => [:name, :email, :website, :comment], #Whatever fields are in your form 
       :params => params)
+  end
+
+  def get_user_submission_list_page(options, page_num)
+    UserSubmission.paginate(
+        :all,
+        :conditions => "#{LIST_CONDITIONS}#{options[:additional_conditions] || ''}",
+        :order => "#{options[:order]}created_at DESC",
+        :per_page => PER_PAGE,
+        :page => page_num)
+  end
+
+  def get_user_submission_list(options)
+    page = params[options[:page_param]] || 1
+    page = 1 if page.to_i < 1
+
+    user_submissions = get_user_submission_list_page(options, page)
+
+    if user_submissions.blank? && page.to_i > 1
+      user_submissions = get_user_submission_list_page(options, 1 + user_submissions.total_entries / PER_PAGE)
+    end
+
+    return user_submissions
   end
 
 end

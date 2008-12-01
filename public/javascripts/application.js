@@ -34,3 +34,27 @@ function create_live_validation_field_basic(id, delay, validations) {
        
   return validator;
 }
+
+var Pagination = Class.create({
+
+  initialize: function() {
+    this.options = Object.extend({
+      container:  arguments[0]
+    }, arguments[1] || {});
+    this.initLinks();
+  },
+
+  initLinks: function() {
+    $(this.options.container).select('div.pagination a').invoke('observe', 'click', this.linkHandler.bind(this));
+  },
+
+  linkHandler: function(event) {
+    event.stop();
+    new Ajax.Updater(this.options.container, event.element().getAttribute('href'), {
+      method: 'get',
+      parameters: { list_type: this.options.container },
+      onComplete: this.initLinks.bind(this)
+    });
+  }
+
+});

@@ -1,0 +1,41 @@
+<div id="<%= id %>">
+  <% unless user_submissions.blank? -%>
+    <table class="library-list">
+      <thead>
+        <tr style="<%= title_style ||= '' %>">
+          <td colspan="10" style="<%= title_style %>"><%= id.titleize %></td>
+        </tr>
+        <tr>
+          <th>Piece</th>
+          <% columns.each do |key, value| -%>
+            <th class="library-list-data-column"><%= key %></th>
+          <% end -%>
+        </tr>
+      </thead>
+      <tbody>
+        <% user_submissions.each do |user_submission| -%>
+          <tr>
+            <td>
+              <%= link_to("#{h(user_submission.title)} by #{h(user_submission.name)}", :action => 'view_piece', :id => user_submission) %>
+            </td>
+            <% columns.each do |key, value| -%>
+              <td class="library-list-data-column">
+                <%= user_submission.send(value) %>
+              </td>
+            <% end -%>
+          </tr>
+        <% end -%>
+      </tbody>
+      <% if user_submissions.total_entries > LibraryController::PER_PAGE -%>
+        <tfoot>
+          <tr class="pagination">
+            <td colspan="10">
+              <%= will_paginate user_submissions, :param_name => page_param, :params => { :list_type => nil } %>
+              <%= javascript_tag("new Pagination('#{id}');") %>
+            </td>
+          </tr>
+        </tfoot>
+      <% end -%>
+    </table>
+  <% end -%>
+</div>
