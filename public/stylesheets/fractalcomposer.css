@@ -4,6 +4,11 @@
    TODO: change the mouse icon over buttons to indicate they can be pressed
  *************************************************************/
 
+div#sidebar ul, div#sidebar ol {
+    margin: 5px;
+    padding:0 0 0 25px;
+}
+
 .library-list-data-column {
     text-align: center;
 }

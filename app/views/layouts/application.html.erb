@@ -45,18 +45,34 @@
                     <%= yield %>
 		</div>		
 			
-		<div id="sidebar">	
-          <% form_tag({:controller => 'library', :action => 'search'}, :method => 'get', :class => 'searchform') do -%>
-              <p>
-                <%= text_field_tag(:query, params[:query], :class => 'textbox') %>
-                <input class="button" type="submit" value="Search" />
-              </p>
-          <% end -%>
-          <br />
-          <div class="feed-button rounded-corners">
-            <a href="http://feeds.feedburner.com/fractalcomposer">Subscribe</a>
+		<div id="sidebar">
+                    <div>
+            <div class="feed-button rounded-corners">
+              <a href="http://feeds.feedburner.com/fractalcomposer">Subscribe</a>
+            </div>
           </div>
-          <br />
+          
+          <div>
+            <h2>Search the library!</h2>
+            <% form_tag({:controller => 'library', :action => 'search'}, :method => 'get', :class => 'searchform') do -%>
+                <p>
+                  <%= text_field_tag(:query, params[:query], :class => 'textbox') %>
+                  <input class="button" type="submit" value="Search" />
+                </p>
+            <% end -%>
+          </div>
+          
+          <div>
+            <h2>Newest Pieces</h2>
+            <ol>
+              <% @most_recent_pieces.each do |user_submission| -%>
+                <li>
+                  <%= link_to("#{h(user_submission.title)} by #{h(user_submission.name)}", :controller => 'library', :action => 'view_piece', :id => user_submission) %>
+                </li>
+              <% end -%>
+            </ol>
+          </div>
+
         </div>
 				
 	<!-- content-wrap ends here -->	

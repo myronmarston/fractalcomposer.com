@@ -4,7 +4,8 @@
 class ApplicationController < ActionController::Base
   include ExceptionNotifiable
   local_addresses.clear
-  before_filter :protect_xhr_actions  
+  before_filter :protect_xhr_actions
+  before_filter :load_most_recent_list
   helper :all # include all helpers, all the time
 
   # See ActionController::RequestForgeryProtection for details
@@ -18,6 +19,10 @@ class ApplicationController < ActionController::Base
   # taken from http://www.webdevbros.net/2007/12/05/protect-your-xhr-actions-ror/
   def protect_xhr_actions    
     redirect_to '/compose' and false if self.action_name.ends_with?('_xhr') and !request.xhr?
+  end
+
+  def load_most_recent_list
+    @most_recent_pieces = UserSubmission.find(:all, :conditions => LibraryController::LIST_CONDITIONS, :order => 'created_at DESC', :limit => 5)
   end
     
   # taken from http://groups.google.com/group/jruby-users/browse_thread/thread/e703e3acd2f9bed7/baee5d58f5fb6d58?lnk=gst&q=render_optional_error_file#
