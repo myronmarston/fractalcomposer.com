@@ -42,6 +42,7 @@ class LibraryController < ApplicationController
   before_filter :setup_negative_captcha, :only => [:view_piece, :add_comment, :examples]
   
   def index
+    @page_title = 'Library'
     if request.xhr?
       # AJAX requests come from the pagination...
       matching_options = LIST_OPTIONS.select { |opt| opt[:id] == params[:list_type] }
@@ -68,6 +69,7 @@ class LibraryController < ApplicationController
   end
 
   def search
+    @page_title = 'Library Search'
     @query = params[:query]
     @page = params[:page] || 1
 
@@ -114,6 +116,7 @@ class LibraryController < ApplicationController
   end
   
   def examples
+    @page_title = 'Examples'
     @examples = UserSubmission.find(:all, :order => 'id', :conditions => { :id => EXAMPLE_IDS } )
     @examples.each {|e| UserSubmissionProcessor.start_processor_if_necessary unless e.processed?}
     @comment = flash[:comment]
@@ -129,6 +132,7 @@ class LibraryController < ApplicationController
           flash.keep
           redirect_to :action => :examples, :tab => tab
         else
+          @page_title = "#{@user_submission.title} by #{@user_submission.name}"
           @user_submission.page_view(request.remote_ip)
           @comment = flash[:comment]
           @valid = (@comment ? @comment.valid? : true) # true is the default so we don't get error messages

@@ -372,7 +372,8 @@ class ComposeController < ApplicationController
     end
   end  
   
-  def load_fractal_piece_from_session        
+  def load_fractal_piece_from_session
+    @page_title = 'Compose'
     begin
       # first, check to see if the user is trying to work with an existing user submitted piece...
       if params.has_key?(:user_submission_id)
