@@ -10,7 +10,7 @@ CREATE TABLE `comments` (
   `created_at` datetime default NULL,
   `updated_at` datetime default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 CREATE TABLE `generated_pieces` (
   `id` int(11) NOT NULL auto_increment,
@@ -20,8 +20,9 @@ CREATE TABLE `generated_pieces` (
   `generated_guido_file` varchar(255) collate utf8_bin NOT NULL,
   `created_at` datetime default NULL,
   `updated_at` datetime default NULL,
+  `germ` varchar(255) collate utf8_bin NOT NULL default '',
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=487 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 CREATE TABLE `ip_addresses` (
   `id` int(11) NOT NULL auto_increment,
@@ -30,7 +31,7 @@ CREATE TABLE `ip_addresses` (
   `updated_at` datetime default NULL,
   PRIMARY KEY  (`id`),
   KEY `index_ip_addresses_on_ip_address` (`ip_address`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=68 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 CREATE TABLE `page_html_parts` (
   `id` int(11) NOT NULL auto_increment,
@@ -40,7 +41,7 @@ CREATE TABLE `page_html_parts` (
   `created_at` datetime default NULL,
   `updated_at` datetime default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 CREATE TABLE `ratings` (
   `id` int(11) NOT NULL auto_increment,
@@ -51,7 +52,7 @@ CREATE TABLE `ratings` (
   PRIMARY KEY  (`id`),
   KEY `index_ratings_on_rater_id` (`rater_id`),
   KEY `index_ratings_on_rated_type_and_rated_id` (`rated_type`,`rated_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=115 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 CREATE TABLE `schema_info` (
   `version` int(10) default NULL
@@ -66,7 +67,7 @@ CREATE TABLE `sessions` (
   PRIMARY KEY  (`id`),
   KEY `index_sessions_on_session_id` (`session_id`),
   KEY `index_sessions_on_updated_at` (`updated_at`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=4244 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 CREATE TABLE `user_submission_unique_page_views` (
   `id` int(11) NOT NULL auto_increment,
@@ -77,7 +78,7 @@ CREATE TABLE `user_submission_unique_page_views` (
   PRIMARY KEY  (`id`),
   KEY `fk_user_submission_unique_page_views` (`user_submission_id`),
   CONSTRAINT `fk_user_submission_unique_page_views` FOREIGN KEY (`user_submission_id`) REFERENCES `user_submissions` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=392 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 CREATE TABLE `user_submissions` (
   `id` int(11) NOT NULL auto_increment,
@@ -104,9 +105,10 @@ CREATE TABLE `user_submissions` (
   `rating_avg` decimal(10,2) default NULL,
   `created_at` datetime default NULL,
   `updated_at` datetime default NULL,
+  `slug` varchar(1024) collate utf8_bin NOT NULL default '',
   PRIMARY KEY  (`id`),
   KEY `fk_user_submissions_generated_piece_id_to_generated_pieces` (`generated_piece_id`),
   CONSTRAINT `fk_user_submissions_generated_piece_id_to_generated_pieces` FOREIGN KEY (`generated_piece_id`) REFERENCES `generated_pieces` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
-INSERT INTO `schema_info` (version) VALUES (6)
+INSERT INTO `schema_info` (version) VALUES (8)

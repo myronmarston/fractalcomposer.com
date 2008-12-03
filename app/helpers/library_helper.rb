@@ -23,7 +23,7 @@ module LibraryHelper
     
     star_or_stars = (num == 1 ? 'star' : 'stars')
     id = "rate_link_#{num}_#{@user_submission.id}"
-    url_hash = { :controller => :library, :action => :rate, :id => @user_submission, :rating => num }
+    url_hash = { :controller => :library, :action => :rate, :slug => @user_submission.slug, :rating => num }
     link = link_to(num.to_s, url_hash,
         {:id => id,
          :class => "#{num_spelled_out}-#{star_or_stars}", 

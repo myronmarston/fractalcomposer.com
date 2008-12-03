@@ -10,7 +10,7 @@
     <ol>
       <% @search_results.each do |user_submission| -%>
           <li>
-            <%= link_to("#{highlight(h(user_submission.title), @query)} by #{highlight(h(user_submission.name), @query)}", :action => 'view_piece', :id => user_submission) %>
+            <%= link_to("#{highlight(h(user_submission.title), @query)} by #{highlight(h(user_submission.name), @query)}", :action => 'view_piece', :slug => user_submission.slug) %>
             <% @search_excerpts = search_excerpts(user_submission) -%>
             <%= "<br />#{@search_excerpts.join('<br />')}" unless @search_excerpts.blank? %>
           </li>

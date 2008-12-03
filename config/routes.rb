@@ -40,9 +40,11 @@ ActionController::Routing::Routes.draw do |map|
   map.connect 'examples/', :controller => 'library', :action => 'examples'  
   map.connect 'library/search', :controller => 'library', :action => 'search'
   map.connect 'library/feed.:format', :controller => 'library', :action => 'feed', :conditions => { :method => :get }, :requirements => { :format => /atom/ }
-  map.connect 'library/', :controller => 'library', :action => 'index'  
-  map.connect 'library/:id', :controller => 'library', :action => 'view_piece'  
-  
+  map.connect 'library/', :controller => 'library', :action => 'index'
+  map.connect 'library/:slug', :controller => 'library', :action => 'view_piece'
+  map.connect 'library/:action/:slug', :controller => 'library', :requirements => { :action => /(rate|add_comment)/i }
+  map.connect 'library/:id',   :controller => 'library', :action => 'view_piece'
+
   map.connect 'compose/', :controller => 'compose', :action => 'index'  
   map.connect 'compose/:user_submission_id', :controller => 'compose', :action => 'index', :user_submission_id => /\d+/
   

@@ -16,7 +16,7 @@
         <% user_submissions.each do |user_submission| -%>
           <tr>
             <td>
-              <%= link_to("#{h(user_submission.title)} by #{h(user_submission.name)}", :action => 'view_piece', :id => user_submission) %>
+              <%= link_to("#{h(user_submission.title)} by #{h(user_submission.name)}", :action => 'view_piece', :slug => user_submission.slug) %>
             </td>
             <% columns.each do |key, value| -%>
               <td class="library-list-data-column">

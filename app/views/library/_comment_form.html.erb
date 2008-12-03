@@ -1,5 +1,5 @@
   <% new_comment_spinner_id = "new_comment_spinner_#{@user_submission.id}" %>
-  <% url_hash = {:action => 'add_comment', :id => @user_submission} %>
+  <% url_hash = {:action => 'add_comment', :slug => @user_submission.slug} %>
   <% form_remote_tag :url => url_hash,
                      :html => {:action => url_for(url_hash), :id => "comment_form_#{@user_submission.id}", :class => 'rounded-corners comment_form'},
                      :before => "$('#{new_comment_spinner_id}').show()",

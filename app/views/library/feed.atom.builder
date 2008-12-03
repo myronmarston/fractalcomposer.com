@@ -1,4 +1,4 @@
-fc_atom_feed(:schema_date => Date.civil(2008, 10, 20), :root_url => root_url ) do |feed|
+fc_atom_feed(:schema_date => Date.civil(2008, 12, 3), :root_url => root_url ) do |feed|
    feed.title("Fractal Composer User Submission Library")
    feed.updated(@user_submissions.size == 0 ? DateTime.now : @user_submissions.first.created_at)   
    
@@ -11,7 +11,7 @@ fc_atom_feed(:schema_date => Date.civil(2008, 10, 20), :root_url => root_url ) d
    feed.rights '&copy;2008 Myron Marston', :type => 'html'
   
    for @user_submission in @user_submissions
-     feed.entry(@user_submission, :url => url_for(:action => :view_piece, :id => @user_submission.id, :only_path => false) ) do |entry|
+     feed.entry(@user_submission, :url => url_for(:action => :view_piece, :slug => @user_submission.slug, :only_path => false) ) do |entry|
        entry.link :rel => 'license', :type => 'application/rdf+xml', :href => "#{LICENSE_URL}rdf"
        # the piece goes first, since some feed readers can only handle one enclosure...
        entry_mp3_enclosure(entry, @user_submission.piece_mp3_file)       

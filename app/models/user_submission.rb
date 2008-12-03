@@ -19,10 +19,12 @@ class UserSubmission < ActiveRecord::Base
       
   generate_validations
   validates_email_format_of :email
+  validates_uniqueness_of :slug
   
   #TODO: remove the url validation, but make sure that XSS can't happen....
   validates_http_url :website 
-  attr_accessor :is_website_tester  
+  attr_accessor :is_website_tester
+  before_validation :set_slug
 
   def comment_names
     @comment_names ||= self.comments.map(&:name).join('    ');
@@ -139,6 +141,23 @@ class UserSubmission < ActiveRecord::Base
     # and read/execute for everyone else
     Dir.mkdir(local_dir, 0755) unless File.exist?(local_dir)     
     user_submission_dir
-  end      
+  end
+
+  def expected_id
+    self.new_record? ? UserSubmission.find(:first, :order => 'id DESC', :select => 'id').id + 1 : self.id
+  end
+
+  def set_slug
+    return unless slug.blank?
+    
+    new_slug = Slugalizer.slugalize("#{title} by #{name}")
+
+    # we don't prevent duplicate names, so we might wind up with a duplicate slug; in this case use the id as well...
+    if UserSubmission.find(:first, :conditions => ['slug = ?', new_slug])
+      new_slug = Slugalizer.slugalize("#{title} by #{name} #{expected_id}")
+    end
+
+    self.slug = new_slug
+  end
       
 end

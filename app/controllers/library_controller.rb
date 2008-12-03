@@ -151,7 +151,7 @@ class LibraryController < ApplicationController
     if request.xml_http_request?
       respond_to { |format| format.js } 
     else
-      redirect_to :action => 'view_piece', :id => @user_submission
+      redirect_to :action => 'view_piece', :slug => @user_submission.slug
     end    
   end
   
@@ -188,17 +188,27 @@ class LibraryController < ApplicationController
       # if the comment is invalid, pass on the comment to the redirect so that
       # we can use it to preserve what the user typed
       flash[:comment] = @comment unless @is_valid_non_preview
-      redirect_to :action => 'view_piece', :id => @user_submission
+      redirect_to :action => 'view_piece', :slug => @user_submission.slug
     end                
   end    
   
   private
   
   def load_user_submission
-    begin
-      @user_submission = UserSubmission.find(params[:id]) if params.has_key?(:id)      
-    rescue ActiveRecord::RecordNotFound      
-      @user_submission = nil      
+    return true unless params.has_key?(:slug) || params.has_key?(:id)
+
+    slug = params[:slug] || params[:id]
+
+    @user_submission = UserSubmission.find_by_slug(slug)
+
+    if @user_submission.nil?
+      # try to find it by id, since we didn't have slugs when we first launched the website...
+      @user_submission = UserSubmission.find_by_id(slug)
+      if @user_submission
+        # redirect!
+        redirect_to :slug => @user_submission.slug, :id => nil, :status => 301
+        return false
+      end
     end
   end
     
