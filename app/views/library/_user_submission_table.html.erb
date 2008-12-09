@@ -12,6 +12,18 @@
           <% end -%>
         </tr>
       </thead>
+
+      <% if user_submissions.total_entries > LibraryController::PER_PAGE -%>
+        <tfoot>
+          <tr class="pagination">
+            <td colspan="10">
+              <%= will_paginate user_submissions, :param_name => page_param, :params => { :list_type => nil } %>
+              <%= javascript_tag("new Pagination('#{id}');") %>
+            </td>
+          </tr>
+        </tfoot>
+      <% end -%>
+
       <tbody>
         <% user_submissions.each do |user_submission| -%>
           <tr>
@@ -26,16 +38,7 @@
           </tr>
         <% end -%>
       </tbody>
-      <% if user_submissions.total_entries > LibraryController::PER_PAGE -%>
-        <tfoot>
-          <tr class="pagination">
-            <td colspan="10">
-              <%= will_paginate user_submissions, :param_name => page_param, :params => { :list_type => nil } %>
-              <%= javascript_tag("new Pagination('#{id}');") %>
-            </td>
-          </tr>
-        </tfoot>
-      <% end -%>
+
     </table>
   <% end -%>
 </div>
