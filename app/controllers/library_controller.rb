@@ -271,7 +271,7 @@ class LibraryController < ApplicationController
       @user_submission = UserSubmission.find_by_id(slug)
       if @user_submission
         # redirect!
-        redirect_to :slug => @user_submission.slug, :id => nil, :status => 301
+        redirect_to params.merge(:slug => @user_submission.slug, :id => nil, :status => 301)
         return false
       end
     end

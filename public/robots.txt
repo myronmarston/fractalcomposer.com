@@ -5,3 +5,6 @@
 # Disallow: /
 
 Sitemap: http://fractalcomposer.com/sitemap.xml
+
+User-Agent: *
+Disallow: /library/rate/
