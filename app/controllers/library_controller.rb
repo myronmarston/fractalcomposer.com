@@ -1,5 +1,3 @@
-require 'rake'
-
 class LibraryController < ApplicationController
   EXAMPLE_IDS = [1, 2] unless defined? EXAMPLE_IDS
   LIST_CONDITIONS = "processing_completed IS NOT NULL AND id NOT IN (#{EXAMPLE_IDS.join(', ')})" unless defined? LIST_CONDITIONS
@@ -43,49 +41,49 @@ class LibraryController < ApplicationController
   SITEMAP_PAGE_DATA = [
     {
       :url_options => { :controller => 'static_page', :action => 'index', :page => 'home' },
-      :view_filelist => FileList['app/views/static_page/home.html.erb'],
+      #:view_filelist => FileList['app/views/static_page/home.html.erb'],
       :priority => 1.0,
       :changefreq => 'weekly'
     },
     {
       :url_options => { :controller => 'static_page', :action => 'index', :page => 'about' },
-      :view_filelist => FileList['app/views/static_page/about.html.erb'],
+      #:view_filelist => FileList['app/views/static_page/about.html.erb'],
       :priority => 0.8,
       :changefreq => 'weekly'
     },
     {
       :url_options => { :controller => 'library', :action => 'examples' },
-      :view_filelist => FileList['app/views/library/examples.html.erb', 'app/views/library/_piece.html.erb'],
+      #:view_filelist => FileList['app/views/library/examples.html.erb', 'app/views/library/_piece.html.erb'],
       :priority => 0.8,
       :changefreq => 'daily'
     },
     {
       :url_options => { :controller => 'compose', :action => 'index' },
-      :view_filelist => FileList['app/views/compose/*.*', 'app/views/info_partials/*.*'],
+      #:view_filelist => FileList['app/views/compose/*.*', 'app/views/info_partials/*.*'],
       :priority => 0.7,
       :changefreq => 'weekly'
     },
     {
       :url_options => { :controller => 'library', :action => 'index' },
-      :view_filelist => FileList['app/views/library/index.html.erb', 'app/views/library/_user_submission_table.html.erb'],
+      #:view_filelist => FileList['app/views/library/index.html.erb', 'app/views/library/_user_submission_table.html.erb'],
       :priority => 0.8,
       :changefreq => 'hourly'
     },
     {
       :url_options => { :controller => 'static_page', :action => 'index', :page => 'acknowledgements' },
-      :view_filelist => FileList['app/views/static_page/acknowledgements.html.erb'],
+      #:view_filelist => FileList['app/views/static_page/acknowledgements.html.erb'],
       :priority => 0.3,
       :changefreq => 'weekly'
     }
   ]
 
-  VIEW_PIECE_FILELIST = FileList[
-    'app/views/library/_comment*.*',
-    'app/views/library/_creative_commons_license.html.erb',
-    'app/views/library/_piece.html.erb',
-    'app/views/library/_star_rating.html.erb',
-    'app/views/library/view_piece.html.erb'
-  ] unless defined? VIEW_PIECE_FILELIST
+#  VIEW_PIECE_FILELIST = FileList[
+#    'app/views/library/_comment*.*',
+#    'app/views/library/_creative_commons_license.html.erb',
+#    'app/views/library/_piece.html.erb',
+#    'app/views/library/_star_rating.html.erb',
+#    'app/views/library/view_piece.html.erb'
+#  ] unless defined? VIEW_PIECE_FILELIST
 
   before_filter :load_user_submission
   before_filter :setup_negative_captcha, :only => [:view_piece, :add_comment, :examples]
@@ -242,15 +240,21 @@ class LibraryController < ApplicationController
   end
 
   def sitemap
+    # Originally, we tried to use FileList objects to check the modified time on a list of views, but
+    # that causes problems for our atom feed because it needs to require rake (for FileTime), which creates
+    # an error in the atom feed helper (maybe because of monkey patching?)
+    # Plus, it doesn't work properly anyway...on the server, the mtime is always the time the WAR is deployed,
+    # not the time of the last source modification of the file.
+    # Instead, we'll just use the modified time of the app layout, which is the time the WAR was deployed.
     @layout_file_last_changed = File.mtime("#{RAILS_ROOT}/app/views/layouts/application.html.erb")
     @page_data = SITEMAP_PAGE_DATA.dup
 
     @page_data.each do |data|
-      data[:last_view_file_timestamp] = (data[:view_filelist].map {|f| File.mtime(f)} + [@layout_file_last_changed]).max
+      data[:last_view_file_timestamp] = @layout_file_last_changed#(data[:view_filelist].map {|f| File.mtime(f)} + [@layout_file_last_changed]).max
     end
 
     @pieces = UserSubmission.find(:all, :conditions => LIST_CONDITIONS, :order => 'created_at DESC', :limit => 1000)
-    @view_piece_file_last_changed = (VIEW_PIECE_FILELIST.map {|f| File.mtime(f)} + [@layout_file_last_changed]).max
+    @view_piece_file_last_changed = @layout_file_last_changed#(VIEW_PIECE_FILELIST.map {|f| File.mtime(f)} + [@layout_file_last_changed]).max
 
     respond_to do |format|
       format.xml { render :layout => false }
