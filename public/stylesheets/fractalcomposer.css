@@ -187,7 +187,8 @@ textarea#germ {
 }
 
 object.midi_player {
-    margin-left: -7px;
+    display: block;
+    margin: 10px auto;
 }
 
 form#compose_form input.button {
